@@ -62,10 +62,10 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* React Bits - Orb Background (@react-bits/Orb-JS-CSS) scoped to Hero */
+    /* React Bits - Orb Background (@react-bits/Orb-JS-CSS) scoped to Hero with Atmospheric Blur */
     .orb-container {
       position: absolute;
-      top: -65px; /* Moved slightly up to frame header and badge */
+      top: 15px; /* Moved down slightly to center harmoniously behind title */
       left: 50%;
       transform: translateX(-50%);
       width: 1050px;
@@ -73,8 +73,8 @@
       max-width: 100vw;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.92;
-      filter: drop-shadow(0 0 90px rgba(240, 185, 11, 0.35)) drop-shadow(0 0 25px rgba(252, 213, 53, 0.25));
+      opacity: 0.90;
+      filter: blur(14px) drop-shadow(0 0 100px rgba(240, 185, 11, 0.5)) drop-shadow(0 0 35px rgba(252, 213, 53, 0.3));
       mask-image: radial-gradient(circle at 50% 48%, black 50%, transparent 82%);
       -webkit-mask-image: radial-gradient(circle at 50% 48%, black 50%, transparent 82%);
       transition: opacity 0.15s ease-out;

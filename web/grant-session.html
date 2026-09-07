@@ -65,6 +65,24 @@
       position: relative;
     }
 
+    
+    /* React Bits - Blurred Ambient Orb Background */
+    .orb-container {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 950px;
+      height: 750px;
+      max-width: 100vw;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.72;
+      filter: blur(20px) drop-shadow(0 0 100px rgba(240, 185, 11, 0.45)) drop-shadow(0 0 35px rgba(252, 213, 53, 0.3));
+      mask-image: radial-gradient(circle at 50% 48%, black 45%, transparent 80%);
+      -webkit-mask-image: radial-gradient(circle at 50% 48%, black 45%, transparent 80%);
+    }
+
     /* Film Grain Ambient Texture */
     .grain-overlay {
       position: fixed;
@@ -547,6 +565,7 @@
   </style>
 </head>
 <body>
+  <div id="orb-container" class="orb-container"></div>
   <div class="grain-overlay"></div>
 
   <!-- Floating Island Topbar with Back Button -->
@@ -887,5 +906,22 @@
       }
     };
   </script>
+
+  <!-- React Bits - Orb Component on Console -->
+  <script type="module">
+    import { initOrb } from './orb.js';
+
+    const orbEl = document.getElementById('orb-container');
+    if (orbEl) {
+      initOrb(orbEl, {
+        hue: 0,
+        hoverIntensity: 1.5,
+        rotateOnHover: true,
+        forceHoverState: false,
+        backgroundColor: '#070611'
+      });
+    }
+  </script>
+
 </body>
 </html>
