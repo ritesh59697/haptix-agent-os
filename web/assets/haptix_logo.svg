@@ -1,21 +1,21 @@
 <svg width="120" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="haptixGradLeft" x1="0%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" stop-color="#EC4899"/>
-      <stop offset="40%" stop-color="#D946EF"/>
-      <stop offset="100%" stop-color="#3B82F6"/>
+      <stop offset="0%" stop-color="#FFF5D6"/>
+      <stop offset="35%" stop-color="#FCD535"/>
+      <stop offset="100%" stop-color="#F0B90B"/>
     </linearGradient>
     <linearGradient id="haptixGradRight" x1="50%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#C084FC"/>
-      <stop offset="60%" stop-color="#0052FF"/>
-      <stop offset="100%" stop-color="#06B6D4"/>
+      <stop offset="0%" stop-color="#FCD535"/>
+      <stop offset="60%" stop-color="#F0B90B"/>
+      <stop offset="100%" stop-color="#D99B00"/>
     </linearGradient>
     <linearGradient id="haptixDotGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#E879F9"/>
-      <stop offset="100%" stop-color="#0052FF"/>
+      <stop offset="0%" stop-color="#FCD535"/>
+      <stop offset="100%" stop-color="#F0B90B"/>
     </linearGradient>
     <filter id="haptixGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#8B5CF6" flood-opacity="0.5"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#F0B90B" flood-opacity="0.6"/>
     </filter>
   </defs>
 
