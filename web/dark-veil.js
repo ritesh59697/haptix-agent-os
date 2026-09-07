@@ -76,9 +76,10 @@ void main(){
     if(uLightMode>0.5){
       float energy=max(result.r,max(result.g,result.b));
       vec3 hue=result/max(energy,0.001);
-      float coverage=smoothstep(0.08,0.82,energy);
-      vec3 ink=mix(hue*0.32,hue*0.78,smoothstep(0.0,1.0,energy));
-      result=mix(vec3(1.0),ink,coverage*0.82);
+      float coverage=smoothstep(0.06,0.85,energy);
+      vec3 ink=mix(hue*0.45,hue*0.85,smoothstep(0.0,1.0,energy));
+      vec3 paper=vec3(0.973,0.980,0.988);
+      result=mix(paper,ink,coverage*0.22);
     }
     gl_FragColor=vec4(result,1.0);
 }
