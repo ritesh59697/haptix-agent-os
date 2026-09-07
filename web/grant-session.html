@@ -4,544 +4,776 @@
   <meta charset="utf-8">
   <title>Haptix Enclave × Binance Agent OS — Live Console</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #07090E;
-      --card-bg: rgba(18, 24, 38, 0.72);
-      --card-surface: rgba(26, 34, 52, 0.6);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --card-border-hover: rgba(240, 185, 11, 0.3);
-      --gold: #F0B90B;
-      --gold-light: #FCD535;
-      --gold-alpha: rgba(240, 185, 11, 0.1);
-      --gold-glow: rgba(240, 185, 11, 0.25);
+      --bg: #070611;
+      --bg-surface: rgba(14, 18, 32, 0.75);
+      --bg-card: rgba(18, 24, 42, 0.72);
+      --bg-card-hover: rgba(24, 32, 56, 0.82);
+      --card-border: rgba(255, 255, 255, 0.09);
+      --card-border-hover: rgba(240, 185, 11, 0.4);
+      --inner-glow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      
+      --binance-gold: #F0B90B;
+      --binance-gold-light: #FCD535;
+      --binance-gold-glow: rgba(240, 185, 11, 0.25);
+      --binance-gold-alpha: rgba(240, 185, 11, 0.1);
+      
       --base-blue: #0052FF;
-      --base-blue-alpha: rgba(0, 82, 255, 0.12);
+      --base-blue-glow: rgba(0, 82, 255, 0.35);
+      --base-blue-alpha: rgba(0, 82, 255, 0.14);
+      
       --emerald: #10B981;
+      --emerald-glow: rgba(16, 185, 129, 0.3);
       --emerald-alpha: rgba(16, 185, 129, 0.12);
+      
       --rose: #F43F5E;
+      --rose-glow: rgba(244, 63, 94, 0.3);
       --rose-alpha: rgba(244, 63, 94, 0.12);
+      
       --text: #F8FAFC;
       --text-muted: #94A3B8;
       --text-dim: #64748B;
+      
       --font-heading: 'Outfit', sans-serif;
       --font-sans: 'Plus Jakarta Sans', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
     body {
       background: var(--bg);
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(240, 185, 11, 0.07) 0%, transparent 45%),
-        radial-gradient(circle at 100% 50%, rgba(0, 82, 255, 0.05) 0%, transparent 40%);
+        radial-gradient(circle at 50% -10%, rgba(240, 185, 11, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 90% 40%, rgba(0, 82, 255, 0.1) 0%, transparent 45%),
+        radial-gradient(circle at 10% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 45%);
       color: var(--text);
       font-family: var(--font-sans);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 48px 20px 80px;
+      padding: 100px 20px 80px;
       -webkit-font-smoothing: antialiased;
-    }
-    .container {
-      max-width: 800px;
-      width: 100%;
-    }
-    
-    /* Header Section */
-    .header {
-      margin-bottom: 32px;
-      text-align: center;
-    }
-    .badge-bar {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      border-radius: 9999px;
-      font-size: 11.5px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-    .badge-binance {
-      background: var(--gold-alpha);
-      border: 1px solid rgba(240, 185, 11, 0.3);
-      color: var(--gold-light);
-    }
-    .badge-base {
-      background: var(--base-blue-alpha);
-      border: 1px solid rgba(0, 82, 255, 0.3);
-      color: #93C5FD;
-    }
-    .pulse-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 8px var(--emerald);
-      animation: pulse 1.8s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-    h1 {
-      font-family: var(--font-heading);
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 10px;
-    }
-    h1 span {
-      background: linear-gradient(135deg, #F0B90B 0%, #FCD535 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    p.subtitle {
-      font-size: 14.5px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      max-width: 620px;
-      margin: 0 auto;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    /* Card Styling */
-    .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 24px;
-      margin-bottom: 22px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-      transition: border-color 0.2s ease;
+    /* Film Grain Ambient Texture */
+    .grain-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.28;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
     }
-    .card:hover {
-      border-color: rgba(255, 255, 255, 0.14);
+
+    .container {
+      max-width: 860px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
     }
-    .card-title {
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 16px;
+
+    /* Precision Floating Island Navbar */
+    .top-nav-wrapper {
+      position: fixed;
+      top: 18px;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 20px;
       display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .top-nav {
+      display: inline-flex;
       align-items: center;
       justify-content: space-between;
+      gap: 20px;
+      height: 52px;
+      max-width: 860px;
+      width: 100%;
+      padding: 0 8px 0 16px;
+      background: rgba(12, 16, 28, 0.75);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      pointer-events: auto;
     }
-    .card-title-left {
+
+    .nav-brand {
       display: flex;
       align-items: center;
       gap: 10px;
+      text-decoration: none;
+      color: #FFF;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: -0.02em;
     }
-    .icon-box {
-      width: 32px;
-      height: 32px;
+
+    .brand-logo-icon {
+      width: 28px;
+      height: 28px;
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.05);
+      background: linear-gradient(135deg, #EC4899 0%, #3B82F6 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.4);
     }
 
-    /* Telemetry Panel */
+    .nav-center-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(240, 185, 11, 0.08);
+      border: 1px solid rgba(240, 185, 11, 0.25);
+      color: var(--binance-gold-light);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 14px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #FFF;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-back-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.28);
+      transform: translateX(-2px);
+    }
+
+    /* Hero Header */
+    .hero-header {
+      margin-bottom: 36px;
+      text-align: center;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--binance-gold-alpha);
+      border: 1px solid rgba(240, 185, 11, 0.35);
+      color: var(--binance-gold-light);
+      margin-bottom: 16px;
+      box-shadow: 0 0 20px rgba(240, 185, 11, 0.15);
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 10px var(--emerald);
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.85); }
+    }
+
+    h1.hero-title {
+      font-family: var(--font-heading);
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    h1.hero-title span {
+      background: linear-gradient(135deg, #F0B90B 0%, #FCD535 50%, #FFF 100%);
+      -webkit-background-clip: text;
+      -webkit-fill-color: transparent;
+    }
+
+    p.hero-sub {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 660px;
+      margin: 0 auto;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 26px;
+      margin-bottom: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), var(--inner-glow);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-icon-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-title-text {
+      font-family: var(--font-heading);
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    /* Telemetry Hero Card */
+    .telemetry-card {
+      border-color: rgba(240, 185, 11, 0.25);
+      background: linear-gradient(180deg, rgba(24, 30, 50, 0.8) 0%, rgba(14, 18, 32, 0.8) 100%);
+    }
+
     .telemetry-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 14px;
       margin-top: 14px;
     }
-    .telemetry-cell {
-      background: var(--card-surface);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 14px 16px;
+
+    .telemetry-box {
+      background: rgba(10, 14, 26, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
       transition: all 0.2s ease;
     }
-    .telemetry-cell:hover {
-      border-color: rgba(240, 185, 11, 0.25);
-      background: rgba(32, 42, 64, 0.6);
+
+    .telemetry-box:hover {
+      border-color: rgba(240, 185, 11, 0.35);
+      background: rgba(16, 22, 38, 0.75);
     }
-    .telemetry-label {
+
+    .telemetry-metric-title {
       font-size: 11px;
+      font-weight: 700;
       color: var(--text-dim);
-      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
-    .telemetry-val {
+
+    .telemetry-metric-value {
       font-family: var(--font-mono);
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--text);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
 
-    /* Info Rows */
-    .info-row {
+    /* Info Table */
+    .info-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 11px 0;
+      padding: 12px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       font-size: 13.5px;
     }
-    .info-row:last-child { border-bottom: none; }
+    .info-item:last-child { border-bottom: none; }
     .mono { font-family: var(--font-mono); }
 
-    /* Action Console Buttons */
-    .action-grid {
+    /* Interactive 3-Tier Console */
+    .tier-cards-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 14px;
-      margin-bottom: 16px;
+      gap: 14px;
+      margin-top: 16px;
+      margin-bottom: 20px;
     }
-    .btn-action {
-      background: var(--card-surface);
+
+    .tier-card-btn {
+      background: rgba(12, 16, 30, 0.6);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 14px 16px;
+      border-radius: 16px;
+      padding: 18px;
       cursor: pointer;
       text-align: left;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .btn-action:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+    .tier-card-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
     }
-    .btn-action:active { transform: translateY(0); }
-    .btn-action-title {
-      font-size: 13.5px;
-      font-weight: 700;
+
+    .tier-card-btn:active { transform: translateY(0); }
+
+    .tier-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .tier-name {
+      font-family: var(--font-heading);
+      font-size: 15px;
+      font-weight: 800;
       margin-bottom: 4px;
     }
-    .btn-action-sub {
-      font-size: 11.5px;
-      color: var(--text-muted);
+
+    .tier-amount {
       font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
 
-    /* Specific Button Themes */
-    .btn-tier1 {
-      border-color: rgba(240, 185, 11, 0.35);
-      background: linear-gradient(180deg, rgba(240, 185, 11, 0.12) 0%, rgba(240, 185, 11, 0.04) 100%);
+    .tier-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      width: fit-content;
     }
-    .btn-tier1:hover {
-      border-color: var(--gold);
-      box-shadow: 0 8px 24px var(--gold-glow);
-    }
-    .btn-tier1 .btn-action-title { color: var(--gold-light); }
 
-    .btn-tier2 {
-      border-color: rgba(245, 158, 11, 0.25);
+    /* Tier Card Variants */
+    .tier-1 {
+      border-color: rgba(240, 185, 11, 0.3);
+      background: linear-gradient(180deg, rgba(240, 185, 11, 0.09) 0%, rgba(12, 16, 30, 0.6) 100%);
     }
-    .btn-tier2:hover {
-      border-color: #F59E0B;
-      background: rgba(245, 158, 11, 0.08);
+    .tier-1:hover {
+      border-color: var(--binance-gold);
+      box-shadow: 0 12px 30px var(--binance-gold-glow);
     }
-    .btn-tier2 .btn-action-title { color: #FCD34D; }
+    .tier-1 .tier-icon-wrap { background: var(--binance-gold-alpha); color: var(--binance-gold-light); }
+    .tier-1 .tier-name { color: var(--binance-gold-light); }
+    .tier-1 .tier-amount { color: #FFF; }
+    .tier-1 .tier-badge { background: var(--binance-gold-alpha); color: var(--binance-gold-light); border: 1px solid rgba(240, 185, 11, 0.3); }
 
-    .btn-tier3 {
+    .tier-2 {
+      border-color: rgba(168, 85, 247, 0.25);
+      background: linear-gradient(180deg, rgba(168, 85, 247, 0.08) 0%, rgba(12, 16, 30, 0.6) 100%);
+    }
+    .tier-2:hover {
+      border-color: #C084FC;
+      box-shadow: 0 12px 30px rgba(168, 85, 247, 0.3);
+    }
+    .tier-2 .tier-icon-wrap { background: rgba(168, 85, 247, 0.15); color: #C084FC; }
+    .tier-2 .tier-name { color: #E9D5FF; }
+    .tier-2 .tier-amount { color: #FFF; }
+    .tier-2 .tier-badge { background: rgba(168, 85, 247, 0.15); color: #D8B4FE; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+    .tier-3 {
       border-color: rgba(244, 63, 94, 0.25);
+      background: linear-gradient(180deg, rgba(244, 63, 94, 0.08) 0%, rgba(12, 16, 30, 0.6) 100%);
     }
-    .btn-tier3:hover {
+    .tier-3:hover {
       border-color: var(--rose);
-      background: rgba(244, 63, 94, 0.08);
+      box-shadow: 0 12px 30px var(--rose-glow);
     }
-    .btn-tier3 .btn-action-title { color: #FDA4AF; }
+    .tier-3 .tier-icon-wrap { background: var(--rose-alpha); color: var(--rose); }
+    .tier-3 .tier-name { color: #FECDD3; }
+    .tier-3 .tier-amount { color: #FFF; }
+    .tier-3 .tier-badge { background: var(--rose-alpha); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.3); }
 
-    /* Terminal Console */
-    .terminal-window {
-      background: #06080D;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
+    /* macOS Developer Terminal */
+    .terminal-container {
+      background: #05070D;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
       overflow: hidden;
-      margin-top: 14px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
       display: none;
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8);
+      margin-top: 18px;
     }
-    .terminal-bar {
+
+    .terminal-topbar {
       background: rgba(255, 255, 255, 0.04);
-      padding: 8px 14px;
+      padding: 10px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
-    .window-dots {
+
+    .term-dots {
       display: flex;
-      gap: 6px;
+      gap: 7px;
     }
-    .window-dot {
-      width: 10px;
-      height: 10px;
+
+    .term-dot {
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
     }
-    .terminal-body {
-      padding: 16px;
+
+    .term-body {
+      padding: 18px;
       font-family: var(--font-mono);
-      font-size: 12px;
-      line-height: 1.7;
-      color: #CBD5E1;
-      max-height: 300px;
+      font-size: 12.5px;
+      line-height: 1.8;
+      color: #E2E8F0;
+      max-height: 320px;
       overflow-y: auto;
     }
-    .log-line {
+
+    .term-line {
       display: flex;
       align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 4px;
+      gap: 10px;
+      margin-bottom: 6px;
     }
-    .log-tag {
-      padding: 1px 6px;
-      border-radius: 4px;
-      font-size: 10px;
+
+    .term-tag {
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 10.5px;
       font-weight: 700;
       flex-shrink: 0;
+      font-family: var(--font-mono);
     }
-    .tag-binance { background: var(--gold-alpha); color: var(--gold); }
-    .tag-llm { background: rgba(168, 85, 247, 0.15); color: #D8B4FE; }
-    .tag-haptix { background: var(--base-blue-alpha); color: #93C5FD; }
-    .tag-success { background: var(--emerald-alpha); color: var(--emerald); }
-    .tag-warning { background: rgba(245, 158, 11, 0.15); color: #FCD34D; }
-    .tag-error { background: var(--rose-alpha); color: var(--rose); }
 
-    /* Primary CTA Button */
-    .btn-quorum-cta {
+    /* Big Gold CTA */
+    .primary-glow-btn {
       width: 100%;
-      background: linear-gradient(135deg, #F0B90B 0%, #E5A800 100%);
+      background: linear-gradient(135deg, #F0B90B 0%, #D99B00 100%);
       color: #07090E;
       border: none;
-      padding: 14px 20px;
-      border-radius: 10px;
-      font-size: 14px;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-family: var(--font-heading);
+      font-size: 15px;
       font-weight: 800;
+      letter-spacing: -0.01em;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 20px rgba(240, 185, 11, 0.25);
+      gap: 10px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 28px rgba(240, 185, 11, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
-    .btn-quorum-cta:hover {
-      background: linear-gradient(135deg, #FCD535 0%, #F0B90B 100%);
-      box-shadow: 0 6px 28px rgba(240, 185, 11, 0.4);
-      transform: translateY(-1px);
-    }
-    .btn-quorum-cta:active { transform: translateY(0); }
-    .btn-quorum-cta:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-    @media (max-width: 680px) {
-      .telemetry-grid, .action-grid {
+    .primary-glow-btn:hover {
+      background: linear-gradient(135deg, #FCD535 0%, #F0B90B 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(240, 185, 11, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+
+    .primary-glow-btn:active { transform: translateY(0); }
+    .primary-glow-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    @media (max-width: 720px) {
+      .telemetry-grid, .tier-cards-grid {
         grid-template-columns: 1fr;
       }
+      h1.hero-title { font-size: 28px; }
+      .top-nav { padding: 0 12px; }
+      .nav-center-status { display: none; }
     }
   </style>
 </head>
 <body>
+  <div class="grain-overlay"></div>
+
+  <!-- Floating Island Topbar with Back Button -->
+  <div class="top-nav-wrapper">
+    <nav class="top-nav">
+      <a href="/" class="nav-brand">
+        <div class="brand-logo-icon">
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
+            <path d="M4 8C4 5.24 6.24 3 9 3H10C11.1 3 12 3.9 12 5V12.2L16.2 14.6L12 16.8V27C12 28.1 11.1 29 10 29H9C6.24 29 4 26.76 4 24V8Z" fill="#FFF"/>
+            <path d="M28 24C28 26.76 25.76 29 23 29H22C20.9 29 20 28.1 20 27V19.8L15.8 17.4L20 15.2V5C20 3.9 20.9 3 22 3H23C25.76 3 28 5.24 28 8V24Z" fill="#FFF"/>
+          </svg>
+        </div>
+        <span>Haptix Enclave</span>
+      </a>
+
+      <div class="nav-center-status">
+        <div class="pulse-dot"></div>
+        <span>Binance Agent OS MCP (Active)</span>
+      </div>
+
+      <div class="nav-actions">
+        <a href="/" class="nav-back-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>Back to Home</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+
   <div class="container">
     
-    <!-- Header -->
-    <div class="header">
-      <div class="badge-bar">
-        <div class="badge badge-binance">
-          <div class="pulse-dot"></div>
-          <span>Binance Agent OS · Track A</span>
-        </div>
-        <div class="badge badge-base">
-          <span>Base Sepolia · RIP-7212 P-256</span>
-        </div>
+    <!-- Hero Title -->
+    <div class="hero-header">
+      <div class="badge-pill">
+        <div class="pulse-dot"></div>
+        <span>Binance Agent OS · Track A Official Console</span>
       </div>
-      <h1>Haptix Enclave × <span>Binance Agent OS</span></h1>
-      <p class="subtitle">Hardware Enclave Biometric Security & On-Chain SpendPolicy Firewall for Autonomous Binance AI Agents.</p>
+      <h1 class="hero-title">
+        Autonomous AI Enclave <span>Firewall</span>
+      </h1>
+      <p class="hero-sub">
+        Hardware-enforced biometric spend ceilings for AI agents acting on real-time Binance market intelligence.
+      </p>
     </div>
 
-    <!-- Live Binance Telemetry Card -->
-    <div class="card" style="border-color: rgba(240, 185, 11, 0.28);">
-      <div class="card-title">
-        <div class="card-title-left">
-          <div class="icon-box" style="background: rgba(240, 185, 11, 0.1); border-color: rgba(240, 185, 11, 0.25);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F0B90B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 1. Live Binance Telemetry Bloomberg Card -->
+    <div class="card telemetry-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div class="card-icon-badge" style="background: rgba(240, 185, 11, 0.12); border-color: rgba(240, 185, 11, 0.3);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F0B90B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
             </svg>
           </div>
-          <span style="font-weight: 700; color: #F0B90B;">Binance Agent OS Live Telemetry</span>
+          <div>
+            <div class="card-title-text" style="color: var(--binance-gold-light);">Binance Agent OS Telemetry Feed</div>
+            <div style="font-size: 12px; color: var(--text-dim); margin-top: 2px;">
+              MCP Endpoint: <span class="mono" style="color: #FCD535;">agent.binance.com/mcp/agentic</span>
+            </div>
+          </div>
         </div>
-        <span class="badge" style="background: var(--emerald-alpha); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--emerald);">
+        <div style="display: flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 4px 10px; border-radius: 9999px; font-size: 11.5px; font-weight: 700; color: var(--emerald);">
           <div class="pulse-dot"></div>
-          <span>MCP Gateway Active</span>
-        </span>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">
-        <span>Endpoint: <span class="mono" style="color: #FCD535;">https://agent.binance.com/mcp/agentic</span></span>
-        <span style="color: var(--emerald); font-weight: 600;">Feed: Real-time Order Book</span>
+          <span>Live Order Book</span>
+        </div>
       </div>
 
       <div class="telemetry-grid">
-        <div class="telemetry-cell">
-          <div class="telemetry-label">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/></svg>
-            ETH / USDC Price
+        <div class="telemetry-box">
+          <div class="telemetry-metric-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/></svg>
+            <span>ETH / USDC Price</span>
           </div>
-          <div class="telemetry-val" id="dispBinancePrice" style="color: var(--gold-light);">$2,491.50</div>
+          <div class="telemetry-metric-value" id="dispBinancePrice" style="color: var(--binance-gold-light);">$2,491.50</div>
         </div>
-        <div class="telemetry-cell">
-          <div class="telemetry-label">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-            24h Momentum
+        <div class="telemetry-box">
+          <div class="telemetry-metric-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            <span>24h Momentum</span>
           </div>
-          <div class="telemetry-val" id="dispBinanceChange" style="color: var(--emerald);">+0.42%</div>
+          <div class="telemetry-metric-value" id="dispBinanceChange" style="color: var(--emerald);">+0.42%</div>
         </div>
-        <div class="telemetry-cell">
-          <div class="telemetry-label">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-            Order Book Spread
+        <div class="telemetry-box">
+          <div class="telemetry-metric-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span>Order Book Spread</span>
           </div>
-          <div class="telemetry-val" id="dispBinanceSpread" style="color: #93C5FD;">$0.0100</div>
+          <div class="telemetry-metric-value" id="dispBinanceSpread" style="color: #93C5FD;">$0.0100</div>
         </div>
       </div>
     </div>
 
-    <!-- On-Chain Smart Account Status -->
+    <!-- 2. On-Chain Smart Account Status -->
     <div class="card">
-      <div class="card-title">
-        <div class="card-title-left">
-          <div class="icon-box">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93C5FD" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <div class="card-header">
+        <div class="card-title-group">
+          <div class="card-icon-badge" style="background: rgba(0, 82, 255, 0.12); border-color: rgba(0, 82, 255, 0.28);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           </div>
-          <span>Smart Account (Base Sepolia)</span>
+          <div>
+            <div class="card-title-text">Smart Account State (Base Sepolia)</div>
+            <div style="font-size: 12px; color: var(--text-dim); margin-top: 2px;">ERC-4337 v0.7 · RIP-7212 Precompile (0x100)</div>
+          </div>
         </div>
-        <span class="badge" style="background: var(--emerald-alpha); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--emerald);">
-          Hardware Enclave Active
+        <span style="font-size: 11.5px; font-weight: 700; color: #93C5FD; background: var(--base-blue-alpha); border: 1px solid rgba(0, 82, 255, 0.3); padding: 4px 10px; border-radius: 9999px;">
+          Verified On-Chain
         </span>
       </div>
 
-      <div class="info-row">
+      <div class="info-item">
         <span style="color: var(--text-muted);">Smart Account Address</span>
         <span class="mono" style="color: #93C5FD;">0xB01543453cF31052c769d79e9C755E3b035d796f</span>
       </div>
-      <div class="info-row">
-        <span style="color: var(--text-muted);">Enrolled Hardware Keys</span>
-        <span class="mono" style="color: #A7F3D0;">2 Hardware Passkeys (Apple Touch ID Enclave)</span>
+      <div class="info-item">
+        <span style="color: var(--text-muted);">Hardware Signers</span>
+        <span class="mono" style="color: #A7F3D0;">2 Hardware Passkeys (Touch ID Apple Secure Enclave)</span>
       </div>
-      <div class="info-row">
-        <span style="color: var(--text-muted);">Session Delegation</span>
-        <span class="mono" style="color: var(--gold-light);">Active (0.001 ETH & $20 USDC Limit)</span>
+      <div class="info-item">
+        <span style="color: var(--text-muted);">Delegated Session Key</span>
+        <span class="mono" style="color: var(--binance-gold-light);">Active (0x093F... with 0.001 ETH & $20 USDC limit)</span>
       </div>
     </div>
 
-    <!-- AI Agent Security Console -->
+    <!-- 3. AI Agent 3-Tier Security Policy Console -->
     <div class="card">
-      <div class="card-title">
-        <div class="card-title-left">
-          <div class="icon-box">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0B90B" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <div class="card-header">
+        <div class="card-title-group">
+          <div class="card-icon-badge" style="background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.3);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C084FC" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </div>
-          <span>Autonomous AI Agent Console</span>
+          <div>
+            <div class="card-title-text">AI Agent Policy Firewall Simulator</div>
+            <div style="font-size: 12px; color: var(--text-dim); margin-top: 2px;">Test autonomous execution vs hardware biometric escalation</div>
+          </div>
         </div>
-        <span class="badge badge-binance">Live 3-Tier Policy Test</span>
       </div>
 
-      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
-        Test how Haptix guards autonomous AI agents when reacting to live market opportunities from Binance Agent OS:
+      <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.55;">
+        Select an action below to see how the autonomous AI agent reacts to live Binance order book conditions and interacts with Haptix on-chain spend boundaries:
       </p>
 
-      <div class="action-grid">
-        <!-- Tier 1 Button -->
-        <button class="btn-action btn-tier1" onclick="runAgentScenario(1)">
-          <div class="btn-action-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            <span>Run Micro-Trade</span>
+      <div class="tier-cards-grid">
+        <!-- Tier 1 -->
+        <button class="tier-card-btn tier-1" onclick="runAgentScenario(1)">
+          <div>
+            <div class="tier-icon-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div class="tier-name">Tier 1: Autonomous</div>
+            <div class="tier-amount">$20.00 USDC</div>
           </div>
-          <div class="btn-action-sub">$20.00 USDC · Autonomous 0x01</div>
+          <span class="tier-badge">0x01 · Zero Prompts</span>
         </button>
 
-        <!-- Tier 2 Button -->
-        <button class="btn-action btn-tier2" onclick="runAgentScenario(2)">
-          <div class="btn-action-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            <span>Volatility Spike</span>
+        <!-- Tier 2 -->
+        <button class="tier-card-btn tier-2" onclick="runAgentScenario(2)">
+          <div>
+            <div class="tier-icon-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+            </div>
+            <div class="tier-name">Tier 2: Volatility Spike</div>
+            <div class="tier-amount">$150.00 USDC</div>
           </div>
-          <div class="btn-action-sub">$150.00 USDC · Touch ID Escalation</div>
+          <span class="tier-badge">Touch ID Quorum</span>
         </button>
 
-        <!-- Tier 3 Button -->
-        <button class="btn-action btn-tier3" onclick="runAgentScenario(3)">
-          <div class="btn-action-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span>Rogue Ceiling</span>
+        <!-- Tier 3 -->
+        <button class="tier-card-btn tier-3" onclick="runAgentScenario(3)">
+          <div>
+            <div class="tier-icon-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </div>
+            <div class="tier-name">Tier 3: Rogue Trade</div>
+            <div class="tier-amount">$350.00 USDC</div>
           </div>
-          <div class="btn-action-sub">$350.00 USDC · Hard Block</div>
+          <span class="tier-badge">Hard Policy Block</span>
         </button>
       </div>
 
-      <!-- Execution Trace Terminal -->
-      <div id="terminalWindow" class="terminal-window">
-        <div class="terminal-bar">
-          <div class="window-dots">
-            <div class="window-dot" style="background: #FF5F56;"></div>
-            <div class="window-dot" style="background: #FFBD2E;"></div>
-            <div class="window-dot" style="background: #27C93F;"></div>
+      <!-- Developer Execution Terminal -->
+      <div id="terminalWindow" class="terminal-container">
+        <div class="terminal-topbar">
+          <div class="term-dots">
+            <div class="term-dot" style="background: #FF5F56;"></div>
+            <div class="term-dot" style="background: #FFBD2E;"></div>
+            <div class="term-dot" style="background: #27C93F;"></div>
           </div>
-          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-dim);">agent-os-runtime.log</span>
-          <div style="width: 32px;"></div>
+          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-dim);">haptix-agent-os-runtime.log</span>
+          <div style="width: 33px;"></div>
         </div>
-        <div id="terminalContent" class="terminal-body"></div>
+        <div id="terminalContent" class="term-body"></div>
       </div>
     </div>
 
-    <!-- Passkey Quorum Ceremony -->
+    <!-- 4. Biometric Touch ID Ceremony -->
     <div class="card">
-      <div class="card-title">
-        <div class="card-title-left">
-          <div class="icon-box">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0B90B" stroke-width="2"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+      <div class="card-header">
+        <div class="card-title-group">
+          <div class="card-icon-badge" style="background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
           </div>
-          <span>Hardware Passkey Quorum Delegation</span>
+          <div>
+            <div class="card-title-text">Biometric Hardware Passkey Quorum</div>
+            <div style="font-size: 12px; color: var(--text-dim); margin-top: 2px;">Authorize or re-delegate agent spending limits via Touch ID</div>
+          </div>
         </div>
       </div>
 
-      <div class="info-row">
-        <span style="color: var(--text-muted);">Session Signer</span>
-        <span class="mono" style="color: #93C5FD;">0x093F8575a87cdb2919E5B3f1677eD8d7815c9461</span>
-      </div>
-      <div class="info-row">
+      <div class="info-item">
         <span style="color: var(--text-muted);">Tier 1 Autonomous Ceiling</span>
         <span class="mono" style="color: var(--emerald);">$50.00 USDC / Op (Zero Prompts)</span>
       </div>
-      <div class="info-row">
-        <span style="color: var(--text-muted);">Tier 2 Escalation Limit</span>
-        <span class="mono" style="color: #FCD34D;">$200.00 USDC / Op (Touch ID Quorum)</span>
+      <div class="info-item">
+        <span style="color: var(--text-muted);">Tier 2 Biometric Escalation Threshold</span>
+        <span class="mono" style="color: var(--binance-gold-light);">$200.00 USDC / Op (Touch ID Quorum)</span>
       </div>
-      <div class="info-row">
+      <div class="info-item">
         <span style="color: var(--text-muted);">Tier 3 Hard Policy Ceiling</span>
         <span class="mono" style="color: var(--rose);">> $200.00 USDC (Fail-Closed Revert)</span>
       </div>
 
-      <button id="btnQuorumCta" class="btn-quorum-cta" style="margin-top: 18px;" onclick="triggerQuorumCeremony()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <span>Authorize Agent Session (2-of-2 Hardware Touch ID Quorum)</span>
-      </button>
+      <div style="margin-top: 20px;">
+        <button id="btnQuorumCta" class="primary-glow-btn" onclick="triggerQuorumCeremony()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Authorize Agent Session (2-of-2 Hardware Touch ID Quorum)</span>
+        </button>
+      </div>
     </div>
 
   </div>
@@ -574,7 +806,7 @@
       }
     }
 
-    setInterval(updateBinanceTelemetry, 4000);
+    setInterval(updateBinanceTelemetry, 3500);
     updateBinanceTelemetry();
 
     // AI Agent Scenario Handler
@@ -588,36 +820,36 @@
 
       if (tier === 1) {
         content.innerHTML = `
-          <div class="log-line"><span class="log-tag tag-binance">BINANCE AGENT OS</span> Ingested live ticker: ETH/USDC = ${price}, Spread = ${spread}</div>
-          <div class="log-line"><span class="log-tag tag-llm">LLM AGENT CORE</span> Market order book indicates tight spread. Condition favorable for micro-hedge.</div>
-          <div class="log-line"><span class="log-tag tag-haptix">HAPTIX SPENDPOLICY</span> Evaluating spend parameter: $20.00 USDC &lt;= $50.00 autonomous threshold</div>
-          <div class="log-line"><span class="log-tag tag-success">POLICY VERIFIED</span> Permitted autonomously (Mode 0x01 ECDSA Session Key)</div>
-          <div class="log-line"><span class="log-tag tag-haptix">USEROP CONSTRUCTED</span> Nonce: 14 | Hash: 0xce6b257a22db756e6d78dcdd0a999d331a2fb796...</div>
-          <div class="log-line" style="color: var(--emerald); font-weight: 700; margin-top: 6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="term-line"><span class="term-tag" style="background:var(--binance-gold-alpha); color:var(--binance-gold);">BINANCE AGENT OS</span> Telemetry Ingested: ETH/USDC = ${price}, Spread = ${spread}</div>
+          <div class="term-line"><span class="term-tag" style="background:rgba(168,85,247,0.15); color:#D8B4FE;">LLM AGENT CORE</span> Binance order book shows deep liquidity with stable momentum. Condition favorable for micro-hedge.</div>
+          <div class="term-line"><span class="term-tag" style="background:var(--base-blue-alpha); color:#93C5FD;">HAPTIX SPENDPOLICY</span> Evaluating spend parameter: $20.00 USDC &lt;= $50.00 autonomous threshold</div>
+          <div class="term-line"><span class="term-tag" style="background:var(--emerald-alpha); color:var(--emerald);">POLICY VERIFIED</span> Permitted autonomously (Mode 0x01 ECDSA Session Key)</div>
+          <div class="term-line"><span class="term-tag" style="background:var(--base-blue-alpha); color:#93C5FD;">USEROP CONSTRUCTED</span> Nonce: 14 | Hash: 0xce6b257a22db756e6d78dcdd0a999d331a2fb796...</div>
+          <div class="term-line" style="color: var(--emerald); font-weight: 700; margin-top: 8px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>
             SUCCESS: Executed on Base Sepolia with ZERO biometric prompts.
           </div>
         `;
       } else if (tier === 2) {
         content.innerHTML = `
-          <div class="log-line"><span class="log-tag tag-binance">BINANCE AGENT OS</span> Volatility alert: 24h momentum surge detected.</div>
-          <div class="log-line"><span class="log-tag tag-llm">LLM AGENT CORE</span> Proposing hedge trade: $150.00 USDC rebalancing position.</div>
-          <div class="log-line"><span class="log-tag tag-haptix">HAPTIX SPENDPOLICY</span> Evaluating: $150.00 USDC &gt; $50.00 autonomous limit (Within $200 ceiling)</div>
-          <div class="log-line"><span class="log-tag tag-warning">TIER 2 ESCALATION</span> Autonomous execution paused. Demanding Hardware Passkey Quorum.</div>
-          <div class="log-line" style="color: #FCD34D; font-weight: 700; margin-top: 6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div class="term-line"><span class="term-tag" style="background:var(--binance-gold-alpha); color:var(--binance-gold);">BINANCE AGENT OS</span> Volatility spike detected! Order book delta surge.</div>
+          <div class="term-line"><span class="term-tag" style="background:rgba(168,85,247,0.15); color:#D8B4FE;">LLM AGENT CORE</span> Proposing hedge trade: $150.00 USDC rebalancing position.</div>
+          <div class="term-line"><span class="term-tag" style="background:var(--base-blue-alpha); color:#93C5FD;">HAPTIX SPENDPOLICY</span> Evaluating: $150.00 USDC &gt; $50.00 autonomous limit (Within $200 ceiling)</div>
+          <div class="term-line"><span class="term-tag" style="background:rgba(245,158,11,0.15); color:#FCD34D;">TIER 2 ESCALATION</span> Autonomous execution paused. Demanding Hardware Passkey Quorum.</div>
+          <div class="term-line" style="color: #FCD34D; font-weight: 700; margin-top: 8px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             Action Required: Authorize with 2-of-2 Hardware Touch ID passkey quorum below.
           </div>
         `;
       } else if (tier === 3) {
         content.innerHTML = `
-          <div class="log-line"><span class="log-tag tag-binance">BINANCE AGENT OS</span> Rogue order execution attempt: $350.00 USDC</div>
-          <div class="log-line"><span class="log-tag tag-llm">LLM AGENT CORE</span> Hallucinated trade parameter exceeding maximum authorized ceiling.</div>
-          <div class="log-line"><span class="log-tag tag-haptix">HAPTIX SPENDPOLICY</span> Evaluating: $350.00 USDC &gt; $200.00 Hard Policy Ceiling</div>
-          <div class="log-line"><span class="log-tag tag-error">HARD CEILING BREACH</span> Contract fails-closed: SIG_VALIDATION_FAILED (1) / AA24</div>
-          <div class="log-line" style="color: var(--rose); font-weight: 700; margin-top: 6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-            BLOCKED: Smart Account firewall rejected UserOperation before broadcast.
+          <div class="term-line"><span class="term-tag" style="background:var(--binance-gold-alpha); color:var(--binance-gold);">BINANCE AGENT OS</span> Rogue order execution attempt: $350.00 USDC</div>
+          <div class="term-line"><span class="term-tag" style="background:rgba(168,85,247,0.15); color:#D8B4FE;">LLM AGENT CORE</span> Hallucinated trade parameter exceeding maximum authorized ceiling.</div>
+          <div class="term-line"><span class="term-tag" style="background:var(--base-blue-alpha); color:#93C5FD;">HAPTIX SPENDPOLICY</span> Evaluating: $350.00 USDC &gt; $200.00 Hard Policy Ceiling</div>
+          <div class="term-line"><span class="term-tag" style="background:var(--rose-alpha); color:var(--rose);">HARD CEILING BREACH</span> Contract fails-closed: SIG_VALIDATION_FAILED (1) / AA24</div>
+          <div class="term-line" style="color: var(--rose); font-weight: 700; margin-top: 8px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            BLOCKED: Smart Account firewall rejected UserOperation on-chain.
           </div>
         `;
       }
