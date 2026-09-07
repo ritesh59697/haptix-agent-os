@@ -66,21 +66,19 @@
     }
 
     
-    /* React Bits - Blurred Ambient Orb Background */
-    .orb-container {
+    /* React Bits - AcidSquares Ambient Background */
+    .acid-squares-container {
       position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 950px;
-      height: 750px;
-      max-width: 100vw;
-      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 720px;
+      overflow: hidden;
+      pointer-events: auto;
       z-index: 0;
-      opacity: 0.72;
-      filter: blur(20px) drop-shadow(0 0 100px rgba(240, 185, 11, 0.45)) drop-shadow(0 0 35px rgba(252, 213, 53, 0.3));
-      mask-image: radial-gradient(circle at 50% 48%, black 45%, transparent 80%);
-      -webkit-mask-image: radial-gradient(circle at 50% 48%, black 45%, transparent 80%);
+      opacity: 0.65;
+      mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
     }
 
     /* Film Grain Ambient Texture */
@@ -565,7 +563,7 @@
   </style>
 </head>
 <body>
-  <div id="orb-container" class="orb-container"></div>
+  <div id="acid-squares-container" class="acid-squares-container"></div>
   <div class="grain-overlay"></div>
 
   <!-- Floating Island Topbar with Back Button -->
@@ -907,18 +905,29 @@
     };
   </script>
 
-  <!-- React Bits - Orb Component on Console -->
+  <!-- React Bits - AcidSquares Background on Console -->
   <script type="module">
-    import { initOrb } from './orb.js';
+    import { initAcidSquares } from './acid-squares.js';
 
-    const orbEl = document.getElementById('orb-container');
-    if (orbEl) {
-      initOrb(orbEl, {
-        hue: 0,
-        hoverIntensity: 1.5,
-        rotateOnHover: true,
-        forceHoverState: false,
-        backgroundColor: '#070611'
+    const container = document.getElementById('acid-squares-container');
+    if (container) {
+      initAcidSquares(container, {
+        color1: '#F0B90B',
+        color2: '#FCD535',
+        color3: '#FFFFFF',
+        detail: 'medium',
+        speed: 0.6,
+        waveDepth: 1.0,
+        zoom: 1.3,
+        density: 9.0,
+        glow: 1.2,
+        exposure: 2600,
+        contrast: 1.1,
+        brightness: 1.0,
+        opacity: 0.75,
+        mouseInteraction: true,
+        mouseStrength: 0.18,
+        grain: true
       });
     }
   </script>
