@@ -75,11 +75,13 @@ void main(){
     vec3 result=clamp(col.rgb,0.0,1.0);
     if(uLightMode>0.5){
       float energy=max(result.r,max(result.g,result.b));
-      vec3 hue=result/max(energy,0.001);
-      float coverage=smoothstep(0.06,0.85,energy);
-      vec3 ink=mix(hue*0.45,hue*0.85,smoothstep(0.0,1.0,energy));
-      vec3 paper=vec3(0.973,0.980,0.988);
-      result=mix(paper,ink,coverage*0.22);
+      float coverage=smoothstep(0.06,0.75,energy);
+      // Harmonious warm gold & refined slate wash (Binance Brand aligned, zero purple artifact)
+      vec3 goldTint = vec3(0.94, 0.72, 0.12);
+      vec3 slateTint = vec3(0.40, 0.46, 0.58);
+      vec3 ink = mix(slateTint, goldTint, energy);
+      vec3 paper = vec3(0.975, 0.980, 0.988);
+      result = mix(paper, ink, coverage * 0.10);
     }
     gl_FragColor=vec4(result,1.0);
 }
