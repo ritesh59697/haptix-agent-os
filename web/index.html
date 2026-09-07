@@ -62,14 +62,20 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* React Bits Grainient Background */
-    .grainient-canvas {
+    /* React Bits - Orb Background (@react-bits/Orb-JS-CSS) */
+    .orb-container {
       position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
+      top: 10%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 1050px;
+      height: 1050px;
+      max-width: 100vw;
+      max-height: 100vh;
       pointer-events: none;
+      z-index: 0;
+      opacity: 0.92;
+      filter: drop-shadow(0 0 80px rgba(240, 185, 11, 0.22));
     }
 
     .grain-overlay {
@@ -1587,8 +1593,8 @@
   
 
 
-  <!-- React Bits Grainient Canvas & Fine Film Grain Overlay -->
-  <canvas id="grainientCanvas" class="grainient-canvas"></canvas>
+  <!-- React Bits - Orb Background (@react-bits/Orb-JS-CSS) & Fine Film Grain Overlay -->
+  <div id="orb-container" class="orb-container"></div>
   <div class="grain-overlay"></div>
 
   <!-- Precision Floating Island Navbar -->
@@ -1613,7 +1619,7 @@
             <path d="M28 24C28 26.76 25.76 29 23 29H22C20.9 29 20 28.1 20 27V19.8L15.8 17.4L20 15.2V5C20 3.9 20.9 3 22 3H23C25.76 3 28 5.24 28 8V24Z" fill="url(#navHaptixGradRight)"/>
           </svg>
         </div>
-        <span class="brand-title">Hapt<span class="brand-i-box">&#305;<span class="brand-i-dot"></span></span>x</span>
+        <span class="brand-title">Hapt<span class="brand-i-box">&#305;<span class="brand-i-dot"></span></span>x</span><span style="font-size: 10.5px; font-weight: 800; background: rgba(240, 185, 11, 0.15); border: 1px solid rgba(240, 185, 11, 0.35); color: #FCD535; padding: 2px 7px; border-radius: 9999px; margin-left: 6px; letter-spacing: 0.04em;">AGENT OS</span>
       </a>
 
       <div class="nav-links"><a href="/grant-session.html" class="nav-link" style="color: #FCD535; font-weight: 700;">Agent OS</a>
@@ -1632,8 +1638,8 @@
       </div>
 
       <div class="nav-actions">
-        <a href="app.html" class="nav-cta-btn">
-          Launch App
+        <a href="/grant-session.html" class="nav-cta-btn" style="background: linear-gradient(135deg, #F0B90B 0%, #D99B00 100%); color: #000; font-weight: 800; border: none; box-shadow: 0 0 16px rgba(240, 185, 11, 0.3);">
+          Launch Console
         </a>
         <button class="nav-menu-btn" id="mobileMenuBtn" aria-label="Open mobile navigation menu" aria-expanded="false">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -1657,7 +1663,7 @@
             <path d="M28 24C28 26.76 25.76 29 23 29H22C20.9 29 20 28.1 20 27V19.8L15.8 17.4L20 15.2V5C20 3.9 20.9 3 22 3H23C25.76 3 28 5.24 28 8V24Z" fill="url(#navHaptixGradRight)"/>
           </svg>
         </div>
-        <span class="brand-title">Hapt<span class="brand-i-box">&#305;<span class="brand-i-dot"></span></span>x</span>
+        <span class="brand-title">Hapt<span class="brand-i-box">&#305;<span class="brand-i-dot"></span></span>x</span><span style="font-size: 10.5px; font-weight: 800; background: rgba(240, 185, 11, 0.15); border: 1px solid rgba(240, 185, 11, 0.35); color: #FCD535; padding: 2px 7px; border-radius: 9999px; margin-left: 6px; letter-spacing: 0.04em;">AGENT OS</span>
       </div>
       <button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close navigation menu">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1775,24 +1781,24 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FCD535" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
 
-      <h1 class="hero-title">
-        The Biometric Enclave<br>
-        Smart Account on Base.
+      <h1 class="hero-title" style="letter-spacing: -0.04em;">
+        The Hardware Biometric Enclave<br>
+        <span style="background: linear-gradient(135deg, #F0B90B 0%, #FCD535 50%, #FFF 100%); -webkit-background-clip: text; -webkit-fill-color: transparent;">for Binance Agent OS.</span>
       </h1>
 
       <p class="hero-sub">
-        Haptix brings seedless WebAuthn biometric authentication directly to Base. Autonomous on-chain spending firewall with 0.4s Touch ID execution and 2-of-2 multi-device hardware quorum protection.
+        Hardware Enclave biometric security and on-chain SpendPolicy firewalls for autonomous AI agents on Binance Agent OS. Real-time MCP market intelligence verification, 0.4s Apple Touch ID biometric authorization, and zero plaintext private key exposure.
       </p>
 
       <div class="hero-ctas">
-        <a href="app.html" class="btn-primary hero-btn-main">
-          <span>Get started</span>
+        <a href="/grant-session.html" class="btn-primary hero-btn-main" style="background: linear-gradient(135deg, #F0B90B 0%, #D99B00 100%); color: #000; font-weight: 800; border: none; box-shadow: 0 8px 28px rgba(240, 185, 11, 0.4);">
+          <span>Launch Agent Console</span>
           <svg class="arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 8h10M9 4l4 4-4 4"/>
           </svg>
         </a>
-        <a href="/extension/test-dapp.html" class="btn-ghost hero-btn-sec">
-          Learn more
+        <a href="#workflows" class="btn-ghost hero-btn-sec" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.18);">
+          View SpendPolicy Architecture
         </a>
       </div>
     </div>
@@ -1830,8 +1836,8 @@
         <div class="tenbin-metric-label">Validation Gas (RIP-7212)</div>
       </div>
       <div class="tenbin-metric-box">
-        <div class="tenbin-metric-val">100%</div>
-        <div class="tenbin-metric-label">Hardware Enclave Isolation</div>
+        <div class="tenbin-metric-val">3-Tier</div>
+        <div class="tenbin-metric-label">On-Chain SpendPolicy Firewall</div>
       </div>
       <div class="tenbin-metric-box">
         <div class="tenbin-metric-val">158 / 158</div>
@@ -1845,7 +1851,7 @@
     <div class="section-header-compact">
       <div class="section-tag">Performance &amp; Security Benchmark</div>
       <h2 class="section-title">Execution in milliseconds, zero exposure</h2>
-      <p class="section-sub">Comparing native P-256 passkey smart accounts with traditional EOAs and multi-signature vaults.</p>
+      <p class="section-sub">Comparing Haptix Enclave + Binance Agent OS against unprotected bot scripts and standard multisigs.</p>
     </div>
 
     <div class="comp-table-container">
@@ -1853,9 +1859,9 @@
       <div class="micro-comp-card">
         <div class="comp-row comp-header">
           <div>Metric / Feature</div>
-          <div>Passkey Smart Account</div>
-          <div>Standard EOA (MetaMask)</div>
-          <div>Multisig (Safe)</div>
+          <div style="color: #FCD535; font-weight: 800;">Haptix Enclave (Agent OS)</div>
+          <div>Unprotected Bot Key (.env)</div>
+          <div>Standard Multisig (Safe)</div>
         </div>
         <div class="comp-row">
           <div class="comp-feature">Signing Latency</div>
@@ -2421,23 +2427,20 @@
 
         <div class="footer-cta">
           <h2 style="font-family:var(--font-heading);font-size:clamp(28px, 4vw, 40px);font-weight:800;color:var(--text-white);margin-bottom:14px;letter-spacing:-0.02em;">
-            Drop the seed phrase. Start building on Base.
+            Secure Autonomous AI Agents on Binance Agent OS.
           </h2>
-          <p style="color:var(--text-muted);font-size:15px;max-width:540px;margin:0 auto 28px auto;line-height:1.6;">
-            Experience seamless biometric authentication with enterprise-grade multi-device hardware quorum and autonomous AI agent delegation.
+          <p style="color:var(--text-muted);font-size:15px;max-width:560px;margin:0 auto 28px auto;line-height:1.6;">
+            Hardware Enclave biometric security, real-time MCP order book verification, and on-chain SpendPolicy firewalls built for the Binance Agent OS Track A Hackathon.
           </p>
           <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
-            <a href="app.html" class="btn-primary hero-btn-main" style="padding:12px 28px;font-size:14.5px;display:inline-flex;align-items:center;gap:8px;">
-              <span>Launch Smart Wallet</span>
+            <a href="/grant-session.html" class="btn-primary hero-btn-main" style="padding:12px 28px;font-size:14.5px;display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg, #F0B90B 0%, #D99B00 100%);color:#000;font-weight:800;border:none;box-shadow:0 6px 20px rgba(240,185,11,0.4);">
+              <span>Launch Agent Console</span>
               <svg class="arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 8h10M9 4l4 4-4 4"/>
               </svg>
             </a>
-            <a href="test-dapp.html" class="btn-ghost" style="padding:12px 24px;font-size:14.5px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-full);color:#FFF;text-decoration:none;">
-              <span>Open dApp Simulator</span>
-              <svg class="ext-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4.5 11.5l7-7M5 4.5h6.5v6.5"/>
-              </svg>
+            <a href="https://github.com/ritesh59697/haptix-agent-os" target="_blank" class="btn-ghost" style="padding:12px 24px;font-size:14.5px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-full);color:#FFF;text-decoration:none;">
+              <span>GitHub Repository ↗</span>
             </a>
           </div>
         </div>
@@ -2455,11 +2458,11 @@
             <strong>Haptix Protocol</strong>
           </div>
           <p style="font-size:13px;color:var(--text-muted);max-width:300px;line-height:1.6;">
-            The Biometric Hardware Enclave Layer for EVM. Self-custodial smart accounts with on-chain spending firewalls and autonomous agent session keys on Base.
+            Haptix Enclave × Binance Agent OS. Hardware Enclave biometric security &amp; on-chain SpendPolicy firewalls for autonomous AI agents.
           </p>
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,82,255,0.1);border:1px solid rgba(0,82,255,0.25);padding:4px 10px;border-radius:999px;font-size:11.5px;color:#60A5FA;width:fit-content;">
-            <img src="assets/base_logo.svg" width="12" height="12" alt="Base" />
-            <span>Base Sepolia Live</span>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(240,185,11,0.1);border:1px solid rgba(240,185,11,0.3);padding:4px 10px;border-radius:999px;font-size:11.5px;color:#FCD535;width:fit-content;">
+            <span style="width:6px;height:6px;border-radius:50%;background:#F0B90B;box-shadow:0 0 6px #F0B90B;"></span>
+            <span>Binance Track A Official Entry</span>
           </div>
         </div>
 
@@ -2479,7 +2482,7 @@
             <a href="app.html" class="footer-link">Haptix Web Console</a>
             <a href="test-dapp.html" class="footer-link">dApp Simulator (EIP-1193)</a>
             <a href="https://sepolia.basescan.org/address/0xB01543453cF31052c769d79e9C755E3b035d796f" target="_blank" class="footer-link">BaseScan Contract ↗</a>
-            <a href="https://github.com/ritesh59697/haptix" target="_blank" class="footer-link">GitHub Repository ↗</a>
+            <a href="https://github.com/ritesh59697/haptix-agent-os" target="_blank" class="footer-link">GitHub Repository ↗</a>
           </div>
         </div>
 
@@ -2574,89 +2577,8 @@
     approvalToggle.addEventListener('change', updateSandbox);
     freezeToggle.addEventListener('change', updateSandbox);
 
-    // React Bits Grainient (Grainy Gradient with Soft Motion) Engine
-    const canvas = document.getElementById('grainientCanvas');
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      let width = 0, height = 0;
-      let mouseX = 0, mouseY = 0;
-      let targetMouseX = 0, targetMouseY = 0;
-
-      function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      window.addEventListener('mousemove', e => {
-        targetMouseX = (e.clientX / window.innerWidth - 0.5) * 100;
-        targetMouseY = (e.clientY / window.innerHeight - 0.5) * 100;
-      });
-
-      let time = 0;
-
-      function renderGrainient() {
-        time += 0.006;
-        mouseX += (targetMouseX - mouseX) * 0.05;
-        mouseY += (targetMouseY - mouseY) * 0.05;
-
-        ctx.clearRect(0, 0, width, height);
-
-        // Midnight base
-        ctx.fillStyle = '#0f0821';
-        ctx.fillRect(0, 0, width, height);
-
-        // Blob 1: Vibrant Magenta / Orchid (Top Left / Center)
-        const b1x = width * 0.25 + Math.sin(time * 1.1) * (width * 0.12) + mouseX;
-        const b1y = height * 0.3 + Math.cos(time * 0.8) * (height * 0.12) + mouseY;
-        const b1r = Math.max(width, height) * 0.65;
-        const g1 = ctx.createRadialGradient(b1x, b1y, 0, b1x, b1y, b1r);
-        g1.addColorStop(0, 'rgba(236, 72, 153, 0.88)'); // #EC4899 Pink
-        g1.addColorStop(0.42, 'rgba(217, 70, 239, 0.62)'); // #D946EF Magenta
-        g1.addColorStop(0.85, 'rgba(168, 85, 247, 0.15)');
-        g1.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = g1;
-        ctx.fillRect(0, 0, width, height);
-
-        // Blob 2: Electric Violet / Lavender (Top Right / Middle)
-        const b2x = width * 0.72 + Math.cos(time * 0.9) * (width * 0.15) - mouseX * 0.8;
-        const b2y = height * 0.35 + Math.sin(time * 1.0) * (height * 0.14) - mouseY * 0.8;
-        const b2r = Math.max(width, height) * 0.7;
-        const g2 = ctx.createRadialGradient(b2x, b2y, 0, b2x, b2y, b2r);
-        g2.addColorStop(0, 'rgba(168, 85, 247, 0.92)'); // #A855F7 Purple
-        g2.addColorStop(0.48, 'rgba(139, 92, 246, 0.6)'); // #8B5CF6 Violet
-        g2.addColorStop(0.9, 'rgba(99, 102, 241, 0.15)');
-        g2.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = g2;
-        ctx.fillRect(0, 0, width, height);
-
-        // Blob 3: Royal Cobalt Blue / Base Blue (Bottom & Right)
-        const b3x = width * 0.85 + Math.sin(time * 0.7) * (width * 0.12);
-        const b3y = height * 0.75 + Math.cos(time * 0.6) * (height * 0.15);
-        const b3r = Math.max(width, height) * 0.75;
-        const g3 = ctx.createRadialGradient(b3x, b3y, 0, b3x, b3y, b3r);
-        g3.addColorStop(0, 'rgba(0, 82, 255, 0.9)'); // #0052FF Base Blue
-        g3.addColorStop(0.5, 'rgba(67, 56, 202, 0.65)'); // #4338CA Indigo
-        g3.addColorStop(1, 'rgba(0, 82, 255, 0)');
-        ctx.fillStyle = g3;
-        ctx.fillRect(0, 0, width, height);
-
-        // Blob 4: Soft Lilac Highlight (Center Swirl)
-        const b4x = width * 0.48 + Math.cos(time * 1.2) * (width * 0.16);
-        const b4y = height * 0.22 + Math.sin(time * 1.1) * (height * 0.1);
-        const b4r = Math.max(width, height) * 0.5;
-        const g4 = ctx.createRadialGradient(b4x, b4y, 0, b4x, b4y, b4r);
-        g4.addColorStop(0, 'rgba(244, 114, 182, 0.8)'); // #F472B6
-        g4.addColorStop(0.55, 'rgba(192, 132, 252, 0.45)'); // #C084FC
-        g4.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = g4;
-        ctx.fillRect(0, 0, width, height);
-
-        requestAnimationFrame(renderGrainient);
-      }
-      renderGrainient();
-    }
+    // React Bits - Orb Background Engine (@react-bits/Orb-JS-CSS)
+    // Initialized via ES Module below
 
     // Aceternity UI Live Glowing Effect Engine
     // Continuously moves around the corners non-stop (independent of mouse/cursor)
@@ -2721,6 +2643,21 @@
         }
       });
     })();
+  </script>
+  <!-- React Bits - Orb Component Initialization (@react-bits/Orb-JS-CSS) -->
+  <script type="module">
+    import { initOrb } from './orb.js';
+
+    const orbEl = document.getElementById('orb-container');
+    if (orbEl) {
+      initOrb(orbEl, {
+        hue: 38,
+        hoverIntensity: 2.0,
+        rotateOnHover: true,
+        forceHoverState: false,
+        backgroundColor: '#070611'
+      });
+    }
   </script>
 </body>
 </html>
