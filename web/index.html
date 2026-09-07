@@ -75,7 +75,7 @@
       pointer-events: none;
       z-index: 0;
       opacity: 0.92;
-      filter: drop-shadow(0 0 80px rgba(240, 185, 11, 0.22));
+      filter: drop-shadow(0 0 90px rgba(240, 185, 11, 0.35)) drop-shadow(0 0 25px rgba(252, 213, 53, 0.25));
     }
 
     .grain-overlay {
@@ -2651,7 +2651,7 @@
     const orbEl = document.getElementById('orb-container');
     if (orbEl) {
       initOrb(orbEl, {
-        hue: 38,
+        hue: 0,
         hoverIntensity: 2.0,
         rotateOnHover: true,
         forceHoverState: false,

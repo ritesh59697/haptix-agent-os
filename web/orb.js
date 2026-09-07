@@ -92,9 +92,11 @@ const frag = /* glsl */ `
       return vec4(colorIn.rgb / (a + 1e-5), a);
     }
 
-    const vec3 baseColor1 = vec3(0.611765, 0.262745, 0.996078);
-    const vec3 baseColor2 = vec3(0.298039, 0.760784, 0.913725);
-    const vec3 baseColor3 = vec3(0.062745, 0.078431, 0.600000);
+    // Binance Official Brand Palette: Gold (#F0B90B), White/Light Gold (#FFFFFF / #FFF2D1), and Deep Black (#000000)
+    const vec3 baseColor1 = vec3(0.941, 0.725, 0.043); // Binance Gold #F0B90B
+    const vec3 baseColor2 = vec3(1.0, 0.96, 0.84);     // Bright White-Gold #FFF5D6
+    const vec3 baseColor3 = vec3(0.008, 0.008, 0.012); // Deep Obsidian Black
+    const vec3 whiteHighlight = vec3(1.0, 1.0, 1.0);   // Pure Crystalline White Flare
     const float innerRadius = 0.6;
     const float noiseScale = 0.65;
 
@@ -106,9 +108,9 @@ const frag = /* glsl */ `
     }
 
     vec4 draw(vec2 uv) {
-      vec3 color1 = adjustHue(baseColor1, hue);
-      vec3 color2 = adjustHue(baseColor2, hue);
-      vec3 color3 = adjustHue(baseColor3, hue);
+      vec3 color1 = hue != 0.0 ? adjustHue(baseColor1, hue) : baseColor1;
+      vec3 color2 = hue != 0.0 ? adjustHue(baseColor2, hue) : baseColor2;
+      vec3 color3 = baseColor3;
       
       float ang = atan(uv.y, uv.x);
       float len = length(uv);
@@ -139,10 +141,10 @@ const frag = /* glsl */ `
       float fadeAmount = mix(1.0, 0.1, bgLuminance);
       
       vec3 darkCol = mix(color3, colBase, v0);
-      darkCol = (darkCol + v1) * v2 * v3;
+      darkCol = (darkCol + v1 * whiteHighlight) * v2 * v3;
       darkCol = clamp(darkCol, 0.0, 1.0);
       
-      vec3 lightCol = (colBase + v1) * mix(1.0, v2 * v3, fadeAmount);
+      vec3 lightCol = (colBase + v1 * whiteHighlight) * mix(1.0, v2 * v3, fadeAmount);
       lightCol = mix(backgroundColor, lightCol, v0);
       lightCol = clamp(lightCol, 0.0, 1.0);
       
