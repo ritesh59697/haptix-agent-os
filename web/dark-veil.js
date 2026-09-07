@@ -76,9 +76,10 @@ void main(){
     if(uLightMode>0.5){
       float energy=max(result.r,max(result.g,result.b));
       vec3 hue=result/max(energy,0.001);
-      float coverage=smoothstep(0.08,0.82,energy);
-      vec3 ink=mix(hue*0.32,hue*0.78,smoothstep(0.0,1.0,energy));
-      result=mix(vec3(1.0),ink,coverage*0.82);
+      float coverage=smoothstep(0.06,0.85,energy);
+      vec3 ink=mix(hue*0.45,hue*0.85,smoothstep(0.0,1.0,energy));
+      vec3 paper=vec3(0.973,0.980,0.988);
+      result=mix(paper,ink,coverage*0.22);
     }
     gl_FragColor=vec4(result,1.0);
 }
@@ -94,7 +95,7 @@ export function initDarkVeil(container, options = {}) {
   const scanlineFrequency = options.scanlineFrequency !== undefined ? options.scanlineFrequency : 0.5;
   const warpAmount = options.warpAmount !== undefined ? options.warpAmount : 0.06;
   const resolutionScale = options.resolutionScale !== undefined ? options.resolutionScale : 1;
-  const lightMode = options.lightMode || false;
+  let currentLightMode = (options.lightMode !== undefined ? options.lightMode : false) ? 1 : 0;
 
   const canvas = document.createElement('canvas');
   canvas.className = 'darkveil-canvas';
@@ -125,7 +126,7 @@ export function initDarkVeil(container, options = {}) {
       uScan: { value: scanlineIntensity },
       uScanFreq: { value: scanlineFrequency },
       uWarp: { value: warpAmount },
-      uLightMode: { value: lightMode ? 1 : 0 }
+      uLightMode: { value: currentLightMode }
     }
   });
 
@@ -151,7 +152,7 @@ export function initDarkVeil(container, options = {}) {
     program.uniforms.uScan.value = scanlineIntensity;
     program.uniforms.uScanFreq.value = scanlineFrequency;
     program.uniforms.uWarp.value = warpAmount;
-    program.uniforms.uLightMode.value = lightMode ? 1 : 0;
+    program.uniforms.uLightMode.value = currentLightMode;
     renderer.render({ scene: mesh });
     frame = requestAnimationFrame(loop);
   };
@@ -159,6 +160,10 @@ export function initDarkVeil(container, options = {}) {
   loop();
 
   return {
+    setLightMode(isLight) {
+      currentLightMode = isLight ? 1 : 0;
+      program.uniforms.uLightMode.value = currentLightMode;
+    },
     destroy() {
       cancelAnimationFrame(frame);
       window.removeEventListener('resize', resize);

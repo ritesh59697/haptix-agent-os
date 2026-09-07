@@ -1,6 +1,46 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('haptix-theme');
+        var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        var theme = saved ? saved : (prefersLight ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  
+    // Theme Manager
+    (function() {
+      function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('haptix-theme', theme);
+        if (window.darkVeil && typeof window.darkVeil.setLightMode === 'function') {
+          window.darkVeil.setLightMode(theme === 'light');
+        }
+      }
+
+      function initThemeToggles() {
+        const toggleBtn = document.getElementById('themeToggleBtn');
+        if (toggleBtn) {
+          toggleBtn.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            const next = current === 'light' ? 'dark' : 'light';
+            applyTheme(next);
+          });
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initThemeToggles);
+      } else {
+        initThemeToggles();
+      }
+    })();
+
+  </script>
+
   <meta charset="utf-8">
   <title>Haptix Enclave × Binance Agent OS — Live Console</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -557,6 +597,254 @@
       .top-nav { padding: 0 12px; }
       .nav-center-status { display: none; }
     }
+  
+    /* Theme Toggle Button Styles */
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+    .theme-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+    .theme-icon {
+      position: absolute;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    }
+    /* In Dark Mode (default): Show Sun icon to switch to light mode */
+    html[data-theme="dark"] .sun-icon,
+    :root:not([data-theme="light"]) .sun-icon {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+    html[data-theme="dark"] .moon-icon,
+    :root:not([data-theme="light"]) .moon-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+      pointer-events: none;
+    }
+
+    /* In Light Mode: Show Moon icon to switch to dark mode */
+    [data-theme="light"] .sun-icon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
+      pointer-events: none;
+    }
+    [data-theme="light"] .moon-icon {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+    [data-theme="light"] .theme-toggle-btn {
+      background: rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      color: #334155;
+    }
+    [data-theme="light"] .theme-toggle-btn:hover {
+      background: rgba(15, 23, 42, 0.12);
+      border-color: rgba(15, 23, 42, 0.22);
+      color: #0F172A;
+    }
+
+    /* ==========================================================================
+       GRANT-SESSION LIGHT MODE SYSTEM ([data-theme="light"])
+       ========================================================================== */
+    html[data-theme="light"] {
+      --bg: #F8FAFC;
+      --bg-surface: rgba(255, 255, 255, 0.92);
+      --bg-card: rgba(255, 255, 255, 0.95);
+      --bg-card-hover: #FFFFFF;
+      --card-border: rgba(15, 23, 42, 0.09);
+      --card-border-hover: rgba(240, 185, 11, 0.5);
+      --inner-glow: inset 0 1px 0 rgba(255, 255, 255, 1);
+
+      --binance-gold: #C88D00;
+      --binance-gold-light: #F0B90B;
+      --binance-gold-glow: rgba(240, 185, 11, 0.2);
+      --binance-gold-alpha: rgba(240, 185, 11, 0.12);
+
+      --text: #0B0F19;
+      --text-muted: #475569;
+      --text-dim: #64748B;
+    }
+
+    [data-theme="light"] body {
+      background: #F8FAFC;
+      background-image: 
+        radial-gradient(circle at 50% -10%, rgba(240, 185, 11, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 90% 40%, rgba(0, 82, 255, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 10% 80%, rgba(168, 85, 247, 0.05) 0%, transparent 45%);
+      color: #0B0F19;
+    }
+
+    [data-theme="light"] .grain-overlay {
+      opacity: 0.08;
+      mix-blend-mode: multiply;
+    }
+
+    [data-theme="light"] .darkveil-container {
+      opacity: 0.5;
+    }
+
+    /* Top Navigation */
+    [data-theme="light"] .top-nav {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07), inset 0 1px 0 #FFFFFF;
+    }
+
+    [data-theme="light"] .nav-brand {
+      color: #0B0F19;
+    }
+
+    [data-theme="light"] .nav-center-status {
+      background: rgba(240, 185, 11, 0.12);
+      border: 1px solid rgba(198, 138, 0, 0.28);
+      color: #7A5300;
+    }
+
+    [data-theme="light"] .nav-back-btn {
+      background: rgba(15, 23, 42, 0.05);
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      color: #1E293B;
+    }
+
+    [data-theme="light"] .nav-back-btn:hover {
+      background: rgba(15, 23, 42, 0.10);
+      color: #0B0F19;
+    }
+
+    /* Hero Section */
+    [data-theme="light"] h1.hero-title {
+      color: #0B0F19;
+    }
+
+    [data-theme="light"] h1.hero-title span {
+      background: linear-gradient(135deg, #0B0F19 0%, #1E293B 40%, #B88200 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    [data-theme="light"] .hero-sub {
+      color: #475569;
+    }
+
+    [data-theme="light"] .badge-pill {
+      background: rgba(240, 185, 11, 0.12);
+      border: 1px solid rgba(198, 138, 0, 0.3);
+      color: #8C5E00;
+    }
+
+    /* Cards */
+    [data-theme="light"] .card {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(15, 23, 42, 0.09);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.05), inset 0 1px 0 #FFFFFF;
+    }
+
+    [data-theme="light"] .card-icon-badge {
+      background: rgba(15, 23, 42, 0.04);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+    }
+
+    [data-theme="light"] .card-title-text h2 {
+      color: #0B0F19;
+    }
+
+    [data-theme="light"] .card-title-text p {
+      color: #475569;
+    }
+
+    /* Telemetry Hero Card */
+    [data-theme="light"] .telemetry-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+      border-color: rgba(240, 185, 11, 0.35);
+      box-shadow: 0 20px 48px rgba(15, 23, 42, 0.07);
+    }
+
+    [data-theme="light"] .telemetry-box {
+      background: #F1F5F9;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+    }
+
+    [data-theme="light"] .telemetry-box:hover {
+      background: #FFFFFF;
+      border-color: rgba(15, 23, 42, 0.16);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+    }
+
+    [data-theme="light"] .telemetry-metric-value {
+      color: #0B0F19;
+    }
+
+    [data-theme="light"] .telemetry-metric-title {
+      color: #475569;
+    }
+
+    [data-theme="light"] .info-item {
+      background: #F8FAFC;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      color: #1E293B;
+    }
+
+    [data-theme="light"] .info-item span:first-child {
+      color: #475569;
+    }
+
+    /* Tier Cards */
+    [data-theme="light"] .tier-card-btn {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(15, 23, 42, 0.09);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+    }
+
+    [data-theme="light"] .tier-card-btn:hover {
+      background: #FFFFFF;
+    }
+
+    [data-theme="light"] .tier-name {
+      color: #0B0F19;
+    }
+
+    [data-theme="light"] .tier-amount {
+      color: #475569;
+    }
+
+    [data-theme="light"] .tier-1 {
+      background: linear-gradient(180deg, rgba(240, 185, 11, 0.08) 0%, rgba(255, 255, 255, 0.95) 100%);
+      border-color: rgba(240, 185, 11, 0.35);
+    }
+
+    [data-theme="light"] .tier-2 {
+      background: linear-gradient(180deg, rgba(168, 85, 247, 0.07) 0%, rgba(255, 255, 255, 0.95) 100%);
+      border-color: rgba(168, 85, 247, 0.28);
+    }
+
+    [data-theme="light"] .tier-3 {
+      background: linear-gradient(180deg, rgba(244, 63, 94, 0.07) 0%, rgba(255, 255, 255, 0.95) 100%);
+      border-color: rgba(244, 63, 94, 0.28);
+    }
+
+    /* Developer macOS Terminal remains authentic deep obsidian */
+    [data-theme="light"] .terminal-container {
+      background: #05070D;
+      border: 1px solid rgba(15, 23, 42, 0.2);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
+    }
+
   </style>
 </head>
 <body>
@@ -582,6 +870,22 @@
       </div>
 
       <div class="nav-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle color theme" title="Toggle theme (Light / Dark)">
+          <svg class="theme-icon sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
         <a href="/" class="nav-back-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
           <span>Back to Home</span>
@@ -909,7 +1213,8 @@
 
     const container = document.getElementById('darkveil-container');
     if (container) {
-      initDarkVeil(container, {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      window.darkVeil = initDarkVeil(container, {
         hueShift: 0,
         noiseIntensity: 0.02,
         scanlineIntensity: 0.04,
@@ -917,7 +1222,7 @@
         scanlineFrequency: 0.5,
         warpAmount: 0.06,
         resolutionScale: 1,
-        lightMode: false
+        lightMode: isLight
       });
     }
   </script>
