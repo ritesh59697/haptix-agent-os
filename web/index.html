@@ -62,20 +62,27 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* React Bits - Orb Background (@react-bits/Orb-JS-CSS) */
+    /* React Bits - Orb Background (@react-bits/Orb-JS-CSS) scoped to Hero */
     .orb-container {
-      position: fixed;
-      top: 10%;
+      position: absolute;
+      top: -65px; /* Moved slightly up to frame header and badge */
       left: 50%;
-      transform: translate(-50%, 0);
+      transform: translateX(-50%);
       width: 1050px;
-      height: 1050px;
+      height: 820px;
       max-width: 100vw;
-      max-height: 100vh;
       pointer-events: none;
       z-index: 0;
       opacity: 0.92;
       filter: drop-shadow(0 0 90px rgba(240, 185, 11, 0.35)) drop-shadow(0 0 25px rgba(252, 213, 53, 0.25));
+      mask-image: radial-gradient(circle at 50% 48%, black 50%, transparent 82%);
+      -webkit-mask-image: radial-gradient(circle at 50% 48%, black 50%, transparent 82%);
+      transition: opacity 0.15s ease-out;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
     }
 
     .grain-overlay {
@@ -1593,8 +1600,7 @@
   
 
 
-  <!-- React Bits - Orb Background (@react-bits/Orb-JS-CSS) & Fine Film Grain Overlay -->
-  <div id="orb-container" class="orb-container"></div>
+  <!-- Ambient Film Grain Overlay -->
   <div class="grain-overlay"></div>
 
   <!-- Precision Floating Island Navbar -->
@@ -1774,6 +1780,8 @@
 
   <!-- Hero Section (React Bits Grainient Style) -->
   <section class="hero-section">
+    <!-- React Bits - Orb Background (@react-bits/Orb-JS-CSS) -->
+    <div id="orb-container" class="orb-container"></div>
     <div class="container hero-content">
       <a href="/grant-session.html" class="pill-badge" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-color: rgba(240, 185, 11, 0.4); background: rgba(240, 185, 11, 0.08); box-shadow: 0 0 28px rgba(240, 185, 11, 0.18); transition: transform 0.2s ease, border-color 0.2s ease;">
         <span class="badge-tag" style="background: #F0B90B; color: #000; font-weight: 800; padding: 2px 8px; border-radius: 9999px;">BINANCE TRACK A</span>
@@ -2657,6 +2665,14 @@
         forceHoverState: false,
         backgroundColor: '#070611'
       });
+
+      // Smoothly fade out the orb as user scrolls past the hero section
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const fadeThreshold = 380;
+        const opacity = Math.max(0, 0.92 * (1 - scrollY / fadeThreshold));
+        orbEl.style.opacity = opacity.toFixed(3);
+      }, { passive: true });
     }
   </script>
 </body>
