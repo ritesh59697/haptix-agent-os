@@ -206,14 +206,17 @@
     }
 
     .ext-arrow {
-      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
       display: inline-block;
       vertical-align: middle;
-      margin-left: 2px;
+      margin-left: 3px;
+      opacity: 0.75;
     }
 
-    a:hover .ext-arrow {
+    a:hover .ext-arrow,
+    .btn-ghost:hover .ext-arrow {
       transform: translate(2px, -2px);
+      opacity: 1;
     }
 
     .nav-links {
@@ -1635,8 +1638,9 @@
         <a href="#faq" class="nav-link">FAQ</a>
         <a href="/extension/test-dapp.html" class="nav-link" style="color:#60A5FA;">
           Extension
-          <svg class="ext-arrow" width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4.5 11.5l7-7M5 4.5h6.5v6.5"/>
+          <svg class="ext-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
           </svg>
         </a>
       </div>
@@ -1759,15 +1763,17 @@
     <div class="mobile-drawer-footer">
       <a href="app.html" class="btn-primary" style="width:100%; justify-content:center; padding:12px; font-size:14.5px; display:inline-flex; align-items:center; gap:8px;">
         <span>Launch Smart Wallet</span>
-        <svg class="arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 8h10M9 4l4 4-4 4"/>
-        </svg>
+        <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
       </a>
       <a href="test-dapp.html" class="btn-ghost" style="width:100%; justify-content:center; padding:11px; font-size:13.5px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-full); color:#FFF; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
         <span>Open dApp Simulator</span>
-        <svg class="ext-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4.5 11.5l7-7M5 4.5h6.5v6.5"/>
-        </svg>
+        <svg class="ext-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
       </a>
       <div style="display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px; color:var(--text-muted); font-family:var(--font-mono); margin-top:4px;">
         <span style="width:6px; height:6px; border-radius:50%; background:#10B981; box-shadow:0 0 6px #10B981;"></span>
@@ -1798,8 +1804,9 @@
       <div class="hero-ctas">
         <a href="/grant-session.html" class="btn-primary hero-btn-main" style="background: linear-gradient(135deg, #F0B90B 0%, #D99B00 100%); color: #000; font-weight: 800; border: none; box-shadow: 0 8px 28px rgba(240, 185, 11, 0.4);">
           <span>Launch Agent Console</span>
-          <svg class="arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 8h10M9 4l4 4-4 4"/>
+          <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
         </a>
         <a href="#workflows" class="btn-ghost hero-btn-sec" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.18);">
@@ -2440,12 +2447,16 @@
           <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
             <a href="/grant-session.html" class="btn-primary hero-btn-main" style="padding:12px 28px;font-size:14.5px;display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg, #F0B90B 0%, #D99B00 100%);color:#000;font-weight:800;border:none;box-shadow:0 6px 20px rgba(240,185,11,0.4);">
               <span>Launch Agent Console</span>
-              <svg class="arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 8h10M9 4l4 4-4 4"/>
-              </svg>
+              <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
             </a>
             <a href="https://github.com/ritesh59697/haptix-agent-os" target="_blank" class="btn-ghost" style="padding:12px 24px;font-size:14.5px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-full);color:#FFF;text-decoration:none;">
-              <span>GitHub Repository ↗</span>
+              <span>GitHub Repository</span><svg class="ext-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
             </a>
           </div>
         </div>
@@ -2486,18 +2497,18 @@
           <div class="footer-col-links">
             <a href="app.html" class="footer-link">Haptix Web Console</a>
             <a href="test-dapp.html" class="footer-link">dApp Simulator (EIP-1193)</a>
-            <a href="https://sepolia.basescan.org/address/0xB01543453cF31052c769d79e9C755E3b035d796f" target="_blank" class="footer-link">BaseScan Contract ↗</a>
-            <a href="https://github.com/ritesh59697/haptix-agent-os" target="_blank" class="footer-link">GitHub Repository ↗</a>
+            <a href="https://sepolia.basescan.org/address/0xB01543453cF31052c769d79e9C755E3b035d796f" target="_blank" class="footer-link">BaseScan Contract <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+            <a href="https://github.com/ritesh59697/haptix-agent-os" target="_blank" class="footer-link">GitHub Repository <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
 
         <div>
           <div class="footer-col-title">Standards</div>
           <div class="footer-col-links">
-            <a href="https://eips.ethereum.org/EIPS/eip-7212" target="_blank" class="footer-link">RIP-7212 (0x100) ↗</a>
-            <a href="https://eips.ethereum.org/EIPS/eip-4337" target="_blank" class="footer-link">ERC-4337 v0.7 ↗</a>
-            <a href="https://eips.ethereum.org/EIPS/eip-6963" target="_blank" class="footer-link">EIP-6963 Discovery ↗</a>
-            <a href="https://eips.ethereum.org/EIPS/eip-1271" target="_blank" class="footer-link">ERC-1271 Signatures ↗</a>
+            <a href="https://eips.ethereum.org/EIPS/eip-7212" target="_blank" class="footer-link">RIP-7212 (0x100) <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+            <a href="https://eips.ethereum.org/EIPS/eip-4337" target="_blank" class="footer-link">ERC-4337 v0.7 <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+            <a href="https://eips.ethereum.org/EIPS/eip-6963" target="_blank" class="footer-link">EIP-6963 Discovery <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+            <a href="https://eips.ethereum.org/EIPS/eip-1271" target="_blank" class="footer-link">ERC-1271 Signatures <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </div>
@@ -2506,7 +2517,7 @@
         <span>© 2026 Haptix Protocol · Open Source MIT License</span>
         <div style="display:flex;align-items:center;gap:16px;">
           <span>Live on Base Sepolia (84532)</span>
-          <a href="https://sepolia.basescan.org/address/0xB01543453cF31052c769d79e9C755E3b035d796f" target="_blank" style="color:var(--text-muted);text-decoration:none;">Contract 0xB015...796f ↗</a>
+          <a href="https://sepolia.basescan.org/address/0xB01543453cF31052c769d79e9C755E3b035d796f" target="_blank" style="color:var(--text-muted);text-decoration:none;">Contract 0xB015...796f <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
         </div>
       </div>
     </div>
