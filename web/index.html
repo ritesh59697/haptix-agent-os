@@ -62,18 +62,16 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* React Bits - AcidSquares Background (@react-bits/AcidSquares-JS-CSS) */
+    /* React Bits - AcidSquares Full Page Background (@react-bits/AcidSquares-JS-CSS) */
     .acid-squares-container {
-      position: absolute;
+      position: fixed;
       inset: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
-      pointer-events: auto;
+      pointer-events: none;
       z-index: 0;
-      opacity: 0.85;
-      mask-image: radial-gradient(circle at 50% 50%, black 45%, transparent 92%);
-      -webkit-mask-image: radial-gradient(circle at 50% 50%, black 45%, transparent 92%);
+      opacity: 0.78;
     }
 
     .hero-content {
@@ -1595,6 +1593,8 @@
   </style>
 </head>
 <body>
+  <!-- React Bits - AcidSquares Full Page Background (@react-bits/AcidSquares-JS-CSS) -->
+  <div id="acid-squares-container" class="acid-squares-container"></div>
   
 
 
@@ -1778,8 +1778,7 @@
 
   <!-- Hero Section (React Bits Grainient Style) -->
   <section class="hero-section">
-    <!-- React Bits - AcidSquares Background (@react-bits/AcidSquares-JS-CSS) -->
-    <div id="acid-squares-container" class="acid-squares-container"></div>
+    
     <div class="container hero-content">
       <a href="/grant-session.html" class="pill-badge" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-color: rgba(240, 185, 11, 0.4); background: rgba(240, 185, 11, 0.08); box-shadow: 0 0 28px rgba(240, 185, 11, 0.18); transition: transform 0.2s ease, border-color 0.2s ease;">
         <span class="badge-tag" style="background: #F0B90B; color: #000; font-weight: 800; padding: 2px 8px; border-radius: 9999px;">BINANCE TRACK A</span>
@@ -2657,22 +2656,26 @@
     const container = document.getElementById('acid-squares-container');
     if (container) {
       initAcidSquares(container, {
-        color1: '#F0B90B',
-        color2: '#FCD535',
+        color1: '#5227FF',
+        color2: '#A855F7',
         color3: '#FFFFFF',
         detail: 'medium',
-        speed: 0.6,
+        speed: 0.7,
         waveDepth: 1.0,
         zoom: 1.3,
-        density: 9.0,
-        glow: 1.2,
-        exposure: 2600,
-        contrast: 1.1,
+        density: 10.0,
+        glow: 1.0,
+        exposure: 2700,
+        spread: 0.3,
+        stepSize: 0.002,
+        contrast: 1.0,
         brightness: 1.0,
-        opacity: 0.85,
+        opacity: 0.78,
         mouseInteraction: true,
-        mouseStrength: 0.18,
-        grain: true
+        mouseStrength: 0.15,
+        mouseRadius: 0.35,
+        grain: true,
+        grainIntensity: 0.05
       });
     }
   </script>

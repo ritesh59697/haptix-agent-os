@@ -145,8 +145,8 @@ const ctxMap = new WeakMap();
 export function initAcidSquares(container, options = {}) {
   if (!container) return null;
 
-  const color1 = options.color1 || '#F0B90B';
-  const color2 = options.color2 || '#FCD535';
+  const color1 = options.color1 || '#5227FF';
+  const color2 = options.color2 || '#A855F7';
   const color3 = options.color3 || '#FFFFFF';
   const detail = options.detail || 'medium';
   const speed = options.speed !== undefined ? options.speed : 0.6;
