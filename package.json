@@ -1,19 +1,13 @@
 {
-  "name": "haptix-passkey-wallet",
+  "name": "haptix-agent-os",
   "version": "1.0.0",
   "private": true,
-  "description": "Biometric Hardware Enclave Layer for EVM. ERC-4337 Smart Account with WebAuthn P-256 Passkeys.",
+  "description": "Hardware Biometric Enclave for Binance Agent OS. Self-custodial smart accounts with autonomous on-chain spending firewalls.",
   "scripts": {
-    "dev": "npm run dev --prefix extension-app",
-    "build": "npm run build --prefix extension-app",
-    "type-check": "npm run type-check --prefix extension-app",
-    "preview": "npm run preview --prefix extension-app",
-    "package:extension": "node scripts/package-extension.mjs",
     "test:sdk": "npm test --prefix sdk",
     "test:contracts": "forge test",
-    "demo": "node scripts/demo-flow.mjs",
+    "demo:binance": "node examples/binance-agent-runner.mjs",
     "demo:agent": "node scripts/execute-autonomous-agent.mjs",
-    "demo:reject": "node scripts/test-policy-violation.mjs",
-    "demo:binance": "node examples/binance-agent-runner.mjs"
+    "demo:reject": "node scripts/test-policy-violation.mjs"
   }
 }

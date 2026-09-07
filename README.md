@@ -114,9 +114,9 @@ The on-chain smart account intercepts calldata inside `validateUserOp` before an
 
 ---
 
-## Chrome Browser Extension & Interactive Web UI
+## Interactive Web Console & Developer UI
 
-The repository also includes a biometric wallet extension and web dashboard for passkey authorization:
+Launch the interactive web console and live telemetry dashboard:
 
 ```bash
 # Launch the interactive web console
