@@ -1122,78 +1122,194 @@
       line-height: 1.55;
     }
 
-    /* FAQ Section */
+    /* ==========================================================================
+       VENGEANCE UI FAQ ACCORDION
+       ========================================================================== */
     .faq-section {
       padding: 90px 0;
       max-width: 820px;
       margin: 0 auto;
+      position: relative;
+    }
+
+    .faq-list {
+      list-style: none;
+      padding: 0;
+      margin: 36px 0 0 0;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
     }
 
     .faq-item {
-      background: rgba(14, 18, 26, 0.8);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      margin-bottom: 14px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      overflow: hidden;
-      transition: border-color 0.2s ease, background-color 0.2s ease;
+      width: 100%;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border-bottom: 2px solid #262626;
+      background: transparent;
+      margin: 0;
+      border-radius: 0;
     }
 
-    .faq-item:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      background: rgba(20, 25, 36, 0.85);
+    .faq-item:last-child {
+      border-bottom: none;
     }
 
-    .faq-question {
+    .faq-item.active {
+      border-bottom: 1px solid #404040;
+    }
+
+    .faq-button {
       display: flex;
+      flex-direction: row;
       align-items: center;
-      justify-content: space-between;
-      font-family: var(--font-heading);
-      font-size: 16.5px;
-      font-weight: 700;
-      color: var(--text-white);
+      justify-content: flex-start;
+      width: 100%;
+      min-height: 60px;
+      padding: 18px 20px 18px 56px;
+      position: relative;
+      margin: 0;
       cursor: pointer;
+      border: none;
+      background: transparent;
+      border-left: 8px solid #404040;
+      transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+      text-align: left;
+      outline: none;
+      font-family: var(--font-heading);
+      font-size: 17px;
+      font-weight: 500;
+      color: #A3A3A3;
       user-select: none;
-      padding: 22px 24px;
     }
 
-    .faq-answer-wrapper {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    @media (min-width: 768px) {
+      .faq-button {
+        border-left-width: 10px;
+        padding-left: 60px;
+        font-size: 18px;
+      }
     }
 
-    .faq-item.active .faq-answer-wrapper {
-      grid-template-rows: 1fr;
+    .faq-button:hover {
+      border-left-color: #737373;
+      color: #E5E5E5;
+      background: rgba(23, 23, 23, 0.5);
     }
 
-    .faq-answer-inner {
-      overflow: hidden;
+    .faq-item.active .faq-button {
+      border-left-color: #F5F5F5;
+      background: rgba(38, 38, 38, 0.3);
+      color: #F5F5F5;
+      font-weight: 600;
     }
 
-    .faq-answer {
-      padding: 0 24px 22px 24px;
-      font-size: 14.5px;
-      color: var(--text-muted);
-      line-height: 1.65;
-    }
-
-    .faq-icon {
-      font-size: 20px;
+    /* Plus / Minus Icon */
+    .faq-toggle-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: all 0.2s ease;
+      line-height: 1;
+      font-size: 26px;
       font-weight: 300;
-      color: var(--text-dark);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
-      display: inline-flex;
+      color: #737373;
+      display: flex;
       align-items: center;
       justify-content: center;
       width: 24px;
       height: 24px;
     }
 
-    .faq-item.active .faq-icon {
-      transform: rotate(45deg);
-      color: #60A5FA;
+    @media (min-width: 768px) {
+      .faq-toggle-icon {
+        left: 20px;
+        font-size: 30px;
+      }
+    }
+
+    .faq-item.active .faq-toggle-icon {
+      font-size: 34px;
+      color: #F5F5F5;
+      font-weight: 400;
+    }
+
+    @media (min-width: 768px) {
+      .faq-item.active .faq-toggle-icon {
+        font-size: 40px;
+      }
+    }
+
+    .faq-question-text {
+      padding-right: 32px;
+      line-height: 1.45;
+    }
+
+    /* Chevron Indicator */
+    .faq-chevron {
+      position: absolute;
+      right: 24px;
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-top: 3px solid #737373;
+      border-right: 3px solid #737373;
+      transform: rotate(133deg);
+      transition: transform 0.2s ease-in-out, border-color 0.2s ease;
+    }
+
+    .faq-item.active .faq-chevron {
+      transform: rotate(-44deg);
+      border-top-color: #F5F5F5;
+      border-right-color: #F5F5F5;
+    }
+
+    /* Accordion Drawer */
+    .faq-drawer {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.3s ease-in-out;
+      width: 100%;
+      border-left: 8px solid #404040;
+      background: transparent;
+    }
+
+    @media (min-width: 768px) {
+      .faq-drawer {
+        border-left-width: 10px;
+      }
+    }
+
+    .faq-item.active .faq-drawer {
+      grid-template-rows: 1fr;
+      border-left-color: #F5F5F5;
+      background: rgba(38, 38, 38, 0.3);
+    }
+
+    .faq-drawer-inner {
+      overflow: hidden;
+    }
+
+    .faq-answer-content {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: flex-start;
+      width: 100%;
+      padding: 4px 24px 24px 56px;
+      font-size: 15px;
+      font-weight: 400;
+      color: #D4D4D4;
+      line-height: 1.65;
+    }
+
+    @media (min-width: 768px) {
+      .faq-answer-content {
+        padding-left: 60px;
+        padding-right: 32px;
+        font-size: 16.5px;
+      }
     }
 
     /* Clean Institutional Footer */
@@ -2030,23 +2146,64 @@
       color: #475569 !important;
     }
 
-    /* FAQ Items */
+    /* Vengeance UI FAQ Light Mode Overrides */
     [data-theme="light"] .faq-item {
-      background: rgba(255, 255, 255, 0.92) !important;
-      border: 1px solid rgba(15, 23, 42, 0.08) !important;
+      border-bottom: 2px solid #F1F5F9 !important;
+      background: transparent !important;
     }
 
-    [data-theme="light"] .faq-item:hover {
-      background: #FFFFFF !important;
-      border-color: rgba(15, 23, 42, 0.16) !important;
+    [data-theme="light"] .faq-item.active {
+      border-bottom: 1px solid #E2E8F0 !important;
     }
 
-    [data-theme="light"] .faq-question {
-      color: #0B0F19 !important;
-    }
-
-    [data-theme="light"] .faq-answer {
+    [data-theme="light"] .faq-button {
+      border-left-color: #CBD5E1 !important;
       color: #475569 !important;
+      background: transparent !important;
+    }
+
+    [data-theme="light"] .faq-button:hover {
+      border-left-color: #64748B !important;
+      color: #0F172A !important;
+      background: #F8FAFC !important;
+    }
+
+    [data-theme="light"] .faq-item.active .faq-button {
+      border-left-color: #0F172A !important;
+      background: rgba(241, 245, 249, 0.65) !important;
+      color: #0F172A !important;
+    }
+
+    [data-theme="light"] .faq-toggle-icon {
+      color: #94A3B8 !important;
+    }
+
+    [data-theme="light"] .faq-item.active .faq-toggle-icon {
+      color: #0F172A !important;
+    }
+
+    [data-theme="light"] .faq-chevron {
+      border-top-color: #94A3B8 !important;
+      border-right-color: #94A3B8 !important;
+    }
+
+    [data-theme="light"] .faq-item.active .faq-chevron {
+      border-top-color: #0F172A !important;
+      border-right-color: #0F172A !important;
+    }
+
+    [data-theme="light"] .faq-drawer {
+      border-left-color: #CBD5E1 !important;
+      background: transparent !important;
+    }
+
+    [data-theme="light"] .faq-item.active .faq-drawer {
+      border-left-color: #0F172A !important;
+      background: rgba(241, 245, 249, 0.65) !important;
+    }
+
+    [data-theme="light"] .faq-answer-content {
+      color: #334155 !important;
     }
 
     /* Institutional Footer */
@@ -2920,61 +3077,67 @@
       <h2 class="section-title">Frequently asked questions</h2>
     </div>
 
-    <div class="faq-item active">
-      <div class="faq-question">
-        <span>How does RIP-7212 enable P-256 Passkeys on EVM?</span>
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-answer-wrapper">
-        <div class="faq-answer-inner">
-          <div class="faq-answer">
-            RIP-7212 specifies a native precompile at address 0x100 for P-256 (secp256r1) signature verification. Instead of spending 350,000+ gas on Solidity curve emulation, the precompile executes in native C++ on Base Sepolia for under 10,000 gas.
+    <ul class="faq-list">
+      <li class="faq-item active">
+        <button class="faq-button" type="button" aria-expanded="true">
+          <span class="faq-toggle-icon">-</span>
+          <span class="faq-question-text">How does RIP-7212 enable P-256 Passkeys on EVM?</span>
+          <span class="faq-chevron" aria-hidden="true"></span>
+        </button>
+        <div class="faq-drawer">
+          <div class="faq-drawer-inner">
+            <div class="faq-answer-content">
+              <span>RIP-7212 specifies a native precompile at address 0x100 for P-256 (secp256r1) signature verification. Instead of spending 350,000+ gas on Solidity curve emulation, the precompile executes in native C++ on Base Sepolia and BNB Chain for under 10,000 gas.</span>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </li>
 
-    <div class="faq-item">
-      <div class="faq-question">
-        <span>What happens if an attacker drains with thousands of small $9 transfers?</span>
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-answer-wrapper">
-        <div class="faq-answer-inner">
-          <div class="faq-answer">
-            The smart account enforces a cumulative 24-hour rolling window spend cap in addition to per-operation thresholds. Once the rolling spend meets the daily cap, the wallet automatically locks down all 1-signature transfers and requires the 2-of-2 hardware quorum.
+      <li class="faq-item">
+        <button class="faq-button" type="button" aria-expanded="false">
+          <span class="faq-toggle-icon">+</span>
+          <span class="faq-question-text">What happens if an attacker drains with thousands of small $9 transfers?</span>
+          <span class="faq-chevron" aria-hidden="true"></span>
+        </button>
+        <div class="faq-drawer">
+          <div class="faq-drawer-inner">
+            <div class="faq-answer-content">
+              <span>The smart account enforces a cumulative 24-hour rolling window spend cap in addition to per-operation thresholds. Once the rolling spend meets the daily cap, the wallet automatically locks down all 1-signature transfers and requires the 2-of-2 hardware quorum.</span>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </li>
 
-    <div class="faq-item">
-      <div class="faq-question">
-        <span>What happens if I lose my MacBook or primary device?</span>
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-answer-wrapper">
-        <div class="faq-answer-inner">
-          <div class="faq-answer">
-            Your account is configured with a multi-key quorum. Signer #1 (e.g. your hardware YubiKey or secondary phone) combined with your social recovery or backup key can execute a self-call to replace Signer #0 with a new hardware device.
+      <li class="faq-item">
+        <button class="faq-button" type="button" aria-expanded="false">
+          <span class="faq-toggle-icon">+</span>
+          <span class="faq-question-text">What happens if I lose my MacBook or primary device?</span>
+          <span class="faq-chevron" aria-hidden="true"></span>
+        </button>
+        <div class="faq-drawer">
+          <div class="faq-drawer-inner">
+            <div class="faq-answer-content">
+              <span>Your account is configured with a multi-key quorum. Signer #1 (e.g. your hardware YubiKey or secondary phone) combined with your social recovery or backup key can execute a self-call to replace Signer #0 with a new hardware device.</span>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </li>
 
-    <div class="faq-item">
-      <div class="faq-question">
-        <span>How do autonomous AI agents execute trades on Binance and DeFi protocols?</span>
-        <span class="faq-icon">+</span>
-      </div>
-      <div class="faq-answer-wrapper">
-        <div class="faq-answer-inner">
-          <div class="faq-answer">
-            Agents running on Binance Agent OS connect to Haptix via our TypeScript SDK or standard ERC-4337 UserOperations. Agents execute swaps, rebalancing, or arbitrage across Binance and EVM protocols headlessly using Type 0x01 session keys within on-chain SpendPolicy boundaries.
+      <li class="faq-item">
+        <button class="faq-button" type="button" aria-expanded="false">
+          <span class="faq-toggle-icon">+</span>
+          <span class="faq-question-text">How do autonomous AI agents execute trades on Binance and DeFi protocols?</span>
+          <span class="faq-chevron" aria-hidden="true"></span>
+        </button>
+        <div class="faq-drawer">
+          <div class="faq-drawer-inner">
+            <div class="faq-answer-content">
+              <span>Agents running on Binance Agent OS connect to Haptix via our TypeScript SDK or standard ERC-4337 UserOperations. Agents execute swaps, rebalancing, or arbitrage across Binance and EVM protocols headlessly using Type 0x01 session keys within on-chain SpendPolicy boundaries.</span>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </section>
 
   <!-- Clean Institutional Footer -->
@@ -3075,12 +3238,29 @@
   </footer>
 
   <script>
-    // FAQ Accordion
+    // FAQ Accordion (Vengeance UI style)
     document.querySelectorAll('.faq-item').forEach(item => {
-      item.querySelector('.faq-question').addEventListener('click', () => {
+      const btn = item.querySelector('.faq-button');
+      if (!btn) return;
+      btn.addEventListener('click', () => {
         const isActive = item.classList.contains('active');
-        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-        if (!isActive) item.classList.add('active');
+        
+        // Collapse all items
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('active');
+          const b = i.querySelector('.faq-button');
+          if (b) b.setAttribute('aria-expanded', 'false');
+          const icon = i.querySelector('.faq-toggle-icon');
+          if (icon) icon.textContent = '+';
+        });
+
+        // Toggle current item
+        if (!isActive) {
+          item.classList.add('active');
+          btn.setAttribute('aria-expanded', 'true');
+          const icon = item.querySelector('.faq-toggle-icon');
+          if (icon) icon.textContent = '-';
+        }
       });
     });
 
