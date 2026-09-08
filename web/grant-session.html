@@ -1464,7 +1464,17 @@
       <div class="card-header">
         <div class="card-title-group">
           <div class="card-icon-badge" style="background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/>
+              <path d="M14 13.12c0 2.38 0 6.38-1 8.88"/>
+              <path d="M17.29 21.02c.12-.6.18-1.23.18-1.87 0-4.42-3.58-8-8-8-.8 0-1.57.12-2.3.34"/>
+              <path d="M2 12a10 10 0 0 1 18-6"/>
+              <path d="M2 16h.01"/>
+              <path d="M21.8 16c.2-2 .131-5.354 0-6"/>
+              <path d="M5 19.5C5.5 18 6 15 6 12c0-.7.12-1.37.34-2"/>
+              <path d="M8.65 22c.21-.66.45-1.32.75-2"/>
+              <path d="M9 6.8a6 6 0 0 1 9 5.2c0 .47 0 1.1-.02 1.61"/>
+            </svg>
           </div>
           <div>
             <div class="card-title-text">Biometric Hardware Passkey Quorum</div>
@@ -1492,8 +1502,9 @@
           <span>Authorize Agent Session (2-of-2 Hardware Touch ID Quorum)</span>
         </button>
         <div id="simulatePromptRow" style="display:none; margin-top: 10px; text-align: center;">
-          <button type="button" onclick="triggerQuorumCeremony(true)" style="background: none; border: none; color: var(--text-muted); font-size: 12.5px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 4px 8px; transition: color 0.15s ease;" onmouseover="this.style.color='var(--binance-gold)'" onmouseout="this.style.color='var(--text-muted)'">
-            ⚡ Or skip hardware Touch ID: Click to simulate instant quorum verification
+          <button type="button" onclick="triggerQuorumCeremony(true)" style="background: none; border: none; color: var(--text-muted); font-size: 12.5px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 4px 8px; transition: color 0.15s ease; display: inline-flex; align-items: center; gap: 6px; justify-content: center;" onmouseover="this.style.color='var(--binance-gold)'" onmouseout="this.style.color='var(--text-muted)'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Or skip hardware Touch ID: Click to simulate instant quorum verification</span>
           </button>
         </div>
       </div>
@@ -1697,7 +1708,7 @@
     function showQuorumFallback(btn, content, reason) {
       btn.className = 'primary-glow-btn';
       btn.innerHTML = `
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <span>Biometric Cancelled · Click to Simulate Quorum Verification</span>
       `;
       btn.style.background = 'linear-gradient(135deg, rgba(240, 185, 11, 0.18) 0%, rgba(240, 185, 11, 0.08) 100%)';
