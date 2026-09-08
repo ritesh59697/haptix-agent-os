@@ -403,8 +403,32 @@
       background: rgba(255, 255, 255, 0.045);
       border-color: rgba(255, 255, 255, 0.12);
     }
-    .info-item:last-child { margin-bottom: 0; }
     .mono { font-family: var(--font-mono); }
+    .endpoint-badge { color: #FCD535; }
+    .verified-bnb-pill {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #FCD535;
+      background: rgba(240, 185, 11, 0.12);
+      border: 1px solid rgba(240, 185, 11, 0.35);
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+    .bscscan-account-link {
+      color: #FCD535;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+    .bscscan-account-link:hover {
+      text-decoration: underline;
+    }
+    .session-key-pill {
+      color: var(--binance-gold-light);
+    }
+    .tier2-threshold-pill {
+      color: var(--binance-gold-light);
+    }
 
     /* Interactive 3-Tier Console */
     .tier-cards-grid {
@@ -989,19 +1013,29 @@
       font-weight: 800 !important;
     }
 
-    [data-theme="light"] #dispBinancePrice,
-    [data-theme="light"] .telemetry-metric-value[style*="color: var(--binance-gold-light)"] {
-      color: #8C5E00 !important;
+    [data-theme="light"] .telemetry-card-title {
+      color: #0B0F19 !important;
+      font-weight: 800 !important;
     }
 
-    [data-theme="light"] #dispBinanceChange,
-    [data-theme="light"] .telemetry-metric-value[style*="color: var(--emerald)"] {
+    [data-theme="light"] .endpoint-badge {
+      color: #92400E !important;
+      font-weight: 700 !important;
+    }
+
+    [data-theme="light"] #dispBinancePrice {
+      color: #0F172A !important;
+      font-weight: 800 !important;
+    }
+
+    [data-theme="light"] #dispBinanceChange {
       color: #047857 !important;
+      font-weight: 800 !important;
     }
 
-    [data-theme="light"] #dispBinanceSpread,
-    [data-theme="light"] .telemetry-metric-value[style*="color: #93C5FD"] {
+    [data-theme="light"] #dispBinanceSpread {
       color: #0052FF !important;
+      font-weight: 800 !important;
     }
 
     /* Console Data Rows (.info-item) - High Contrast Readable Text */
@@ -1016,9 +1050,16 @@
       font-weight: 600 !important;
     }
 
-    /* Smart Account Address */
-    [data-theme="light"] .info-item .mono[style*="color: #93C5FD"],
-    [data-theme="light"] .info-item span[style*="color: #93C5FD"] {
+    /* Verified on BNB Testnet Badge */
+    [data-theme="light"] .verified-bnb-pill {
+      color: #92400E !important;
+      background: rgba(245, 158, 11, 0.12) !important;
+      border-color: rgba(217, 119, 6, 0.35) !important;
+      font-weight: 700 !important;
+    }
+
+    /* Smart Account Address (BscScan Link) */
+    [data-theme="light"] .bscscan-account-link {
       color: #0052FF !important;
       font-weight: 700 !important;
     }
@@ -1031,9 +1072,11 @@
     }
 
     /* Delegated Session Key & Gold Metrics */
+    [data-theme="light"] .session-key-pill,
+    [data-theme="light"] .tier2-threshold-pill,
     [data-theme="light"] .info-item .mono[style*="color: var(--binance-gold-light)"],
     [data-theme="light"] .info-item span[style*="color: var(--binance-gold-light)"] {
-      color: #8C5E00 !important;
+      color: #92400E !important;
       font-weight: 700 !important;
     }
 
@@ -1302,9 +1345,9 @@
             </svg>
           </div>
           <div>
-            <div class="card-title-text" style="color: var(--binance-gold-light);">Binance Agent OS Telemetry Feed</div>
+            <div class="card-title-text telemetry-card-title">Binance Agent OS Telemetry Feed</div>
             <div style="font-size: 12px; color: var(--text-dim); margin-top: 2px;">
-              MCP Endpoint: <span class="mono" style="color: #FCD535;">agent.binance.com/mcp/agentic</span>
+              MCP Endpoint: <span class="mono endpoint-badge">agent.binance.com/mcp/agentic</span>
             </div>
           </div>
         </div>
@@ -1320,7 +1363,7 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/></svg>
             <span>ETH / USDC Price</span>
           </div>
-          <div class="telemetry-metric-value" id="dispBinancePrice" style="color: var(--binance-gold-light);">$2,491.50</div>
+          <div class="telemetry-metric-value" id="dispBinancePrice">$2,491.50</div>
         </div>
         <div class="telemetry-box">
           <div class="telemetry-metric-title">
@@ -1351,14 +1394,14 @@
             <div style="font-size: 12px; color: var(--text-dim); margin-top: 2px;">ERC-4337 v0.7 · RIP-7212 Precompile (0x100) · Chain ID 97</div>
           </div>
         </div>
-        <span style="font-size: 11.5px; font-weight: 700; color: #FCD535; background: rgba(240, 185, 11, 0.12); border: 1px solid rgba(240, 185, 11, 0.35); padding: 4px 10px; border-radius: 9999px;">
+        <span class="verified-bnb-pill">
           Verified on BNB Testnet
         </span>
       </div>
 
       <div class="info-item">
         <span style="color: var(--text-muted);">Smart Account Address</span>
-        <a href="https://testnet.bscscan.com/address/0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5" target="_blank" class="mono" style="color: #FCD535; text-decoration: none;">0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5 ↗</a>
+        <a href="https://testnet.bscscan.com/address/0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5" target="_blank" class="mono bscscan-account-link">0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5 ↗</a>
       </div>
       <div class="info-item">
         <span style="color: var(--text-muted);">Hardware Signers</span>
@@ -1366,7 +1409,7 @@
       </div>
       <div class="info-item">
         <span style="color: var(--text-muted);">Delegated Session Key</span>
-        <span class="mono" style="color: var(--binance-gold-light);">Active (0x093F... with 0.001 ETH & $20 USDC limit)</span>
+        <span class="mono session-key-pill">Active (0x093F... with 0.001 ETH & $20 USDC limit)</span>
       </div>
     </div>
 
@@ -1412,7 +1455,17 @@
           <div>
             <div class="tier-card-header">
               <div class="tier-icon-wrap">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/>
+                  <path d="M14 13.12c0 2.38 0 6.38-1 8.88"/>
+                  <path d="M17.29 21.02c.12-.6.18-1.23.18-1.87 0-4.42-3.58-8-8-8-.8 0-1.57.12-2.3.34"/>
+                  <path d="M2 12a10 10 0 0 1 18-6"/>
+                  <path d="M2 16h.01"/>
+                  <path d="M21.8 16c.2-2 .131-5.354 0-6"/>
+                  <path d="M5 19.5C5.5 18 6 15 6 12c0-.7.12-1.37.34-2"/>
+                  <path d="M8.65 22c.21-.66.45-1.32.75-2"/>
+                  <path d="M9 6.8a6 6 0 0 1 9 5.2c0 .47 0 1.1-.02 1.61"/>
+                </svg>
               </div>
               <span class="tier-active-pill">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1489,7 +1542,7 @@
       </div>
       <div class="info-item">
         <span style="color: var(--text-muted);">Tier 2 Biometric Escalation Threshold</span>
-        <span class="mono" style="color: var(--binance-gold-light);">$200.00 USDC / Op (Touch ID Quorum)</span>
+        <span class="mono tier2-threshold-pill">$200.00 USDC / Op (Touch ID Quorum)</span>
       </div>
       <div class="info-item">
         <span style="color: var(--text-muted);">Tier 3 Hard Policy Ceiling</span>

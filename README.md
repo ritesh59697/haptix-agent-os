@@ -14,7 +14,7 @@ Binance built **Agent OS** to connect AI agents to deep market liquidity, live o
 **Haptix provides the missing on-chain security layer:**
 When an AI agent uses Binance Agent OS for market intelligence and needs to execute hedges, rebalancing, or arbitrage on-chain, **Haptix enforces hardware-backed spending policies** directly inside an ERC-4337 smart account:
 
-1. **Tier 1 (Autonomous <= $50 USDC)**: The AI agent executes headlessly on Base using delegated session keys (`0x01` signature) with **Zero Human Prompts**.
+1. **Tier 1 (Autonomous <= $50 USDC)**: The AI agent executes headlessly on **BNB Smart Chain** (and Base Sepolia) using delegated session keys (`0x01` signature) with **Zero Human Prompts**.
 2. **Tier 2 (Escalated $50 - $200 USDC)**: If market volatility prompts a larger rebalance, the transaction is **intercepted on-chain** and requires a **2-of-2 WebAuthn Passkey Quorum** (Apple Touch ID / Secure Enclave).
 3. **Tier 3 (Hard Ceiling > $200 USDC)**: If the agent is compromised or hallucinates a rogue trade, the smart account **fails closed and reverts on-chain** before funds can move.
 
@@ -49,8 +49,8 @@ When an AI agent uses Binance Agent OS for market intelligence and needs to exec
                                      (3) Broadcast to EntryPoint v0.7
                                                    v
                                +---------------------------------------+
-                               |       Base Sepolia Smart Account      |
-                               |   PasskeyAccount.sol (ERC-4337)       |
+                               |     BNB Smart Chain Smart Account     |
+                               |   PasskeyAccount.sol (ERC-4337 v0.7)  |
                                |   - Tier 1: Autonomous (< $50)        |
                                |   - Tier 2: Biometric Touch ID Quorum |
                                |   - Tier 3: Hard Ceiling Block (> $200)|
@@ -132,8 +132,8 @@ The on-chain smart account intercepts calldata inside `validateUserOp` before an
 |---|---|---|
 | **Real Problem Solved** | Wraps an LLM API with simple chat prompts. | Solves the **#1 blocker to real capital deployment**: autonomous on-chain execution with zero wallet-drain risk. |
 | **Binance Integration** | Static mock data or read-only scraper. | **Live Binance Agent OS MCP ingestion** (ETH/USDC ticker, 24h momentum, and top-of-book spreads). |
-| **On-Chain Proofs** | Mock scripts or testnet contract with no tx history. | **Live on Base Sepolia**: Real smart account, verified autonomous UserOp (Block 46457806), and on-chain AA24 policy rejection proof. |
-| **Hardware Biometrics** | Private keys in plain text `.env` or software wallets. | **Hardware Apple Secure Enclave Passkeys** via Base's native **RIP-7212 precompile (`0x100`)**. |
+| **On-Chain Proofs** | Mock scripts or testnet contract with no tx history. | **Live on BNB Smart Chain Testnet**: Real smart account ([`0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5`](https://testnet.bscscan.com/address/0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5)), multi-chain co-deployment on Base Sepolia, verified autonomous UserOps, and on-chain AA24 policy rejection proofs. |
+| **Hardware Biometrics** | Private keys in plain text `.env` or software wallets. | **Hardware Apple Secure Enclave Passkeys** via native **RIP-7212 precompile (`0x100`)**. |
 | **Test Coverage** | 0 to 5 unit tests. | **293 automated tests passing** (243 Foundry Solidity tests + 50 TypeScript SDK tests). |
 | **Judge Experience** | CLI scripts with complex setup. | **1-command runtime demo** (`npm run demo:binance`) + **Interactive Web Console** with WebAuthn Touch ID ceremonies. |
 
