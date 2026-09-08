@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="assets/haptix_banner.png" alt="Haptix Enclave for Binance Agent OS" width="820" style="max-width: 100%; border-radius: 14px; margin-bottom: 20px;" />
   <h2>Haptix Enclave for Binance Agent OS</h2>
   <p><strong>The Biometric Hardware Enclave & On-Chain Security Firewall for Autonomous AI Agents.</strong></p>
   <p><em>Official Submission for the Binance Agent OS Mini Hackathon — Track A: Build an AI Agent</em></p>
