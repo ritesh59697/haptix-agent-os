@@ -679,7 +679,8 @@
       outline: none;
     }
 
-    .animated-button svg {
+    .animated-button > svg.arr-1,
+    .animated-button > svg.arr-2 {
       position: absolute;
       width: 22px;
       height: 22px;
@@ -721,13 +722,14 @@
 
     .animated-button .text svg {
       position: static !important;
-      display: inline-block;
-      vertical-align: middle;
-      width: 17px;
-      height: 17px;
-      fill: none;
-      stroke: currentColor;
-      transition: none;
+      display: inline-block !important;
+      vertical-align: middle !important;
+      width: 17px !important;
+      height: 17px !important;
+      fill: none !important;
+      stroke: currentColor !important;
+      stroke-width: 2.2 !important;
+      transition: stroke 0.3s ease !important;
     }
 
     .animated-button:hover {
@@ -748,8 +750,14 @@
       transform: translateX(12px);
     }
 
-    .animated-button:hover svg {
+    .animated-button:hover > svg.arr-1,
+    .animated-button:hover > svg.arr-2 {
       fill: #1f387e;
+    }
+
+    .animated-button:hover .text svg {
+      fill: none !important;
+      stroke: #212121 !important;
     }
 
     .animated-button:active {
@@ -1189,8 +1197,14 @@
       box-shadow: 0 0 0 2.5px #1f387e, 0 10px 28px rgba(31, 56, 126, 0.18) !important;
     }
 
-    [data-theme="light"] .animated-button svg {
+    [data-theme="light"] .animated-button > svg.arr-1,
+    [data-theme="light"] .animated-button > svg.arr-2 {
       fill: #1f387e !important;
+    }
+
+    [data-theme="light"] .animated-button .text svg {
+      fill: none !important;
+      stroke: currentColor !important;
     }
 
     [data-theme="light"] .animated-button .circle {
@@ -1202,8 +1216,14 @@
       box-shadow: 0 0 0 12px transparent, 0 14px 34px rgba(31, 56, 126, 0.25) !important;
     }
 
-    [data-theme="light"] .animated-button:hover svg {
+    [data-theme="light"] .animated-button:hover > svg.arr-1,
+    [data-theme="light"] .animated-button:hover > svg.arr-2 {
       fill: #1f387e !important;
+    }
+
+    [data-theme="light"] .animated-button:hover .text svg {
+      fill: none !important;
+      stroke: #212121 !important;
     }
 
     [data-theme="light"] .animated-button:active {
