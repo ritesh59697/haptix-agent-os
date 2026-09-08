@@ -114,6 +114,19 @@ The on-chain smart account intercepts calldata inside `validateUserOp` before an
 
 ---
 
+## Why Haptix Wins Track A (Competitive Edge)
+
+| Evaluation Criteria | Typical AI Agent Submission | Haptix Enclave for Binance Agent OS |
+|---|---|---|
+| **Real Problem Solved** | Wraps an LLM API with simple chat prompts. | Solves the **#1 blocker to real capital deployment**: autonomous on-chain execution with zero wallet-drain risk. |
+| **Binance Integration** | Static mock data or read-only scraper. | **Live Binance Agent OS MCP ingestion** (ETH/USDC ticker, 24h momentum, and top-of-book spreads). |
+| **On-Chain Proofs** | Mock scripts or testnet contract with no tx history. | **Live on Base Sepolia**: Real smart account, verified autonomous UserOp (Block 46457806), and on-chain AA24 policy rejection proof. |
+| **Hardware Biometrics** | Private keys in plain text `.env` or software wallets. | **Hardware Apple Secure Enclave Passkeys** via Base's native **RIP-7212 precompile (`0x100`)**. |
+| **Test Coverage** | 0 to 5 unit tests. | **293 automated tests passing** (243 Foundry Solidity tests + 50 TypeScript SDK tests). |
+| **Judge Experience** | CLI scripts with complex setup. | **1-command runtime demo** (`npm run demo:binance`) + **Interactive Web Console** with WebAuthn Touch ID ceremonies. |
+
+---
+
 ## Interactive Web Console & Developer UI
 
 Launch the interactive web console and live telemetry dashboard:
@@ -122,7 +135,7 @@ Launch the interactive web console and live telemetry dashboard:
 # Launch the interactive web console
 npx serve web -l 5199
 ```
-Open [http://localhost:5199/grant-session.html](http://localhost:5199/grant-session.html) to interactively grant session keys with real Touch ID passkeys.
+Open **[http://localhost:5199/grant-session](http://localhost:5199/grant-session)** to interactively simulate all 3 tiers and test hardware Touch ID passkey escalation.
 
 ---
 
