@@ -37,7 +37,10 @@ contract Deploy is Script {
     uint256 constant ETH_THRESHOLD = 0.01 ether;
 
     function run() external {
-        require(block.chainid == 84532, "not Base Sepolia");
+        require(
+            block.chainid == 84532 || block.chainid == 97 || block.chainid == 56 || block.chainid == 5611 || block.chainid == 204,
+            "unsupported chain"
+        );
 
         // Both fresh signers enrolled at construction
         PasskeyAccount.PublicKey[] memory initial =
@@ -60,7 +63,12 @@ contract Deploy is Script {
         console.log("signerCount:  ", account.signerCount());
         console.log("threshold:    ", account.threshold());
         console.log("");
-        console.log("Explorer: https://sepolia.basescan.org/address/%s", address(account));
+        string memory explorer = block.chainid == 97 ? "https://testnet.bscscan.com/address/" :
+                                 block.chainid == 56 ? "https://bscscan.com/address/" :
+                                 block.chainid == 204 ? "https://opbnb.bscscan.com/address/" :
+                                 block.chainid == 5611 ? "https://opbnb-testnet.bscscan.com/address/" :
+                                 "https://sepolia.basescan.org/address/";
+        console.log("Explorer: %s%s", explorer, address(account));
     }
 }
 
@@ -137,7 +145,10 @@ contract DeployFactory is Script {
     address constant ENTRYPOINT = 0x0000000071727De22E5E9d8BAf0edAc6f37da032;
 
     function run() external returns (PasskeyAccount implementation, PasskeyAccountFactory factory) {
-        require(block.chainid == 84532, "not Base Sepolia");
+        require(
+            block.chainid == 84532 || block.chainid == 97 || block.chainid == 56 || block.chainid == 5611 || block.chainid == 204,
+            "unsupported chain"
+        );
 
         // The implementation storage is locked permanently by _initialized = true in its constructor.
         // It requires >= 2 signers in the constructor. We provide dummy signers and max threshold.
@@ -155,7 +166,12 @@ contract DeployFactory is Script {
         console.log("Implementation address: ", address(implementation));
         console.log("Factory address:        ", address(factory));
         console.log("EntryPoint:             ", factory.entryPoint());
-        console.log("Explorer Implementation: https://sepolia.basescan.org/address/%s", address(implementation));
-        console.log("Explorer Factory:        https://sepolia.basescan.org/address/%s", address(factory));
+        string memory explorer = block.chainid == 97 ? "https://testnet.bscscan.com/address/" :
+                                 block.chainid == 56 ? "https://bscscan.com/address/" :
+                                 block.chainid == 204 ? "https://opbnb.bscscan.com/address/" :
+                                 block.chainid == 5611 ? "https://opbnb-testnet.bscscan.com/address/" :
+                                 "https://sepolia.basescan.org/address/";
+        console.log("Explorer Implementation: %s%s", explorer, address(implementation));
+        console.log("Explorer Factory:        %s%s", explorer, address(factory));
     }
 }

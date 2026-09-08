@@ -89,7 +89,19 @@ forge test
 
 ---
 
-## Live on Base Sepolia
+## Live Deployments (Multi-Chain: BNB Chain & Base Sepolia)
+
+### 1. BNB Smart Chain Testnet (ChainId 97) — *Binance Ecosystem Native*
+
+| Parameter | Value |
+|---|---|
+| **Live Smart Account** | [`0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5`](https://testnet.bscscan.com/address/0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5) |
+| **PasskeyAccountFactory** | [`0x3Bc2B099EB7D4622fB95Cb46Af5525825b809c8d`](https://testnet.bscscan.com/address/0x3Bc2B099EB7D4622fB95Cb46Af5525825b809c8d) |
+| **Implementation** | [`0x6d601Fc9e269bA238b1227b40cB4d67F777867A5`](https://testnet.bscscan.com/address/0x6d601Fc9e269bA238b1227b40cB4d67F777867A5) |
+| **Canonical EntryPoint** | [`0x0000000071727De22E5E9d8BAf0edAc6f37da032`](https://testnet.bscscan.com/address/0x0000000071727De22E5E9d8BAf0edAc6f37da032) (ERC-4337 v0.7) |
+| **Enrolled Hardware Signers** | 2 Hardware Passkeys (Touch ID Apple Secure Enclave & iCloud Keychain) |
+
+### 2. Base Sepolia (ChainId 84532)
 
 | Parameter | Value |
 |---|---|
