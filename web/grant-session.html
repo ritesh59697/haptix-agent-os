@@ -655,6 +655,114 @@
     .primary-glow-btn:active { transform: translateY(0); }
     .primary-glow-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
+    /* From Uiverse.io by ryota1231 - Fast Mouse Animated Button */
+    .animated-button {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      gap: 4px;
+      padding: 16px 36px;
+      border: 4px solid transparent;
+      font-size: 15.5px;
+      background-color: #ffffff;
+      border-radius: 100px;
+      font-weight: 700;
+      color: #1f387e;
+      box-shadow: 0 0 0 2px #ffffff, 0 10px 30px rgba(0, 0, 0, 0.45);
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      font-family: var(--font-heading);
+      letter-spacing: -0.01em;
+      outline: none;
+    }
+
+    .animated-button svg {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      fill: #1f387e;
+      z-index: 9;
+      transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button .arr-1 {
+      right: 24px;
+    }
+
+    .animated-button .arr-2 {
+      left: -25%;
+    }
+
+    .animated-button .circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background-color: #c5e5e4;
+      border-radius: 50%;
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button .text {
+      position: relative;
+      z-index: 1;
+      transform: translateX(-12px);
+      transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .animated-button .text svg {
+      position: static !important;
+      display: inline-block;
+      vertical-align: middle;
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      transition: none;
+    }
+
+    .animated-button:hover {
+      box-shadow: 0 0 0 12px transparent, 0 14px 36px rgba(0, 0, 0, 0.6);
+      color: #212121;
+      border-radius: 12px;
+    }
+
+    .animated-button:hover .arr-1 {
+      right: -25%;
+    }
+
+    .animated-button:hover .arr-2 {
+      left: 24px;
+    }
+
+    .animated-button:hover .text {
+      transform: translateX(12px);
+    }
+
+    .animated-button:hover svg {
+      fill: #1f387e;
+    }
+
+    .animated-button:active {
+      scale: 0.95;
+      box-shadow: 0 0 0 4px greenyellow;
+    }
+
+    .animated-button:hover .circle {
+      width: 1100px;
+      height: 1100px;
+      opacity: 1;
+    }
+
     @media (max-width: 720px) {
       .telemetry-grid, .tier-cards-grid {
         grid-template-columns: 1fr;
@@ -1074,6 +1182,35 @@
       box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14) !important;
     }
 
+    /* Light Mode Animated Button */
+    [data-theme="light"] .animated-button {
+      background-color: #ffffff !important;
+      color: #1f387e !important;
+      box-shadow: 0 0 0 2.5px #1f387e, 0 10px 28px rgba(31, 56, 126, 0.18) !important;
+    }
+
+    [data-theme="light"] .animated-button svg {
+      fill: #1f387e !important;
+    }
+
+    [data-theme="light"] .animated-button .circle {
+      background-color: #c5e5e4 !important;
+    }
+
+    [data-theme="light"] .animated-button:hover {
+      color: #212121 !important;
+      box-shadow: 0 0 0 12px transparent, 0 14px 34px rgba(31, 56, 126, 0.25) !important;
+    }
+
+    [data-theme="light"] .animated-button:hover svg {
+      fill: #1f387e !important;
+    }
+
+    [data-theme="light"] .animated-button:active {
+      scale: 0.95 !important;
+      box-shadow: 0 0 0 4px #0052FF !important;
+    }
+
   </style>
 </head>
 <body>
@@ -1407,6 +1544,8 @@
         `;
 
         if (btn) {
+          btn.className = 'primary-glow-btn';
+          btn.removeAttribute('style');
           btn.innerHTML = `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
             <span>Pre-Authorized: Zero Biometric Prompts Needed (Tier 1 Autonomous)</span>
@@ -1433,17 +1572,21 @@
         `;
 
         if (btn) {
+          btn.className = 'animated-button';
+          btn.removeAttribute('style');
           btn.innerHTML = `
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span>Authorize Escalation: $150.00 USDC (2-of-2 Hardware Touch ID Quorum)</span>
+            <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+            </svg>
+            <span class="text">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Authorize Escalation: $150.00 USDC (2-of-2 Hardware Touch ID Quorum)
+            </span>
+            <span class="circle"></span>
+            <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+            </svg>
           `;
-          btn.style.background = 'var(--binance-gold)';
-          btn.style.borderColor = 'var(--binance-gold)';
-          btn.style.color = '#000000';
-          btn.style.cursor = 'pointer';
-          btn.style.pointerEvents = 'auto';
-          btn.style.boxShadow = '0 8px 28px rgba(240, 185, 11, 0.35)';
-          btn.style.opacity = '1';
           btn.disabled = false;
         }
       } else if (tier === 3) {
@@ -1459,6 +1602,8 @@
         `;
 
         if (btn) {
+          btn.className = 'primary-glow-btn';
+          btn.removeAttribute('style');
           btn.innerHTML = `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
             <span>Policy Blocked: $350.00 USDC Exceeds $200.00 Hard Ceiling</span>
@@ -1476,6 +1621,7 @@
     };
 
     function completeQuorumSuccess(btn, content) {
+      btn.className = 'primary-glow-btn';
       if (currentActiveTier === 2) {
         if (content) {
           content.innerHTML += `
@@ -1524,6 +1670,7 @@
     }
 
     function showQuorumFallback(btn, content, reason) {
+      btn.className = 'primary-glow-btn';
       btn.innerHTML = `
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
         <span>Biometric Cancelled · Click to Simulate Quorum Verification</span>
@@ -1548,6 +1695,7 @@
       const content = document.getElementById('terminalContent');
       if (term) term.style.display = 'block';
 
+      btn.className = 'primary-glow-btn';
       btn.disabled = true;
       btn.style.cursor = 'wait';
       btn.style.pointerEvents = 'none';
