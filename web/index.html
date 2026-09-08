@@ -2406,14 +2406,13 @@
         <span class="brand-title">Hapt<span class="brand-i-box">&#305;<span class="brand-i-dot"></span></span>x</span><span style="font-size: 10.5px; font-weight: 800; background: rgba(240, 185, 11, 0.15); border: 1px solid rgba(240, 185, 11, 0.35); color: #FCD535; padding: 2px 7px; border-radius: 9999px; margin-left: 6px; letter-spacing: 0.04em;">AGENT OS</span>
       </a>
 
-      <div class="nav-links"><a href="/grant-session.html" class="nav-link" style="color: #FCD535; font-weight: 700;">Agent OS</a>
+      <div class="nav-links">
         <a href="#metrics" class="nav-link">Performance</a>
         <a href="#comparison" class="nav-link">Comparison</a>
         <a href="#workflows" class="nav-link">Workflows</a>
         <a href="#sandbox" class="nav-link">Sandbox</a>
         <a href="#trust" class="nav-link">Security</a>
         <a href="#faq" class="nav-link">FAQ</a>
-
       </div>
 
       <div class="nav-actions">
@@ -3167,13 +3166,13 @@
       <li class="faq-item active">
         <button class="faq-button" type="button" aria-expanded="true">
           <span class="faq-toggle-icon">-</span>
-          <span class="faq-question-text">How does RIP-7212 enable P-256 Passkeys on EVM?</span>
+          <span class="faq-question-text">How does RIP-7212 enable P-256 Passkeys on BNB Chain?</span>
           <span class="faq-chevron" aria-hidden="true"></span>
         </button>
         <div class="faq-drawer">
           <div class="faq-drawer-inner">
             <div class="faq-answer-content">
-              <span>RIP-7212 specifies a native precompile at address 0x100 for P-256 (secp256r1) signature verification. Instead of spending 350,000+ gas on Solidity curve emulation, the precompile executes in native C++ on Base Sepolia and BNB Chain for under 10,000 gas.</span>
+              <span>RIP-7212 introduces an on-chain precompile at address 0x100 for native secp256r1 (P-256) signature verification. Instead of spending 350,000+ gas on expensive Solidity curve emulation, the precompile executes in native C++ on BNB Smart Chain for under 10,000 gas, enabling near-instant, sub-cent Apple Touch ID biometric authorizations.</span>
             </div>
           </div>
         </div>
@@ -3182,13 +3181,13 @@
       <li class="faq-item">
         <button class="faq-button" type="button" aria-expanded="false">
           <span class="faq-toggle-icon">+</span>
-          <span class="faq-question-text">What happens if an attacker drains with thousands of small $9 transfers?</span>
+          <span class="faq-question-text">What happens if an attacker attempts rapid draining with small transfers?</span>
           <span class="faq-chevron" aria-hidden="true"></span>
         </button>
         <div class="faq-drawer">
           <div class="faq-drawer-inner">
             <div class="faq-answer-content">
-              <span>The smart account enforces a cumulative 24-hour rolling window spend cap in addition to per-operation thresholds. Once the rolling spend meets the daily cap, the wallet automatically locks down all 1-signature transfers and requires the 2-of-2 hardware quorum.</span>
+              <span>The smart account enforces on-chain SpendPolicy.sol firewalls with both per-transaction thresholds and cumulative 24-hour rolling window caps. If a script or micro-draining attempt exceeds the cumulative limit or targets unwhitelisted contracts, the on-chain firewall instantly reverts the UserOperation and blocks execution until re-authorized by the human owner via Apple Touch ID.</span>
             </div>
           </div>
         </div>
@@ -3197,13 +3196,13 @@
       <li class="faq-item">
         <button class="faq-button" type="button" aria-expanded="false">
           <span class="faq-toggle-icon">+</span>
-          <span class="faq-question-text">What happens if I lose my MacBook or primary device?</span>
+          <span class="faq-question-text">What happens if an autonomous AI agent is compromised or prompt-injected?</span>
           <span class="faq-chevron" aria-hidden="true"></span>
         </button>
         <div class="faq-drawer">
           <div class="faq-drawer-inner">
             <div class="faq-answer-content">
-              <span>Your account is configured with a multi-key quorum. Signer #1 (e.g. your hardware YubiKey or secondary phone) combined with your social recovery or backup key can execute a self-call to replace Signer #0 with a new hardware device.</span>
+              <span>Autonomous AI agents never have access to your root private key or master biometric credentials. They only receive scoped, time-bound Type 0x01 Session Keys. Even if an agent's LLM is hijacked via prompt injection, the agent is mathematically constrained on-chain: it cannot exceed configured spending limits, call unwhitelisted targets, or execute past the session expiry.</span>
             </div>
           </div>
         </div>
@@ -3218,7 +3217,22 @@
         <div class="faq-drawer">
           <div class="faq-drawer-inner">
             <div class="faq-answer-content">
-              <span>Agents running on Binance Agent OS connect to Haptix via our TypeScript SDK or standard ERC-4337 UserOperations. Agents execute swaps, rebalancing, or arbitrage across Binance and EVM protocols headlessly using Type 0x01 session keys within on-chain SpendPolicy boundaries.</span>
+              <span>Agents running on Binance Agent OS connect to Haptix via our TypeScript SDK or standard ERC-4337 UserOperations. Guided by real-time Binance order book telemetry via MCP, agents execute headless swaps, arbitrage, and limit orders within on-chain SpendPolicy boundaries without requiring human biometric approval for every routine trade.</span>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="faq-item">
+        <button class="faq-button" type="button" aria-expanded="false">
+          <span class="faq-toggle-icon">+</span>
+          <span class="faq-question-text">What happens if I replace or lose my MacBook or mobile device?</span>
+          <span class="faq-chevron" aria-hidden="true"></span>
+        </button>
+        <div class="faq-drawer">
+          <div class="faq-drawer-inner">
+            <div class="faq-answer-content">
+              <span>WebAuthn passkeys are protected inside hardware enclaves (Apple Secure Enclave, Android Titan M2) and synchronized across your authorized devices via end-to-end encrypted iCloud Keychain or Google Password Manager. If a device is replaced, signing in to your synchronized keychain automatically restores your hardware-grade biometric signer.</span>
             </div>
           </div>
         </div>
