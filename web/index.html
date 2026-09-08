@@ -44,7 +44,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Haptix Enclave for Binance Agent OS — Hardware-Secured AI Agents</title>
-  <meta name="description" content="Haptix provides self-custodial WebAuthn biometric smart accounts with autonomous on-chain spending firewalls and RIP-7212 P-256 precompiles on Base.">
+  <meta name="description" content="Haptix provides self-custodial WebAuthn biometric smart accounts with autonomous on-chain spending firewalls and RIP-7212 P-256 precompiles on BNB Smart Chain.">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-256.png">
@@ -2226,7 +2226,7 @@
       color: #334155 !important;
     }
 
-    /* Institutional Footer */
+    /* Institutional Footer Light Mode */
     [data-theme="light"] .footer-section {
       background: #F1F5F9 !important;
       border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
@@ -2235,6 +2235,15 @@
     [data-theme="light"] .footer-cta {
       background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
       box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08) !important;
+      border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    }
+
+    [data-theme="light"] .footer-cta h2 {
+      color: #0F172A !important;
+    }
+
+    [data-theme="light"] .footer-cta p {
+      color: #475569 !important;
     }
 
     [data-theme="light"] .footer-cta a.btn-ghost {
@@ -2250,31 +2259,55 @@
     }
 
     [data-theme="light"] .glowing-effect-blur {
-      opacity: 0.30 !important;
+      opacity: 0.25 !important;
     }
 
     [data-theme="light"] .glowing-effect-glow {
-      opacity: 0.50 !important;
+      opacity: 0.40 !important;
     }
 
-    [data-theme="light"] .footer-title {
-      color: #0B0F19 !important;
+    [data-theme="light"] .footer-brand-title,
+    [data-theme="light"] .footer-brand-title strong {
+      color: #0F172A !important;
     }
 
-    [data-theme="light"] .footer-desc {
+    [data-theme="light"] .footer-brand-wrap p {
       color: #475569 !important;
     }
 
-    [data-theme="light"] .footer-links a {
+    [data-theme="light"] .footer-col-title {
+      color: #0F172A !important;
+      font-weight: 800 !important;
+    }
+
+    [data-theme="light"] .footer-link,
+    [data-theme="light"] .footer-col-links a {
       color: #475569 !important;
     }
 
-    [data-theme="light"] .footer-links a:hover {
-      color: #0B0F19 !important;
+    [data-theme="light"] .footer-link:hover,
+    [data-theme="light"] .footer-col-links a:hover {
+      color: #0F172A !important;
     }
 
-    [data-theme="light"] .footer-copy {
-      color: #64748B !important;
+    [data-theme="light"] .footer-bottom-bar {
+      border-top: 1px solid rgba(15, 23, 42, 0.1) !important;
+      color: #475569 !important;
+    }
+
+    [data-theme="light"] .footer-bottom-bar a,
+    [data-theme="light"] .footer-bottom-bar span {
+      color: #475569 !important;
+    }
+
+    [data-theme="light"] .footer-bottom-bar a:hover {
+      color: #0F172A !important;
+    }
+
+    [data-theme="light"] .footer-brand-wrap div[style*="background:rgba(240,185,11,0.1)"] {
+      background: rgba(240, 185, 11, 0.16) !important;
+      border-color: rgba(198, 138, 0, 0.45) !important;
+      color: #8C5E00 !important;
     }
 
     /* Mobile Navigation Drawer */
@@ -2504,8 +2537,8 @@
           </svg>
       </a>
       <div style="display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px; color:var(--text-muted); font-family:var(--font-mono); margin-top:4px;">
-        <span style="width:6px; height:6px; border-radius:50%; background:#10B981; box-shadow:0 0 6px #10B981;"></span>
-        <span>Base Sepolia (Chain ID 84532)</span>
+        <span style="width:6px; height:6px; border-radius:50%; background:#F0B90B; box-shadow:0 0 6px #F0B90B;"></span>
+        <span>BNB Smart Chain Testnet (Chain ID 97)</span>
       </div>
     </div>
   </aside>
@@ -2547,7 +2580,7 @@
   <!-- Infinite Marquee Protocol Strip (Tholos Pattern) -->
   <div class="marquee-strip">
     <div class="marquee-track">
-      <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg> <span>Base Network</span></div>
+      <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg> <span>BNB Chain</span></div>
       <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <span>RIP-7212 (0x100)</span></div>
       <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/></svg> <span>ERC-4337 v0.7</span></div>
       <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/></svg> <span>WebAuthn P-256</span></div>
@@ -2555,7 +2588,7 @@
       <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> <span>Foundry Osaka</span></div>
       
       <!-- Duplicate for seamless loop -->
-      <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg> <span>Base Network</span></div>
+      <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg> <span>BNB Chain</span></div>
       <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <span>RIP-7212 (0x100)</span></div>
       <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/></svg> <span>ERC-4337 v0.7</span></div>
       <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/></svg> <span>WebAuthn P-256</span></div>
@@ -2881,7 +2914,7 @@
             </thead>
             <tbody>
               <tr>
-                <td><strong>Base Treasury Pool</strong></td>
+                <td><strong>BNB Treasury Pool</strong></td>
                 <td><code>0x22db...913D</code></td>
                 <td>Allowlisted</td>
                 <td><span class="tag-active">Verified</span></td>
@@ -2964,7 +2997,7 @@
             </div>
             <div class="workflow-title">Developer SDK &amp; UserOp API</div>
           </div>
-          <p class="workflow-sub">Programmatic UserOp construction with sub-second Touch ID signing on Base.</p>
+          <p class="workflow-sub">Programmatic UserOp construction with sub-second Touch ID signing on BNB Chain.</p>
         </div>
 
         <div class="sdk-code-box">
@@ -2980,7 +3013,7 @@
             <span class="kw">const</span> op = <span class="kw">await</span> account.<span class="fn">buildUserOp</span>({ to, value });<br><br>
             <span style="color:#64748B;">// 2. Hardware Enclave Biometric Touch ID</span><br>
             <span class="kw">const</span> sig = <span class="kw">await</span> <span class="fn">signWithPasskey</span>(op.hash);<br><br>
-            <span style="color:#64748B;">// 3. Dispatch to Base Sepolia Bundler</span><br>
+            <span style="color:#64748B;">// 3. Dispatch to BNB Chain Bundler</span><br>
             <span class="kw">const</span> txHash = <span class="kw">await</span> <span class="fn">sendUserOpToBundler</span>(op, sig);
           </div>
         </div>
@@ -3080,7 +3113,7 @@
       <div class="trust-box">
         <div class="trust-tag">STANDARDS COMPLIANCE</div>
         <div class="trust-title">ERC-4337 v0.7 &amp; RIP-7212</div>
-        <p class="trust-desc">Official EntryPoint v0.7 integration with native P-256 curve verification via the Base Sepolia precompile at address 0x100.</p>
+        <p class="trust-desc">Official EntryPoint v0.7 integration with native P-256 curve verification on BNB Smart Chain and Base via the precompile at address 0x100.</p>
       </div>
       <div class="trust-box">
         <div class="trust-tag">HARDWARE SECURITY</div>
@@ -3231,7 +3264,7 @@
           <div class="footer-col-links">
             <a href="app.html" class="footer-link">Haptix Web Console</a>
             <a href="/grant-session.html" class="footer-link">Agent OS Console</a>
-            <a href="https://sepolia.basescan.org/address/0xB01543453cF31052c769d79e9C755E3b035d796f" target="_blank" class="footer-link">BaseScan Contract <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+            <a href="https://testnet.bscscan.com/address/0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5" target="_blank" class="footer-link">BscScan Contract <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
             <a href="https://github.com/ritesh59697/haptix-agent-os" target="_blank" class="footer-link">GitHub Repository <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
@@ -3250,8 +3283,8 @@
       <div class="footer-bottom-bar">
         <span>© 2026 Haptix Protocol · Open Source MIT License</span>
         <div style="display:flex;align-items:center;gap:16px;">
-          <span>Live on Base Sepolia (84532)</span>
-          <a href="https://sepolia.basescan.org/address/0xB01543453cF31052c769d79e9C755E3b035d796f" target="_blank" style="color:var(--text-muted);text-decoration:none;">Contract 0xB015...796f <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+          <span>Live on BNB Smart Chain Testnet (Chain ID 97)</span>
+          <a href="https://testnet.bscscan.com/address/0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5" target="_blank" style="color:var(--text-muted);text-decoration:none;">Contract 0xE12c...06C5 <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
         </div>
       </div>
     </div>
