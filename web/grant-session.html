@@ -1,12 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <script>
     (function() {
       try {
         var saved = localStorage.getItem('haptix-theme');
-        var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-        var theme = saved ? saved : (prefersLight ? 'light' : 'dark');
+        var theme = saved ? saved : 'light';
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) {}
     })();
@@ -25,7 +24,7 @@
         const toggleBtn = document.getElementById('themeToggleBtn');
         if (toggleBtn) {
           toggleBtn.addEventListener('click', () => {
-            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
             const next = current === 'light' ? 'dark' : 'light';
             applyTheme(next);
           });
