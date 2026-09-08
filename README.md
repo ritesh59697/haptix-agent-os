@@ -1,8 +1,14 @@
 <div align="center">
-  <img src="assets/haptix_official_logo.jpg" alt="Haptix Logo" width="720px" style="border-radius: 14px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);" />
+  <img src="assets/haptix_banner.png" alt="Haptix Enclave for Binance Agent OS" width="820" style="max-width: 100%; border-radius: 14px; margin-bottom: 20px;" />
   <h2>Haptix Enclave for Binance Agent OS</h2>
   <p><strong>The Biometric Hardware Enclave & On-Chain Security Firewall for Autonomous AI Agents.</strong></p>
   <p><em>Official Submission for the Binance Agent OS Mini Hackathon — Track A: Build an AI Agent</em></p>
+  <p>
+    <a href="https://haptix-agent-os.vercel.app/grant-session"><strong>🚀 Live Console</strong></a> •
+    <a href="https://haptix-agent-os.vercel.app"><strong>🌐 Website</strong></a> •
+    <a href="https://x.com/Ritesh5969/status/2097242750379077915?s=20"><strong>📹 Demo Video (X / Twitter)</strong></a> •
+    <a href="https://testnet.bscscan.com/address/0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5"><strong>📜 BNB Testnet Contract</strong></a>
+  </p>
 </div>
 
 ---

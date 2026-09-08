@@ -1,0 +1,77 @@
+1
+00:00:00,800 --> 00:00:06,500
+Welcome to Haptix Enclave for Binance Agent OS.
+
+2
+00:00:06,500 --> 00:00:12,150
+Autonomous AI agents trade around the clock,
+but giving bot scripts raw private keys is an extreme security risk.
+
+3
+00:00:13,000 --> 00:00:18,500
+Haptix eliminates this risk with Apple Touch ID passkeys
+and on-chain spending firewalls,
+
+4
+00:00:18,500 --> 00:00:23,970
+accelerated by RIP-7212 precompiles on BNB Chain.
+
+5
+00:00:25,000 --> 00:00:30,500
+Here on BscScan is our verified smart account on BNB Testnet,
+
+6
+00:00:30,500 --> 00:00:36,300
+supporting ERC-4337 and hardware P-256 signatures.
+
+7
+00:00:37,000 --> 00:00:41,500
+In our Live Console, the agent ingests real-time market data
+from the Binance Agent OS MCP server,
+
+8
+00:00:41,500 --> 00:00:46,140
+streaming live prices and order book depth.
+
+9
+00:00:48,500 --> 00:00:53,800
+Tier 1 micro-trades execute autonomously.
+When volatility spikes in Tier 2,
+
+10
+00:00:53,800 --> 00:00:59,850
+autonomous execution pauses,
+demanding human Touch ID authorization.
+
+11
+00:01:01,000 --> 00:01:05,800
+In Tier 3, if the agent hallucinates or is prompt-injected,
+
+12
+00:01:05,800 --> 00:01:10,790
+the on-chain SpendPolicy firewall instantly blocks the transaction
+before funds can move.
+
+13
+00:01:16,500 --> 00:01:23,000
+Switching to our terminal, the Binance Agent OS CLI runner connects
+to the live MCP endpoint and evaluates order book spreads.
+
+14
+00:01:23,000 --> 00:01:29,000
+It signs scoped UserOperations:
+Tier 1 executes autonomously with zero prompts,
+
+15
+00:01:29,000 --> 00:01:34,980
+Tier 2 escalates to Touch ID,
+and Tier 3 hard blocks rogue trades.
+
+16
+00:01:45,500 --> 00:01:51,500
+Finally, all 243 on-chain unit and red-team security tests pass in Foundry.
+
+17
+00:01:51,500 --> 00:01:57,620
+Haptix delivers institutional-grade protection
+for autonomous agents on BNB Chain. Thank you!
