@@ -560,103 +560,14 @@
       box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
     }
 
-    /* ==========================================================================
-       UIVERSE LIQUID SURGE BUTTON EFFECT (by cssbuttons-io)
-       ========================================================================== */
-    .button,
-    .btn-surge,
     .hero-btn-sec {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
       padding: 12px 24px;
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      border-radius: 4px;
-      transition: all 0.2s ease-in;
-      position: relative;
-      overflow: hidden;
       font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
+      font-weight: 700;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       color: #FFFFFF;
-      background: transparent;
-      z-index: 1;
-      text-decoration: none;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-
-    .button:before,
-    .btn-surge:before,
-    .hero-btn-sec:before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%) scaleY(1) scaleX(1.25);
-      top: 100%;
-      width: 140%;
-      height: 180%;
-      background-color: rgba(0, 0, 0, 0.05);
-      border-radius: 50%;
-      display: block;
-      transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
-      z-index: -1;
-    }
-
-    .button:after,
-    .btn-surge:after,
-    .hero-btn-sec:after {
-      content: "";
-      position: absolute;
-      left: 55%;
-      transform: translateX(-50%) scaleY(1) scaleX(1.45);
-      top: 180%;
-      width: 160%;
-      height: 190%;
-      background-color: #39bda7;
-      border-radius: 50%;
-      display: block;
-      transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
-      z-index: -1;
-    }
-
-    .button:hover,
-    .btn-surge:hover,
-    .hero-btn-sec:hover {
-      color: #ffffff !important;
-      border-color: #39bda7 !important;
-    }
-
-    .button:hover:before,
-    .btn-surge:hover:before,
-    .hero-btn-sec:hover:before {
-      top: -35%;
-      background-color: #39bda7;
-      transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
-    }
-
-    .button:hover:after,
-    .btn-surge:hover:after,
-    .hero-btn-sec:hover:after {
-      top: -45%;
-      background-color: #39bda7;
-      transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
-    }
-
-    /* Gold Surge Variant for BNB Chain Hackathon */
-    .btn-surge-gold:after {
-      background-color: #F0B90B;
-    }
-
-    .btn-surge-gold:hover {
-      color: #000000 !important;
-      border-color: #F0B90B !important;
-    }
-
-    .btn-surge-gold:hover:before,
-    .btn-surge-gold:hover:after {
-      background-color: #F0B90B;
     }
 
     /* Infinite Marquee Protocol Strip (Tholos pattern) */
@@ -2027,29 +1938,19 @@
       font-weight: 500 !important;
     }
 
-    [data-theme="light"] .button,
-    [data-theme="light"] .btn-surge,
     [data-theme="light"] .hero-btn-sec {
-      background: transparent !important;
-      border: 1px solid #4f4f4f !important;
+      background: #FFFFFF !important;
+      border: 1px solid rgba(15, 23, 42, 0.16) !important;
       color: #0F172A !important;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
       font-weight: 600 !important;
     }
 
-    [data-theme="light"] .button:hover,
-    [data-theme="light"] .btn-surge:hover,
     [data-theme="light"] .hero-btn-sec:hover {
-      border-color: #39bda7 !important;
-      color: #FFFFFF !important;
-      background: transparent !important;
-      box-shadow: 0 6px 20px rgba(57, 189, 167, 0.25) !important;
-    }
-
-    [data-theme="light"] .btn-surge-gold:hover {
-      border-color: #F0B90B !important;
+      background: #F8FAFC !important;
+      border-color: rgba(15, 23, 42, 0.28) !important;
       color: #000000 !important;
-      box-shadow: 0 6px 20px rgba(240, 185, 11, 0.3) !important;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.09) !important;
     }
 
     /* Infinite Marquee Protocol Strip */
@@ -2616,7 +2517,7 @@
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
         </a>
-        <a href="#workflows" class="button btn-surge hero-btn-sec">
+        <a href="#workflows" class="btn-ghost hero-btn-sec" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.18);">
           View SpendPolicy Architecture
         </a>
       </div>
@@ -3265,12 +3166,11 @@
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
             </a>
-            <a href="https://github.com/ritesh59697/haptix-agent-os" target="_blank" class="button btn-surge footer-btn-sec" style="padding:12px 24px; font-size:14.5px; border-radius:4px;">
-              <span>GitHub Repository</span>
-              <svg class="ext-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="7" y1="17" x2="17" y2="7"></line>
-                <polyline points="7 7 17 7 17 17"></polyline>
-              </svg>
+            <a href="https://github.com/ritesh59697/haptix-agent-os" target="_blank" class="btn-ghost" style="padding:12px 24px;font-size:14.5px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-full);color:#FFF;text-decoration:none;">
+              <span>GitHub Repository</span><svg class="ext-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
             </a>
           </div>
         </div>
