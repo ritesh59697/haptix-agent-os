@@ -1,0 +1,18 @@
+{
+  "outputDirectory": "web",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/grant-session",
+      "destination": "/grant-session.html"
+    },
+    {
+      "source": "/app",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/sign",
+      "destination": "/sign.html"
+    }
+  ]
+}
