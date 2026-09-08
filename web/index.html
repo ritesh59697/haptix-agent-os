@@ -551,6 +551,24 @@
       margin-bottom: 60px;
     }
 
+    .hero-ctas a,
+    .btn-primary,
+    .btn-ghost,
+    .hero-btn-main,
+    .hero-btn-sec {
+      text-decoration: none !important;
+    }
+
+    .hero-ctas a:hover,
+    .hero-ctas a:focus,
+    .hero-ctas a:visited,
+    .btn-primary:hover,
+    .btn-ghost:hover,
+    .hero-btn-main:hover,
+    .hero-btn-sec:hover {
+      text-decoration: none !important;
+    }
+
     .hero-btn-main {
       padding: 13px 28px;
       font-size: 15px;
@@ -558,6 +576,7 @@
       background: #FFFFFF;
       color: #000000;
       box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+      text-decoration: none !important;
     }
 
     .hero-btn-sec {
@@ -568,6 +587,7 @@
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.25);
       color: #FFFFFF;
+      text-decoration: none !important;
     }
 
     /* Infinite Marquee Protocol Strip (Tholos pattern) */
@@ -2510,14 +2530,14 @@
       </p>
 
       <div class="hero-ctas">
-        <a href="/grant-session.html" class="btn-primary hero-btn-main" style="background: linear-gradient(135deg, #F0B90B 0%, #D99B00 100%); color: #000; font-weight: 800; border: none; box-shadow: 0 8px 28px rgba(240, 185, 11, 0.4);">
-          <span>Launch Agent Console</span>
+        <a href="/grant-session.html" class="btn-primary hero-btn-main" style="text-decoration: none; background: linear-gradient(135deg, #F0B90B 0%, #D99B00 100%); color: #000; font-weight: 800; border: none; box-shadow: 0 8px 28px rgba(240, 185, 11, 0.4);">
+          <span style="text-decoration: none;">Launch Agent Console</span>
           <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
         </a>
-        <a href="#workflows" class="btn-ghost hero-btn-sec" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.18);">
+        <a href="#workflows" class="btn-ghost hero-btn-sec" style="text-decoration: none; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.18);">
           View SpendPolicy Architecture
         </a>
       </div>
