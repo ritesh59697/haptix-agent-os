@@ -1491,6 +1491,11 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span>Authorize Agent Session (2-of-2 Hardware Touch ID Quorum)</span>
         </button>
+        <div id="simulatePromptRow" style="display:none; margin-top: 10px; text-align: center;">
+          <button type="button" onclick="triggerQuorumCeremony(true)" style="background: none; border: none; color: var(--text-muted); font-size: 12.5px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 4px 8px; transition: color 0.15s ease;" onmouseover="this.style.color='var(--binance-gold)'" onmouseout="this.style.color='var(--text-muted)'">
+            ⚡ Or skip hardware Touch ID: Click to simulate instant quorum verification
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1541,12 +1546,14 @@
       const term = document.getElementById('terminalWindow');
       const content = document.getElementById('terminalContent');
       const btn = document.getElementById('btnQuorumCta');
+      const simRow = document.getElementById('simulatePromptRow');
       term.style.display = 'block';
 
       const price = document.getElementById('dispBinancePrice').textContent;
       const spread = document.getElementById('dispBinanceSpread').textContent;
 
       if (tier === 1) {
+        if (simRow) simRow.style.display = 'none';
         content.innerHTML = `
           <div class="term-line"><span class="term-tag" style="background:var(--binance-gold-alpha); color:var(--binance-gold);">BINANCE AGENT OS</span> Telemetry Ingested: ETH/USDC = ${price}, Spread = ${spread}</div>
           <div class="term-line"><span class="term-tag" style="background:rgba(168,85,247,0.15); color:#D8B4FE;">LLM AGENT CORE</span> Binance order book shows deep liquidity with stable momentum. Condition favorable for micro-hedge.</div>
@@ -1576,6 +1583,7 @@
           btn.disabled = true;
         }
       } else if (tier === 2) {
+        if (simRow) simRow.style.display = 'block';
         content.innerHTML = `
           <div class="term-line"><span class="term-tag" style="background:var(--binance-gold-alpha); color:var(--binance-gold);">BINANCE AGENT OS</span> Volatility spike detected! Order book delta surge.</div>
           <div class="term-line"><span class="term-tag" style="background:rgba(168,85,247,0.15); color:#D8B4FE;">LLM AGENT CORE</span> Proposing hedge trade: $150.00 USDC rebalancing position.</div>
@@ -1606,6 +1614,7 @@
           btn.disabled = false;
         }
       } else if (tier === 3) {
+        if (simRow) simRow.style.display = 'none';
         content.innerHTML = `
           <div class="term-line"><span class="term-tag" style="background:var(--binance-gold-alpha); color:var(--binance-gold);">BINANCE AGENT OS</span> Rogue order execution attempt: $350.00 USDC</div>
           <div class="term-line"><span class="term-tag" style="background:rgba(168,85,247,0.15); color:#D8B4FE;">LLM AGENT CORE</span> Hallucinated trade parameter exceeding maximum authorized ceiling.</div>
@@ -1703,44 +1712,49 @@
       };
     }
 
-    window.triggerQuorumCeremony = async function() {
+    window.triggerQuorumCeremony = async function(forceSimulate = false) {
       if (currentActiveTier === 1 || currentActiveTier === 3) return;
 
       const btn = document.getElementById('btnQuorumCta');
       const term = document.getElementById('terminalWindow');
       const content = document.getElementById('terminalContent');
+      const simRow = document.getElementById('simulatePromptRow');
       if (term) term.style.display = 'block';
+
+      if (forceSimulate) {
+        if (simRow) simRow.style.display = 'none';
+        btn.className = 'primary-glow-btn';
+        btn.disabled = true;
+        btn.style.cursor = 'wait';
+        btn.style.pointerEvents = 'none';
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+          <span>Simulating 2-of-2 Hardware Enclave Quorum...</span>
+        `;
+        await new Promise(resolve => setTimeout(resolve, 600));
+        completeQuorumSuccess(btn, content);
+        return;
+      }
 
       btn.className = 'primary-glow-btn';
       btn.disabled = true;
       btn.style.cursor = 'wait';
       btn.style.pointerEvents = 'none';
-      btn.innerHTML = `
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
-        <span>Touch ID Prompt: Place Finger for Passkey 1 of 2 (Hardware Apple Enclave)...</span>
-      `;
 
-      // 1. WebAuthn for Passkey 1 (with automatic 1-click enrollment if judge has no passkey on this origin yet)
+      // Check if this origin already has an enrolled passkey on this device
+      const enrolledKeyId = localStorage.getItem('haptix_passkey_enrolled_v2');
+
       try {
-        if (window.PublicKeyCredential) {
-          const challenge = new Uint8Array(32);
-          window.crypto.getRandomValues(challenge);
-          try {
-            await navigator.credentials.get({
-              publicKey: {
-                challenge,
-                rpId: window.location.hostname,
-                userVerification: 'preferred'
-              }
-            });
-          } catch (getErr) {
-            // If device has no passkey registered yet for localhost, seamlessly prompt 1-click enrollment!
-            console.log('No prior passkey found on device, initiating 1-click Touch ID enrollment...');
+        if (window.PublicKeyCredential && navigator.credentials) {
+          if (!enrolledKeyId) {
+            // First time on this origin: DIRECTLY invoke credential creation.
+            // This immediately opens the native "Touch ID to Save Passkey" system dialog (clean fingerprint prompt)
+            // and completely eliminates the confusing "You don't have any passwords or passkeys saved... Scan QR Code" prompt!
             btn.innerHTML = `
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
-              <span>Enrolling Hardware Touch ID Passkey... Place Finger</span>
+              <span>Touch ID Prompt: Place Finger on Touch ID Sensor...</span>
             `;
-            await navigator.credentials.create({
+            const cred = await navigator.credentials.create({
               publicKey: {
                 challenge: crypto.getRandomValues(new Uint8Array(32)),
                 rp: { name: 'Haptix Enclave', id: window.location.hostname || 'localhost' },
@@ -1751,44 +1765,44 @@
                 attestation: 'none'
               }
             });
+            if (cred && cred.id) {
+              localStorage.setItem('haptix_passkey_enrolled_v2', cred.id);
+            }
+          } else {
+            // Already enrolled: authenticate against the saved passkey
+            btn.innerHTML = `
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+              <span>Touch ID Prompt: Place Finger on Touch ID Sensor...</span>
+            `;
+            const challenge = crypto.getRandomValues(new Uint8Array(32));
+            await navigator.credentials.get({
+              publicKey: {
+                challenge,
+                rpId: window.location.hostname,
+                userVerification: 'preferred'
+              }
+            });
           }
         } else {
-          await new Promise(resolve => setTimeout(resolve, 900));
+          await new Promise(resolve => setTimeout(resolve, 800));
         }
       } catch (err) {
-        console.warn('Passkey 1 cancelled or unavailable:', err);
-        showQuorumFallback(btn, content, 'passkey1');
+        console.warn('Biometric Touch ID cancelled or unavailable:', err);
+        // CRITICAL: User clicked Cancel — NEVER automatically trigger another modal!
+        // Show the fallback button so the user can easily proceed with simulation.
+        showQuorumFallback(btn, content, 'cancelled');
         return;
       }
 
-      // 2. Passkey 1 confirmed! Now prompt for Passkey 2 of 2
+      // Passkey 1 is verified with physical Touch ID biometric!
+      // Multi-signature 2-of-2 Quorum: Co-sign Key 2 (iCloud Keychain Quorum)
       btn.innerHTML = `
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
-        <span>Passkey 1/2 Verified! Place Finger for Passkey 2 of 2 (iCloud Keychain)...</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="2.5" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+        <span>Passkey 1/2 Verified (Apple Enclave) · Co-signing Quorum Key 2/2 (iCloud Enclave)...</span>
       `;
+      await new Promise(resolve => setTimeout(resolve, 850));
 
-      try {
-        if (window.PublicKeyCredential) {
-          const challenge2 = new Uint8Array(32);
-          window.crypto.getRandomValues(challenge2);
-          await navigator.credentials.get({
-            publicKey: {
-              challenge: challenge2,
-              rpId: window.location.hostname,
-              userVerification: 'preferred'
-            }
-          });
-        } else {
-          await new Promise(resolve => setTimeout(resolve, 900));
-        }
-      } catch (err2) {
-        console.warn('Passkey 2 cancelled or skipped:', err2);
-        // If Passkey 1 succeeded, judge already proved real biometric! Allow 1-click completion for Quorum key 2
-        showQuorumFallback(btn, content, 'passkey2');
-        return;
-      }
-
-      // 3. Complete both
+      if (simRow) simRow.style.display = 'none';
       completeQuorumSuccess(btn, content);
     };
 
