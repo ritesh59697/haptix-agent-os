@@ -88,6 +88,19 @@ void main(){
 export function initDarkVeil(container, options = {}) {
   if (!container) return null;
 
+  // Mobile Performance Guard: The 7-layer CPPN neural network shader executes
+  // millions of matrix multiplications per frame. Bypassing it on mobile devices
+  // preserves 60-120fps smooth scrolling and prevents GPU overheating/throttling.
+  const isMobile = typeof window !== 'undefined' && (
+    window.innerWidth <= 768 || (navigator.maxTouchPoints > 0 && window.innerWidth < 1024)
+  );
+  if (isMobile) {
+    return {
+      setLightMode() {},
+      destroy() {}
+    };
+  }
+
   const hueShift = options.hueShift !== undefined ? options.hueShift : 0;
   const noiseIntensity = options.noiseIntensity !== undefined ? options.noiseIntensity : 0.02;
   const scanlineIntensity = options.scanlineIntensity !== undefined ? options.scanlineIntensity : 0.04;
