@@ -8,7 +8,7 @@
     },
     {
       "source": "/app",
-      "destination": "/app.html"
+      "destination": "/grant-session.html"
     },
     {
       "source": "/sign",

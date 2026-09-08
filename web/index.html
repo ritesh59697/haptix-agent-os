@@ -2324,17 +2324,33 @@
 
     [data-theme="light"] .mobile-nav-item {
       background: rgba(15, 23, 42, 0.03) !important;
-      color: #1E293B !important;
-      border: 1px solid rgba(15, 23, 42, 0.06) !important;
+      border: 1px solid rgba(15, 23, 42, 0.08) !important;
     }
 
     [data-theme="light"] .mobile-nav-item:hover {
       background: rgba(15, 23, 42, 0.07) !important;
-      color: #0B0F19 !important;
+    }
+
+    [data-theme="light"] .mobile-nav-label {
+      color: #0F172A !important;
+      font-weight: 700 !important;
+    }
+
+    [data-theme="light"] .mobile-nav-sub {
+      color: #64748B !important;
+    }
+
+    [data-theme="light"] .mobile-nav-arr {
+      color: #94A3B8 !important;
     }
 
     [data-theme="light"] .mobile-nav-icon {
-      background: rgba(15, 23, 42, 0.05) !important;
+      background: rgba(15, 23, 42, 0.06) !important;
+      color: #0F172A !important;
+    }
+
+    [data-theme="light"] .mobile-drawer-footer {
+      border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
     }
 
   </style>
@@ -2522,19 +2538,19 @@
     </div>
 
     <div class="mobile-drawer-footer">
-      <a href="app.html" class="btn-primary" style="width:100%; justify-content:center; padding:12px; font-size:14.5px; display:inline-flex; align-items:center; gap:8px;">
-        <span>Launch Smart Wallet</span>
+      <a href="/grant-session.html" class="btn-primary" style="width:100%; justify-content:center; padding:13px; font-size:14.5px; display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg, #F0B90B 0%, #D99B00 100%); color:#000; font-weight:800; border:none; text-decoration:none; box-shadow:0 4px 18px rgba(240,185,11,0.35); border-radius:9999px;">
+        <span>Launch Agent Console</span>
         <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
       </a>
-      <a href="test-dapp.html" class="btn-ghost" style="width:100%; justify-content:center; padding:11px; font-size:13.5px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-full); color:#FFF; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-        <span>Open dApp Simulator</span>
+      <a href="https://github.com/ritesh59697/haptix-agent-os" target="_blank" class="btn-ghost" style="width:100%; justify-content:center; padding:11px; font-size:13.5px; border-radius:9999px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+        <span>GitHub Repository</span>
         <svg class="ext-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="7" y1="17" x2="17" y2="7"></line>
-            <polyline points="7 7 17 7 17 17"></polyline>
-          </svg>
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
       </a>
       <div style="display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px; color:var(--text-muted); font-family:var(--font-mono); margin-top:4px;">
         <span style="width:6px; height:6px; border-radius:50%; background:#F0B90B; box-shadow:0 0 6px #F0B90B;"></span>
@@ -3262,8 +3278,8 @@
         <div>
           <div class="footer-col-title">Applications</div>
           <div class="footer-col-links">
-            <a href="app.html" class="footer-link">Haptix Web Console</a>
             <a href="/grant-session.html" class="footer-link">Agent OS Console</a>
+            <a href="#sandbox" class="footer-link">Policy Firewall Sandbox</a>
             <a href="https://testnet.bscscan.com/address/0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5" target="_blank" class="footer-link">BscScan Contract <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
             <a href="https://github.com/ritesh59697/haptix-agent-os" target="_blank" class="footer-link">GitHub Repository <svg class="ext-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:3px;vertical-align:middle;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
