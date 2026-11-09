@@ -329,6 +329,9 @@ export async function getUserOpHash(rpcUrl, entryPointAddress, packedOp) {
  * Submits UserOperation to ERC-4337 Bundler
  */
 export async function sendUserOpToBundler(bundlerUrl, packedOp, entryPointAddress) {
+  if (!bundlerUrl) {
+    throw new Error("No bundler URL set. Run localStorage.setItem('passkey_bundler_url', '<bundler RPC URL>') in this page's console, then reload.");
+  }
   // Unpack accountGasLimits: verificationGasLimit (first 16 bytes) | callGasLimit (last 16 bytes)
   const limitsHex = packedOp.accountGasLimits.replace(/^0x/, '').padStart(64, '0');
   const verificationGasLimit = BigInt('0x' + limitsHex.slice(0, 32));

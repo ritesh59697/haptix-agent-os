@@ -20,14 +20,15 @@ import {
   computeUserOpHash,
   BundlerClient
 } from '../sdk/dist/index.js';
+import { requireEnv } from './env.mjs';
 
 const RPC_URL = process.env.BASE_SEPOLIA_RPC_URL || 'https://sepolia.base.org';
 const ENTRYPOINT = process.env.ENTRYPOINT_ADDRESS || CANONICAL_ENTRYPOINT_V07;
 const ACCOUNT = process.env.DEPLOYED_PASSKEY_ACCOUNT_ADDRESS || '0xB01543453cF31052c769d79e9C755E3b035d796f';
-const BUNDLER_URL = process.env.BUNDLER_RPC_URL || 'https://api.pimlico.io/v2/84532/rpc?apikey=pim_hkKhRbcJfLUYSzezx8ofPd';
+const BUNDLER_URL = requireEnv('BUNDLER_RPC_URL', 'Set it to your Base Sepolia bundler RPC, e.g. https://api.pimlico.io/v2/84532/rpc?apikey=<your key>.');
 
 // The active session keypair
-const AGENT_PRIVATE_KEY = process.env.AGENT_SESSION_PRIVATE_KEY || '0x7fc37057650fd55a74b810ae0bac0fffa18185bdc50579f5f34e783834824799';
+const AGENT_PRIVATE_KEY = requireEnv('AGENT_SESSION_PRIVATE_KEY', 'Set it to the agent session key granted to the demo account.');
 const AGENT_ADDRESS = '0x093F8575a87cdb2919E5B3f1677eD8d7815c9461';
 
 // Recipient (allowlisted target)
