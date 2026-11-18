@@ -8,3 +8,8 @@ optimizer_runs = 1
 via_ir = true
 gas_reports = ["PasskeyAccount", "SpendPolicy", "SpendWindow", "WebAuthn"]
 fs_permissions = [{ access = "read-write", path = "./" }]
+
+# BNB Chain mainnet deploys (Agent ID work). Pinned below the default "osaka"
+# so the bytecode never uses opcodes BSC hasn't activated.
+[profile.bsc]
+evm_version = "cancun"
