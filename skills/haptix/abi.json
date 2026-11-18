@@ -1,0 +1,32 @@
+{
+  "registry": {
+    "agentId": "0xe84f43b7",
+    "allowanceOf": "0xcb683178",
+    "applyChange": "0xd18fabd9",
+    "cancel": "0xc4d252f5",
+    "changeId": "0x54db676c",
+    "guardOf": "0x6456c9fe",
+    "isHolder": "0xd4d7b19a",
+    "lengthenDelay": "0xa099cd85",
+    "open": "0x572e9442",
+    "queue": "0xac7d0ce5",
+    "queuedAt": "0x930bf574",
+    "ruleOf": "0x7aaa5368",
+    "tightenAllowance": "0x8da10d77",
+    "tightenRule": "0x90d43b6a"
+  },
+  "errors": {
+    "0x965f8d94": "AlreadyOpen()",
+    "0xca7c57d4": "BadRule()",
+    "0xea11784e": "NotAgentIdHolder()",
+    "0x0c1f2fc7": "NotLoosening()",
+    "0xddafad98": "NotOpen()",
+    "0xccbc0d71": "NotQueued()",
+    "0x2a35a324": "TooEarly(uint256)",
+    "0xd92e233d": "ZeroAddress()"
+  },
+  "erc20": {
+    "decimals": "0x313ce567",
+    "symbol": "0x95d89b41"
+  }
+}

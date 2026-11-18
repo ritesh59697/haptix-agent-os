@@ -1,0 +1,7 @@
+{
+  "chainId": 56,
+  "binanceChainId": "56",
+  "rpcUrl": "https://bsc-rpc.publicnode.com",
+  "registry": "0x6C33A3d5d64862671F5BF9139920541a6BC4F73b",
+  "explorerTx": "https://bscscan.com/tx/"
+}
