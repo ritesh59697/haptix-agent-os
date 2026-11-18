@@ -2,6 +2,7 @@
   <h2>Haptix Enclave for Binance Agent OS</h2>
   <p><strong>The Biometric Hardware Enclave & On-Chain Security Firewall for Autonomous AI Agents.</strong></p>
   <p><em>Official Submission for the Binance Agent OS Mini Hackathon — Track A: Build an AI Agent</em></p>
+  <p>🏆 <strong>Winner, Track A (300 USDC)</strong> — <a href="https://x.com/binance/status/2109750965570060759">Binance's winner announcement</a></p>
   <p>
     <a href="https://haptix-agent-os.vercel.app/grant-session"><strong>🚀 Live Console</strong></a> •
     <a href="https://haptix-agent-os.vercel.app"><strong>🌐 Website</strong></a> •
