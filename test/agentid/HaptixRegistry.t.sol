@@ -21,10 +21,12 @@ contract HaptixRegistryTest is Test {
     address token = makeAddr("token");
     address payee = makeAddr("payee");
     uint32 constant DELAY = 1 days;
+    uint256 constant APPLY_WINDOW = 7 days;
+    uint256 constant MAX_PENDING = 4;
 
     function setUp() public {
         nft = new MockAgentId();
-        reg = new HaptixRegistry(nft);
+        reg = new HaptixRegistry(nft, APPLY_WINDOW, MAX_PENDING);
         nft.set(holder, 1);
     }
 
@@ -191,6 +193,88 @@ contract HaptixRegistryTest is Test {
         assertEq(reg.ruleOf(holder, token).dailyCap, 100);
     }
 
+    // --- queued changes are listed and expire --------------------------------
+
+    function test_pending_isListed_andClearedOnApply() public {
+        _open();
+        bytes memory data = abi.encode(token, HaptixRegistry.Rule(1000, 500, 100));
+        vm.prank(holder);
+        bytes32 id = reg.queue(HaptixRegistry.Kind.Rule, data);
+
+        HaptixRegistry.Pending[] memory list = reg.pendingOf(holder);
+        assertEq(list.length, 1);
+        assertEq(list[0].id, id);
+        assertEq(uint8(list[0].kind), uint8(HaptixRegistry.Kind.Rule));
+        assertEq(list[0].data, data);
+        assertEq(list[0].applyAfter, block.timestamp + DELAY);
+        assertEq(list[0].expiresAt, block.timestamp + DELAY + APPLY_WINDOW);
+
+        vm.warp(block.timestamp + DELAY);
+        vm.prank(holder);
+        reg.applyChange(HaptixRegistry.Kind.Rule, data);
+        assertEq(reg.pendingOf(holder).length, 0);
+    }
+
+    function test_pending_expires() public {
+        _open();
+        bytes memory data = abi.encode(token, HaptixRegistry.Rule(1000, 500, 100));
+        vm.prank(holder);
+        reg.queue(HaptixRegistry.Kind.Rule, data);
+        uint256 exp = block.timestamp + DELAY + APPLY_WINDOW;
+        vm.warp(exp);
+        vm.prank(holder);
+        vm.expectRevert(abi.encodeWithSelector(HaptixRegistry.Expired.selector, exp));
+        reg.applyChange(HaptixRegistry.Kind.Rule, data);
+    }
+
+    function test_pending_isBounded_andExpiredOnesArePruned() public {
+        _open();
+        for (uint128 i = 1; i <= MAX_PENDING; i++) {
+            vm.prank(holder);
+            reg.queue(HaptixRegistry.Kind.Rule, abi.encode(token, HaptixRegistry.Rule(100 + i, 50, 10)));
+        }
+        vm.prank(holder);
+        vm.expectRevert(HaptixRegistry.TooManyPending.selector);
+        reg.queue(HaptixRegistry.Kind.Rule, abi.encode(token, HaptixRegistry.Rule(999, 50, 10)));
+
+        vm.warp(block.timestamp + DELAY + APPLY_WINDOW);
+        vm.prank(holder);
+        reg.queue(HaptixRegistry.Kind.Rule, abi.encode(token, HaptixRegistry.Rule(999, 50, 10)));
+        assertEq(reg.pendingOf(holder).length, 1);
+    }
+
+    function test_requeue_restartsClock_noDuplicate() public {
+        _open();
+        bytes memory data = abi.encode(token, HaptixRegistry.Rule(1000, 500, 100));
+        vm.prank(holder);
+        reg.queue(HaptixRegistry.Kind.Rule, data);
+        vm.warp(block.timestamp + DELAY - 1);
+        vm.prank(holder);
+        reg.queue(HaptixRegistry.Kind.Rule, data);
+        HaptixRegistry.Pending[] memory list = reg.pendingOf(holder);
+        assertEq(list.length, 1);
+        assertEq(list[0].applyAfter, block.timestamp + DELAY);
+    }
+
+    function test_cancel_removesFromList() public {
+        _open();
+        vm.startPrank(holder);
+        bytes32 a = reg.queue(HaptixRegistry.Kind.Rule, abi.encode(token, HaptixRegistry.Rule(1000, 500, 100)));
+        reg.queue(HaptixRegistry.Kind.Delay, abi.encode(uint32(0)));
+        reg.cancel(a);
+        vm.stopPrank();
+        HaptixRegistry.Pending[] memory list = reg.pendingOf(holder);
+        assertEq(list.length, 1);
+        assertEq(uint8(list[0].kind), uint8(HaptixRegistry.Kind.Delay));
+    }
+
+    function test_constructor_rejectsZeroConfig() public {
+        vm.expectRevert(HaptixRegistry.BadConfig.selector);
+        new HaptixRegistry(nft, 0, MAX_PENDING);
+        vm.expectRevert(HaptixRegistry.BadConfig.selector);
+        new HaptixRegistry(nft, APPLY_WINDOW, 0);
+    }
+
     // --- against the real Agent ID contract (skipped without a BSC RPC) ------
 
     /// Run: BSC_RPC_URL=... AGENT_ID_NFT=... AGENT_ID_SAMPLE_HOLDER=... forge test --mt test_fork
@@ -203,7 +287,7 @@ contract HaptixRegistryTest is Test {
         address sample = vm.envAddress("AGENT_ID_SAMPLE_HOLDER");
         assertGt(real.balanceOf(sample), 0, "sample address holds no Agent ID");
 
-        HaptixRegistry live = new HaptixRegistry(real);
+        HaptixRegistry live = new HaptixRegistry(real, APPLY_WINDOW, MAX_PENDING);
         vm.prank(sample);
         live.open(_rules(100, 50, 10), DELAY, HaptixRegistry.Passkey(0, 0));
         assertTrue(live.guardOf(sample).open);

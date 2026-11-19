@@ -53,11 +53,14 @@ contract HaptixVault {
     struct Withdrawal {
         uint256 amount;
         uint256 readyAt;
+        uint256 expiresAt; // a request not finalized by then is void
     }
 
     HaptixRegistry public immutable registry;
     IAgentId public immutable agentId;
     uint256 public immutable windowSeconds;
+    /// @notice How long a withdrawal stays finalizable once it is ready.
+    uint256 public immutable withdrawWindow;
 
     bytes32 public constant PAY = keccak256("HAPTIX_PAY");
     bytes32 public constant WITHDRAW = keccak256("HAPTIX_WITHDRAW");
@@ -72,7 +75,9 @@ contract HaptixVault {
 
     event Deposited(address indexed holder, address indexed token, uint256 amount);
     event Paid(address indexed holder, address indexed to, address indexed token, uint256 amount, bool withPasskey);
-    event WithdrawalRequested(address indexed holder, address indexed token, uint256 amount, uint256 readyAt);
+    event WithdrawalRequested(
+        address indexed holder, address indexed token, uint256 amount, uint256 readyAt, uint256 expiresAt
+    );
     event WithdrawalCancelled(address indexed holder, address indexed token);
     event Withdrawn(address indexed holder, address indexed token, uint256 amount, bool withPasskey);
 
@@ -95,13 +100,16 @@ contract HaptixVault {
     error NotReady(uint256 readyAt);
     error TransferFailed();
     error Reentrancy();
+    error Expired(uint256 expiresAt);
+    error BadConfig();
 
-    constructor(HaptixRegistry registry_, uint256 windowSeconds_) {
+    constructor(HaptixRegistry registry_, uint256 windowSeconds_, uint256 withdrawWindow_) {
         if (address(registry_) == address(0)) revert ZeroAddress();
-        if (windowSeconds_ == 0) revert ZeroAmount();
+        if (windowSeconds_ == 0 || withdrawWindow_ == 0) revert BadConfig();
         registry = registry_;
         agentId = registry_.agentId();
         windowSeconds = windowSeconds_;
+        withdrawWindow = withdrawWindow_;
     }
 
     modifier nonReentrant() {
@@ -183,13 +191,15 @@ contract HaptixVault {
     // ------------------------------------------------------------------
 
     /// @notice Start a withdrawal back to yourself. It can be finalized after
-    ///         your guard's change delay, counted from now. Replaces any
-    ///         pending request for the same token.
+    ///         your guard's change delay, counted from now, and until
+    ///         `withdrawWindow` after that. Replaces any pending request for
+    ///         the same token.
     function requestWithdraw(address token, uint256 amount) external {
         if (amount == 0) revert ZeroAmount();
         uint256 readyAt = block.timestamp + registry.guardOf(msg.sender).changeDelay;
-        pendingWithdrawal[msg.sender][token] = Withdrawal(amount, readyAt);
-        emit WithdrawalRequested(msg.sender, token, amount, readyAt);
+        uint256 expiresAt = readyAt + withdrawWindow;
+        pendingWithdrawal[msg.sender][token] = Withdrawal(amount, readyAt, expiresAt);
+        emit WithdrawalRequested(msg.sender, token, amount, readyAt, expiresAt);
     }
 
     function cancelWithdraw(address token) external {
@@ -204,6 +214,7 @@ contract HaptixVault {
         Withdrawal memory w = pendingWithdrawal[msg.sender][token];
         if (w.amount == 0) revert NothingPending();
         if (block.timestamp < w.readyAt) revert NotReady(w.readyAt);
+        if (block.timestamp >= w.expiresAt) revert Expired(w.expiresAt);
         delete pendingWithdrawal[msg.sender][token];
 
         uint256 bal = balanceOf[msg.sender][token];

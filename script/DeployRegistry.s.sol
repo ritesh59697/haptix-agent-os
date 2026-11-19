@@ -8,6 +8,8 @@ import {HaptixRegistry, IAgentId} from "../src/agentid/HaptixRegistry.sol";
 ///
 /// @dev Nothing chain-specific is baked in. Set in `.env`:
 ///        AGENT_ID_NFT          Agent ID contract on the target chain
+///        REGISTRY_APPLY_WINDOW_SECONDS  how long a ready queued change stays applicable
+///        REGISTRY_MAX_PENDING           most queued changes per guard
 ///        EXPECTED_CHAIN_ID     chain you mean to deploy to (guards against a wrong RPC)
 ///        BSC_RPC_URL           RPC for that chain
 ///        ETHERSCAN_API_KEY     Etherscan v2 key (covers BscScan) for --verify
@@ -24,12 +26,17 @@ contract DeployRegistry is Script {
         // Fails loudly if the address doesn't speak balanceOf(address).
         agentId.balanceOf(msg.sender);
 
+        uint256 applyWindow = vm.envUint("REGISTRY_APPLY_WINDOW_SECONDS");
+        uint256 maxPending = vm.envUint("REGISTRY_MAX_PENDING");
+
         vm.startBroadcast();
-        reg = new HaptixRegistry(agentId);
+        reg = new HaptixRegistry(agentId, applyWindow, maxPending);
         vm.stopBroadcast();
 
         console.log("HaptixRegistry:", address(reg));
         console.log("Agent ID NFT:  ", address(agentId));
         console.log("Chain ID:      ", block.chainid);
+        console.log("Apply window:  ", applyWindow);
+        console.log("Max pending:   ", maxPending);
     }
 }

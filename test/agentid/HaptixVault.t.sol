@@ -53,10 +53,14 @@ contract FeeToken is MockToken {
     }
 }
 
-/// Re-enters the vault from inside transfer().
+/// Re-enters the vault from inside transfer() and records how it was refused.
+/// It holds an Agent ID, a guard and a deposit of its own, so the inner pay
+/// would succeed if the vault had no reentrancy lock.
 contract ReentrantToken is MockToken {
     HaptixVault public vault;
     address public payee;
+    bytes public innerError;
+    bool public innerSucceeded;
 
     function arm(HaptixVault v, address p) external {
         vault = v;
@@ -65,7 +69,15 @@ contract ReentrantToken is MockToken {
 
     function transfer(address to, uint256 a) external override returns (bool) {
         _move(msg.sender, to, a);
-        if (address(vault) != address(0)) vault.pay(address(this), payee, 1, "");
+        if (address(vault) != address(0)) {
+            HaptixVault v = vault;
+            vault = HaptixVault(address(0)); // re-enter once
+            try v.pay(address(this), payee, 1, "") {
+                innerSucceeded = true;
+            } catch (bytes memory e) {
+                innerError = e;
+            }
+        }
         return true;
     }
 }
@@ -78,6 +90,9 @@ contract HaptixVaultTest is Test {
 
     uint256 constant WINDOW = 1 days;
     uint32 constant DELAY = 1 days;
+    uint256 constant APPLY_WINDOW = 7 days;
+    uint256 constant MAX_PENDING = 8;
+    uint256 constant WITHDRAW_WINDOW = 3 days;
     uint256 constant PK = 0xA11CE5EC2E7;
     uint256 constant N = 0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551;
 
@@ -88,8 +103,8 @@ contract HaptixVaultTest is Test {
 
     function setUp() public {
         nft = new MockAgentId();
-        reg = new HaptixRegistry(nft);
-        vault = new HaptixVault(reg, WINDOW);
+        reg = new HaptixRegistry(nft, APPLY_WINDOW, MAX_PENDING);
+        vault = new HaptixVault(reg, WINDOW, WITHDRAW_WINDOW);
         usd = new MockToken();
         nft.set(holder, 1);
         nft.set(friend, 1);
@@ -378,7 +393,7 @@ contract HaptixVaultTest is Test {
     }
 
     function test_pay_signatureForOtherVaultFails() public {
-        HaptixVault other = new HaptixVault(reg, WINDOW);
+        HaptixVault other = new HaptixVault(reg, WINDOW, WITHDRAW_WINDOW);
         bytes memory auth = _sign(PK, other.payChallenge(holder, address(usd), friend, 2e18), 0x05);
         vm.prank(holder);
         vm.expectRevert(HaptixVault.BadPasskey.selector);
@@ -445,6 +460,16 @@ contract HaptixVaultTest is Test {
         assertEq(usd.balanceOf(holder), 10e18);
     }
 
+    function test_withdraw_expires() public {
+        vm.prank(holder);
+        vault.requestWithdraw(address(usd), 10e18);
+        uint256 exp = block.timestamp + DELAY + WITHDRAW_WINDOW;
+        vm.warp(exp);
+        vm.prank(holder);
+        vm.expectRevert(abi.encodeWithSelector(HaptixVault.Expired.selector, exp));
+        vault.finalizeWithdraw(address(usd));
+    }
+
     function test_withdrawWithPasskey_instant() public {
         bytes memory auth = _sign(PK, vault.withdrawChallenge(holder, address(usd), 30e18), 0x05);
         vm.prank(holder);
@@ -478,18 +503,24 @@ contract HaptixVaultTest is Test {
         ReentrantToken bad = new ReentrantToken();
         HaptixRegistry.TokenRule[] memory r = new HaptixRegistry.TokenRule[](1);
         r[0] = HaptixRegistry.TokenRule(address(bad), HaptixRegistry.Rule(10e18, 5e18, 5e18));
-        vm.prank(friend);
-        reg.open(r, DELAY, HaptixRegistry.Passkey(0, 0));
-        bad.mint(friend, 10e18);
-        vm.startPrank(friend);
-        bad.approve(address(vault), 10e18);
-        vault.deposit(address(bad), 10e18);
-        vm.stopPrank();
+        // The token itself is a fully set-up holder, so only the lock can stop it.
+        nft.set(address(bad), 1);
+        for (uint256 k; k < 2; k++) {
+            address who = k == 0 ? friend : address(bad);
+            vm.prank(who);
+            reg.open(r, DELAY, HaptixRegistry.Passkey(0, 0));
+            bad.mint(who, 10e18);
+            vm.startPrank(who);
+            bad.approve(address(vault), 10e18);
+            vault.deposit(address(bad), 10e18);
+            vm.stopPrank();
+        }
         bad.arm(vault, holder);
 
         vm.prank(friend);
-        vm.expectRevert(HaptixVault.TransferFailed.selector);
         vault.pay(address(bad), holder, 1e18, "");
+        assertFalse(bad.innerSucceeded(), "re-entered pay went through");
+        assertEq(bytes4(bad.innerError()), HaptixVault.Reentrancy.selector);
     }
 
     function test_eoaTokenRejected() public {
@@ -539,8 +570,8 @@ contract HaptixVaultTest is Test {
         address b = vm.envAddress("AGENT_ID_SAMPLE_HOLDER_2");
         MockToken usdt = MockToken(vm.envAddress("BSC_USDT"));
 
-        HaptixRegistry r2 = new HaptixRegistry(real);
-        HaptixVault v2 = new HaptixVault(r2, WINDOW);
+        HaptixRegistry r2 = new HaptixRegistry(real, APPLY_WINDOW, MAX_PENDING);
+        HaptixVault v2 = new HaptixVault(r2, WINDOW, WITHDRAW_WINDOW);
 
         HaptixRegistry.TokenRule[] memory r = new HaptixRegistry.TokenRule[](1);
         r[0] = HaptixRegistry.TokenRule(address(usdt), HaptixRegistry.Rule(5e18, 2e18, 1e18));

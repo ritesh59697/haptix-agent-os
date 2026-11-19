@@ -18,7 +18,9 @@ interface IAgentId {
 ///      So rules may only get stricter instantly. Anything that loosens them --
 ///      a higher cap, a new or changed passkey, a shorter delay -- is queued and
 ///      only applies after the holder's own `changeDelay`, which leaves the
-///      owner time to see it and cancel it.
+///      owner time to see it and cancel it. Queued changes are listed on-chain
+///      (`pendingOf`) so they can't hide, and expire `applyWindow` after they
+///      become applicable, so a forgotten one can't be applied months later.
 ///
 ///      No owner, no admin, no upgrade path. Nothing here can be changed by
 ///      anyone except each holder, for their own guard.
@@ -54,8 +56,22 @@ contract HaptixRegistry {
     mapping(address holder => mapping(address recipient => mapping(address token => uint128))) private
         _allowances;
 
-    /// @notice holder => change id => earliest time it may apply (0 = not queued).
-    mapping(address holder => mapping(bytes32 id => uint256)) public queuedAt;
+    /// @notice A queued loosening change. Listed on-chain so the owner (and
+    ///         their tools) can always see what is waiting to apply.
+    struct Pending {
+        bytes32 id;
+        Kind kind;
+        bytes data;
+        uint64 applyAfter; // earliest time it may apply
+        uint64 expiresAt;  // after this it can no longer apply and must be re-queued
+    }
+
+    /// @notice How long a queued change stays applicable once its delay has passed.
+    uint256 public immutable applyWindow;
+    /// @notice Most changes one guard may have queued at once, so reads stay bounded.
+    uint256 public immutable maxPending;
+
+    mapping(address holder => Pending[]) private _pending;
 
     enum Kind {
         Rule,
@@ -69,7 +85,9 @@ contract HaptixRegistry {
     event AllowanceSet(address indexed holder, address indexed recipient, address indexed token, uint128 daily);
     event PasskeySet(address indexed holder, bytes32 x, bytes32 y);
     event DelaySet(address indexed holder, uint32 changeDelay);
-    event ChangeQueued(address indexed holder, bytes32 indexed id, Kind kind, bytes data, uint256 applyAfter);
+    event ChangeQueued(
+        address indexed holder, bytes32 indexed id, Kind kind, bytes data, uint256 applyAfter, uint256 expiresAt
+    );
     event ChangeCancelled(address indexed holder, bytes32 indexed id);
 
     error NotAgentIdHolder();
@@ -80,10 +98,16 @@ contract HaptixRegistry {
     error NotQueued();
     error TooEarly(uint256 applyAfter);
     error ZeroAddress();
+    error Expired(uint256 expiresAt);
+    error TooManyPending();
+    error BadConfig();
 
-    constructor(IAgentId agentId_) {
+    constructor(IAgentId agentId_, uint256 applyWindow_, uint256 maxPending_) {
         if (address(agentId_) == address(0)) revert ZeroAddress();
+        if (applyWindow_ == 0 || maxPending_ == 0) revert BadConfig();
         agentId = agentId_;
+        applyWindow = applyWindow_;
+        maxPending = maxPending_;
     }
 
     modifier onlyHolder() {
@@ -145,8 +169,9 @@ contract HaptixRegistry {
 
     /// @notice Drop a queued loosening change before it applies.
     function cancel(bytes32 id) external {
-        if (queuedAt[msg.sender][id] == 0) revert NotQueued();
-        delete queuedAt[msg.sender][id];
+        (bool found, uint256 i) = _find(msg.sender, id);
+        if (!found) revert NotQueued();
+        _remove(msg.sender, i);
         emit ChangeCancelled(msg.sender, id);
     }
 
@@ -163,18 +188,32 @@ contract HaptixRegistry {
     function queue(Kind kind, bytes calldata data) external onlyHolder onlyOpen returns (bytes32 id) {
         if (!_loosens(msg.sender, kind, data)) revert NotLoosening();
         id = changeId(kind, data);
-        uint256 applyAfter = block.timestamp + _guards[msg.sender].changeDelay;
-        queuedAt[msg.sender][id] = applyAfter;
-        emit ChangeQueued(msg.sender, id, kind, data, applyAfter);
+        uint64 applyAfter = uint64(block.timestamp + _guards[msg.sender].changeDelay);
+        uint64 expiresAt = uint64(applyAfter + applyWindow);
+
+        (bool found, uint256 i) = _find(msg.sender, id);
+        if (found) {
+            // Re-queueing the same change restarts its clock; it never shortens it.
+            Pending storage p = _pending[msg.sender][i];
+            p.applyAfter = applyAfter;
+            p.expiresAt = expiresAt;
+        } else {
+            _pruneExpired(msg.sender);
+            if (_pending[msg.sender].length >= maxPending) revert TooManyPending();
+            _pending[msg.sender].push(Pending(id, kind, data, applyAfter, expiresAt));
+        }
+        emit ChangeQueued(msg.sender, id, kind, data, applyAfter, expiresAt);
     }
 
     /// @notice Apply a queued change once its delay has passed.
     function applyChange(Kind kind, bytes calldata data) external onlyHolder onlyOpen {
         bytes32 id = changeId(kind, data);
-        uint256 applyAfter = queuedAt[msg.sender][id];
-        if (applyAfter == 0) revert NotQueued();
-        if (block.timestamp < applyAfter) revert TooEarly(applyAfter);
-        delete queuedAt[msg.sender][id];
+        (bool found, uint256 i) = _find(msg.sender, id);
+        if (!found) revert NotQueued();
+        Pending storage p = _pending[msg.sender][i];
+        if (block.timestamp < p.applyAfter) revert TooEarly(p.applyAfter);
+        if (block.timestamp >= p.expiresAt) revert Expired(p.expiresAt);
+        _remove(msg.sender, i);
 
         if (kind == Kind.Rule) {
             (address token, Rule memory rule) = abi.decode(data, (address, Rule));
@@ -200,6 +239,12 @@ contract HaptixRegistry {
     // ------------------------------------------------------------------
     // Reads (for the vault, the skill and the site)
     // ------------------------------------------------------------------
+
+    /// @notice Every change queued on `holder`'s guard, including expired ones
+    ///         not yet pruned (check `expiresAt`).
+    function pendingOf(address holder) external view returns (Pending[] memory) {
+        return _pending[holder];
+    }
 
     function guardOf(address holder) external view returns (Guard memory) {
         return _guards[holder];
@@ -259,6 +304,30 @@ contract HaptixRegistry {
         }
         uint32 d = abi.decode(data, (uint32));
         return d < _guards[holder].changeDelay;
+    }
+
+    function _find(address holder, bytes32 id) private view returns (bool, uint256) {
+        Pending[] storage list = _pending[holder];
+        for (uint256 i; i < list.length; ++i) {
+            if (list[i].id == id) return (true, i);
+        }
+        return (false, 0);
+    }
+
+    function _remove(address holder, uint256 i) private {
+        Pending[] storage list = _pending[holder];
+        uint256 last = list.length - 1;
+        if (i != last) list[i] = list[last];
+        list.pop();
+    }
+
+    function _pruneExpired(address holder) private {
+        Pending[] storage list = _pending[holder];
+        uint256 i;
+        while (i < list.length) {
+            if (block.timestamp >= list[i].expiresAt) _remove(holder, i);
+            else ++i;
+        }
     }
 
     function _hasPasskey(Passkey calldata p) private pure returns (bool) {
