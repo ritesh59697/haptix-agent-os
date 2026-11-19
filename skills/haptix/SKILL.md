@@ -62,6 +62,13 @@ on-chain. For token addresses, use the binance-agentic-wallet skill's Common Tok
 | Get a queued change's id | `node scripts/haptix.mjs change-id --token <token> --daily <n> --ceiling <n> --passkey-above <n>` |
 | Cancel a queued change | `node scripts/haptix.mjs cancel --from <me> --id <changeId>` |
 | Make increases wait longer (instant) | `node scripts/haptix.mjs lengthen-delay --from <me> --delay <48h>` |
+| Set or change the passkey (queued) | `node scripts/haptix.mjs set-passkey --from <me> --x <0x…> --y <0x…>` |
+| Apply the queued passkey after the delay | `node scripts/haptix.mjs apply-passkey --from <me> --x <0x…> --y <0x…>` |
+| Open a guard with a passkey from the start | add `--passkey-x <0x…> --passkey-y <0x…>` to `open` |
+
+**Passkey:** the user creates it at `https://haptix-agent-os.vercel.app/passkey` on the device they'll
+approve payments with. The page gives them a line like "Set my Haptix passkey to x=… y=…". Never make up
+or reuse key values. On an open guard, a new passkey is queued and applies after the delay.
 
 The limits must satisfy `passkey-above <= ceiling <= daily`.
 - `daily`: the most the agent may pay out per day.

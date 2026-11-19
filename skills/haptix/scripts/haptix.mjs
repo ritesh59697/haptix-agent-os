@@ -206,8 +206,25 @@ const commands = {
     const { token, rule, human } = await readRule(a);
     const delay = parseDelay(need(a, "delay"));
     const zero = "0x" + "0".repeat(64);
-    await prepare(from, enc.open(token, rule, delay, { x: zero, y: zero }),
-      `Open a Haptix guard: ${human}; raising any limit later waits ${a.delay}.`);
+    const pk = a["passkey-x"] || a["passkey-y"]
+      ? { x: need(a, "passkey-x"), y: need(a, "passkey-y") }
+      : { x: zero, y: zero };
+    await prepare(from, enc.open(token, rule, delay, pk),
+      `Open a Haptix guard: ${human}; raising any limit later waits ${a.delay}` +
+      (pk.x === zero ? "; no passkey yet." : "; passkey set now."));
+  },
+
+  async "set-passkey"(a) {
+    const from = need(a, "from");
+    const g = await guardOf(from);
+    await prepare(from, enc.kindBytes("queue", KIND.passkey, enc.passkeyData({ x: need(a, "x"), y: need(a, "y") })),
+      `Queue this passkey for your guard. It applies after ${g.changeDelaySeconds}s; cancel any time before that.`);
+  },
+
+  async "apply-passkey"(a) {
+    const from = need(a, "from");
+    await prepare(from, enc.kindBytes("applyChange", KIND.passkey, enc.passkeyData({ x: need(a, "x"), y: need(a, "y") })),
+      "Apply the queued passkey.");
   },
 
   async tighten(a) {
@@ -239,9 +256,16 @@ const commands = {
 
   async "change-id"(a) {
     // Reads the id from the contract itself, so no keccak is needed here.
-    const { token, rule } = await readRule(a);
-    const data = enc.ruleData(token, rule);
-    const q = "0x" + sel("changeId") + word(KIND.rule) + word(0x40) + bytesTail(data);
+    // With --x/--y it's the id of a passkey change; otherwise a rule change.
+    let kind = KIND.rule, data;
+    if (a.x || a.y) {
+      kind = KIND.passkey;
+      data = enc.passkeyData({ x: need(a, "x"), y: need(a, "y") });
+    } else {
+      const { token, rule } = await readRule(a);
+      data = enc.ruleData(token, rule);
+    }
+    const q = "0x" + sel("changeId") + word(kind) + word(0x40) + bytesTail(data);
     out({ id: await call(CFG.registry, q) });
   },
 

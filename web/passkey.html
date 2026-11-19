@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Haptix Passkey</title>
+  <meta name="description" content="Create the device passkey that approves larger Haptix payments.">
+  <link rel="icon" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <script>
+    (function () { try { var t = localStorage.getItem('haptix-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
+  </script>
+  <link rel="stylesheet" href="/agent-id.css">
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <a class="brand" href="/agent-id"><img src="/assets/favicon-256.png" alt="">Haptix</a>
+      <nav class="nav"><a href="/agent-id">How it works</a></nav>
+    </div>
+  </header>
+
+  <main class="wrap hero">
+    <span class="eyebrow">Step for larger payments</span>
+    <h1>Create your Haptix passkey.</h1>
+    <p class="lede">Payments above your passkey threshold need this device to approve them with Face ID, Touch ID or your PIN. The private key never leaves your device. Haptix only records its public key.</p>
+
+    <div class="panel">
+      <button class="btn" id="createBtn" type="button">Create passkey on this device</button>
+      <p class="msg" id="msg" role="status"></p>
+
+      <div id="result" class="hidden">
+        <dl class="kv">
+          <dt>Public key x</dt><dd class="mono" id="x"></dd>
+          <dt>Public key y</dt><dd class="mono" id="y"></dd>
+        </dl>
+        <p class="sub" style="margin:18px 0 6px">Now tell your agent the line below. It will queue the passkey on your guard. Like any change that loosens a guard, it applies after your delay.</p>
+        <div class="codebox">
+          <div class="code-head"><span>Say to your agent</span><button class="copy" type="button" id="copyBtn">Copy</button></div>
+          <pre class="code" id="say"></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn" role="note" style="margin-top:22px">
+      <strong>Use the device you'll approve payments on</strong>
+      Approvals only work on this site (haptix-agent-os.vercel.app) with this passkey. If you lose the device, lower your limits or withdraw. Both work without the passkey.
+    </div>
+  </main>
+
+  <script type="module">
+    import { base64url, hex } from '/userop.js';
+
+    const btn = document.getElementById('createBtn');
+    const msg = document.getElementById('msg');
+
+    function show(text, isErr) { msg.textContent = text; msg.className = 'msg' + (isErr ? ' err' : ''); }
+
+    btn.addEventListener('click', async () => {
+      if (!window.PublicKeyCredential) { show("This browser doesn't support passkeys.", true); return; }
+      btn.disabled = true; show('Waiting for your device…');
+      try {
+        const cred = await navigator.credentials.create({
+          publicKey: {
+            challenge: crypto.getRandomValues(new Uint8Array(32)),
+            rp: { name: 'Haptix', id: location.hostname },
+            user: { id: crypto.getRandomValues(new Uint8Array(16)), name: 'Haptix guard', displayName: 'Haptix guard' },
+            pubKeyCredParams: [{ type: 'public-key', alg: -7 }], // P-256 only: what the contract verifies
+            authenticatorSelection: { userVerification: 'required', residentKey: 'required' },
+            timeout: 60000,
+            attestation: 'none',
+          },
+        });
+        const spki = new Uint8Array(cred.response.getPublicKey());
+        const point = spki.slice(-65);
+        if (point[0] !== 0x04) throw new Error('Unexpected key format from this device.');
+        const x = '0x' + hex(point.slice(1, 33));
+        const y = '0x' + hex(point.slice(33, 65));
+        try { localStorage.setItem('haptix-passkey-id', base64url(cred.rawId)); } catch (e) {}
+
+        document.getElementById('x').textContent = x;
+        document.getElementById('y').textContent = y;
+        const say = `Set my Haptix passkey to x=${x} y=${y}`;
+        document.getElementById('say').textContent = say;
+        document.getElementById('copyBtn').onclick = (e) => navigator.clipboard.writeText(say).then(() => { e.target.textContent = 'Copied'; });
+        document.getElementById('result').classList.remove('hidden');
+        show('Passkey created.');
+      } catch (e) {
+        show(e && e.name === 'NotAllowedError' ? 'Cancelled.' : (e.message || 'Something went wrong.'), true);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
