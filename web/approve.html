@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Haptix Approval</title>
+  <meta name="description" content="Approve a larger Haptix payment or withdrawal with your passkey.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <script>
+    (function () { try { var t = localStorage.getItem('haptix-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
+  </script>
+  <link rel="stylesheet" href="/agent-id.css">
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <a class="brand" href="/agent-id"><img src="/assets/favicon-256.png" alt="">Haptix</a>
+      <nav class="nav"><a href="/agent-id">How it works</a></nav>
+    </div>
+  </header>
+
+  <main class="wrap hero">
+    <span class="eyebrow">Passkey approval</span>
+    <h1 id="headline">Checking the request…</h1>
+    <p class="lede">Your agent asked for something above your passkey threshold. Check every detail below. Only approve if you asked your agent for exactly this.</p>
+
+    <div class="panel">
+      <dl class="kv" id="details" style="margin-top:0"></dl>
+      <p class="msg" id="msg" role="status"></p>
+      <div style="margin-top:16px"><button class="btn" id="approveBtn" type="button" disabled>Approve with passkey</button></div>
+
+      <div id="result" class="hidden">
+        <p class="sub" style="margin:18px 0 6px">Give this approval code to your agent. It works once, for exactly this request.</p>
+        <div class="codebox">
+          <div class="code-head"><span>Approval code</span><button class="copy" type="button" id="copyBtn">Copy</button></div>
+          <pre class="code" id="code" style="white-space:pre-wrap;word-break:break-all"></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn" role="note" style="margin-top:22px">
+      <strong>Never approve something you didn't ask for</strong>
+      This code lets your agent move exactly the amount shown, to exactly the address shown, from your Haptix vault. It expires as soon as any other passkey approval is used.
+    </div>
+  </main>
+
+  <script src="/agent-id-config.js"></script>
+  <script type="module">
+    import { signWithPasskey } from '/userop.js';
+    import { encodeWebAuthnSignature } from '/webauthn-encode.js';
+
+    const C = window.HAPTIX_AGENT_ID;
+    const $ = (id) => document.getElementById(id);
+    const msg = (t, err) => { $('msg').textContent = t; $('msg').className = 'msg' + (err ? ' err' : ''); };
+    const pad = (n) => BigInt(n).toString(16).padStart(64, '0');
+    const addrW = (a) => a.toLowerCase().replace(/^0x/, '').padStart(64, '0');
+    const isAddr = (a) => /^0x[0-9a-fA-F]{40}$/.test(a || '');
+
+    async function rpc(method, params) {
+      const r = await fetch(C.rpcUrl, { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) });
+      const j = await r.json();
+      if (j.error) throw new Error(j.error.message);
+      return j.result;
+    }
+    const call = (to, data) => rpc('eth_call', [{ to, data }, 'latest']);
+
+    function fmt(v, dec) {
+      const d = 10n ** BigInt(dec), f = (v % d).toString().padStart(dec, '0').replace(/0+$/, '');
+      return (v / d).toString() + (f ? '.' + f : '');
+    }
+
+    function row(k, v, mono) {
+      const dt = document.createElement('dt'); dt.textContent = k;
+      const dd = document.createElement('dd'); dd.textContent = v; if (mono) dd.className = 'mono';
+      $('details').append(dt, dd);
+    }
+
+    (async () => {
+      try {
+        const q = new URLSearchParams(location.search);
+        const action = q.get('action'), holder = q.get('holder'), token = q.get('token'), to = q.get('to');
+        const amountStr = q.get('amount') || '';
+        if (!['pay', 'withdraw'].includes(action)) throw new Error('This link is missing what to approve.');
+        if (!isAddr(holder) || !isAddr(token) || (action === 'pay' && !isAddr(to))) throw new Error('This link has a malformed address.');
+        if (!/^\d+$/.test(amountStr) || BigInt(amountStr) === 0n) throw new Error('This link has a malformed amount.');
+        if (!isAddr(C.vault)) throw new Error("The Haptix vault isn't live yet.");
+        const amount = BigInt(amountStr);
+
+        const abi = await (await fetch(C.abiUrl)).json();
+        if (Number(BigInt(await rpc('eth_chainId', []))) !== C.chainId) throw new Error('Connected to the wrong chain.');
+
+        const dec = Number(BigInt(await call(token, abi.erc20.decimals)));
+        let sym = 'tokens';
+        try {
+          const r = (await call(token, abi.erc20.symbol)).slice(2);
+          const len = parseInt(r.slice(64, 128), 16);
+          sym = new TextDecoder().decode(Uint8Array.from(r.slice(128, 128 + len * 2).match(/.{2}/g), (h) => parseInt(h, 16)));
+        } catch (e) {}
+
+        const challenge = action === 'pay'
+          ? await call(C.vault, abi.vault.payChallenge + addrW(holder) + addrW(token) + addrW(to) + pad(amount))
+          : await call(C.vault, abi.vault.withdrawChallenge + addrW(holder) + addrW(token) + pad(amount));
+
+        $('headline').textContent = action === 'pay'
+          ? `Approve paying ${fmt(amount, dec)} ${sym}`
+          : `Approve withdrawing ${fmt(amount, dec)} ${sym} now`;
+        row('Amount', `${fmt(amount, dec)} ${sym}`);
+        row(action === 'pay' ? 'To' : 'Back to your wallet', action === 'pay' ? to : holder, true);
+        row('From vault of', holder, true);
+        row('Token', token, true);
+        row('Network', C.chainName);
+
+        const btn = $('approveBtn');
+        btn.disabled = false;
+        btn.onclick = async () => {
+          btn.disabled = true; msg('Waiting for your device…');
+          try {
+            let ids = [];
+            try { const id = localStorage.getItem('haptix-passkey-id'); if (id) ids = [id]; } catch (e) {}
+            const sig = await signWithPasskey(challenge, ids);
+            const code = encodeWebAuthnSignature(sig);
+            $('code').textContent = code;
+            $('copyBtn').onclick = (e) => navigator.clipboard.writeText(code).then(() => { e.target.textContent = 'Copied'; });
+            $('result').classList.remove('hidden');
+            msg('Approved. Paste the code back to your agent.');
+          } catch (e) {
+            msg(e && e.name === 'NotAllowedError' ? 'Cancelled.' : (e.message || 'Something went wrong.'), true);
+            btn.disabled = false;
+          }
+        };
+        msg('');
+      } catch (e) {
+        $('headline').textContent = "Can't approve this request";
+        msg(e.message || 'Something went wrong.', true);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -163,10 +163,12 @@
         });
       }
       var dot = document.getElementById('liveDot'), txt = document.getElementById('liveText');
-      Promise.all([
-        rpc('eth_chainId', []),
-        rpc('eth_call', [{ to: C.registry, data: C.agentIdSelector }, 'latest'])
-      ]).then(function (r) {
+      fetch(C.abiUrl).then(function (r) { return r.json(); }).then(function (abi) {
+        return Promise.all([
+          rpc('eth_chainId', []),
+          rpc('eth_call', [{ to: C.registry, data: abi.registry.agentId }, 'latest'])
+        ]);
+      }).then(function (r) {
         if (parseInt(r[0], 16) !== C.chainId) throw new Error('wrong chain');
         var nft = '0x' + r[1].slice(-40);
         if (!/^0x[0-9a-f]{40}$/i.test(nft) || /^0x0+$/.test(nft)) throw new Error('no Agent ID link');

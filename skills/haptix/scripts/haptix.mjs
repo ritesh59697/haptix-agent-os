@@ -7,7 +7,8 @@
 // user's own confirmation.
 //
 // Settings come from ../config.json, overridable by env:
-//   HAPTIX_RPC_URL, HAPTIX_REGISTRY, HAPTIX_CHAIN_ID, HAPTIX_BINANCE_CHAIN_ID
+//   HAPTIX_RPC_URL, HAPTIX_REGISTRY, HAPTIX_VAULT, HAPTIX_CHAIN_ID,
+//   HAPTIX_BINANCE_CHAIN_ID, HAPTIX_APPROVE_URL
 
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -19,29 +20,38 @@ const ABI = JSON.parse(readFileSync(join(here, "..", "abi.json"), "utf8"));
 const CFG = {
   rpcUrl: process.env.HAPTIX_RPC_URL || fileCfg.rpcUrl,
   registry: process.env.HAPTIX_REGISTRY || fileCfg.registry,
+  vault: process.env.HAPTIX_VAULT || fileCfg.vault,
   chainId: Number(process.env.HAPTIX_CHAIN_ID || fileCfg.chainId),
   binanceChainId: process.env.HAPTIX_BINANCE_CHAIN_ID || fileCfg.binanceChainId,
+  approveUrl: process.env.HAPTIX_APPROVE_URL || fileCfg.approveUrl,
 };
 const KIND = { rule: 0, allowance: 1, passkey: 2, delay: 3 };
+const KIND_NAME = ["rule", "allowance", "passkey", "delay"];
 
 // ---------------------------------------------------------------- encoding
 
 const strip = (h) => h.replace(/^0x/, "");
 const word = (n) => BigInt(n).toString(16).padStart(64, "0");
 const addrWord = (a) => {
-  if (!/^0x[0-9a-fA-F]{40}$/.test(a)) fail(`not an address: ${a}`);
+  if (!/^0x[0-9a-fA-F]{40}$/.test(a || "")) fail(`not an address: ${a}`);
   return strip(a).toLowerCase().padStart(64, "0");
 };
 const b32 = (h) => {
-  if (!/^0x[0-9a-fA-F]{64}$/.test(h)) fail(`not a 32-byte hex value: ${h}`);
+  if (!/^0x[0-9a-fA-F]{64}$/.test(h || "")) fail(`not a 32-byte hex value: ${h}`);
   return strip(h).toLowerCase();
+};
+const hexBytes = (h) => {
+  if (!/^0x([0-9a-fA-F]{2})*$/.test(h || "")) fail(`not hex bytes: ${String(h).slice(0, 20)}…`);
+  return h;
 };
 const ruleWords = (r) => word(r.dailyCap) + word(r.ceiling) + word(r.passkeyAbove);
 const bytesTail = (hex) => {
   const h = strip(hex);
   return word(h.length / 2) + h.padEnd(Math.ceil(h.length / 64) * 64, "0");
 };
-const sel = (name) => strip(ABI.registry[name] || fail(`unknown function ${name}`));
+const selOf = (contract, name) => strip(ABI[contract][name] || fail(`unknown function ${contract}.${name}`));
+const sel = (name) => selOf("registry", name);
+const vsel = (name) => selOf("vault", name);
 
 const enc = {
   open(token, rule, delay, pk) {
@@ -56,6 +66,16 @@ const enc = {
   passkeyData: (pk) => "0x" + b32(pk.x) + b32(pk.y),
   kindBytes: (fn, kind, data) => "0x" + sel(fn) + word(kind) + word(0x40) + bytesTail(data),
   cancel: (id) => "0x" + sel("cancel") + b32(id),
+
+  approve: (spender, amount) => "0x" + strip(ABI.erc20.approve) + addrWord(spender) + word(amount),
+  deposit: (token, amount) => "0x" + vsel("deposit") + addrWord(token) + word(amount),
+  pay: (token, to, amount, auth) =>
+    "0x" + vsel("pay") + addrWord(token) + addrWord(to) + word(amount) + word(0x80) + bytesTail(auth || "0x"),
+  requestWithdraw: (token, amount) => "0x" + vsel("requestWithdraw") + addrWord(token) + word(amount),
+  cancelWithdraw: (token) => "0x" + vsel("cancelWithdraw") + addrWord(token),
+  finalizeWithdraw: (token) => "0x" + vsel("finalizeWithdraw") + addrWord(token),
+  withdrawWithPasskey: (token, amount, auth) =>
+    "0x" + vsel("withdrawWithPasskey") + addrWord(token) + word(amount) + word(0x60) + bytesTail(auth),
 };
 
 // ---------------------------------------------------------------- chain
@@ -87,6 +107,11 @@ function decodeRevert(err) {
 async function checkChain() {
   const id = Number(BigInt(await rpc("eth_chainId", [])));
   if (id !== CFG.chainId) fail(`RPC is on chain ${id}, expected ${CFG.chainId}`);
+}
+
+function needVault() {
+  if (!/^0x[0-9a-fA-F]{40}$/.test(CFG.vault || "")) fail("the Haptix vault address isn't configured yet (config.json \"vault\")");
+  return CFG.vault;
 }
 
 async function decimals(token) {
@@ -128,6 +153,8 @@ function parseDelay(s) {
   return v;
 }
 
+const iso = (t) => (t ? new Date(Number(t) * 1000).toISOString() : null);
+
 // ---------------------------------------------------------------- reads
 
 async function isHolder(addr) {
@@ -148,22 +175,54 @@ async function ruleOf(addr, token) {
   return { dailyCap: w[0], ceiling: w[1], passkeyAbove: w[2] };
 }
 
+/// Decodes pendingOf(address) -> (bytes32 id, uint8 kind, bytes data, uint64, uint64)[]
+async function pendingOf(addr) {
+  const h = strip(await call(CFG.registry, "0x" + sel("pendingOf") + addrWord(addr)));
+  const at = (byteOff) => BigInt("0x" + h.slice(byteOff * 2, byteOff * 2 + 64));
+  const arr = Number(at(0));
+  const n = Number(at(arr));
+  const out = [];
+  const now = BigInt((await rpc("eth_getBlockByNumber", ["latest", false])).timestamp); // chain time, not this machine's
+  for (let i = 0; i < n; i++) {
+    const t = arr + 32 + Number(at(arr + 32 + i * 32));
+    const dataOff = t + Number(at(t + 64));
+    const len = Number(at(dataOff));
+    const applyAfter = at(t + 96), expiresAt = at(t + 128);
+    out.push({
+      id: "0x" + h.slice(t * 2, t * 2 + 64),
+      kind: KIND_NAME[Number(at(t + 32))],
+      data: "0x" + h.slice((dataOff + 32) * 2, (dataOff + 32 + len) * 2),
+      applyAfter: iso(applyAfter),
+      expiresAt: iso(expiresAt),
+      state: now >= expiresAt ? "expired" : now >= applyAfter ? "ready to apply" : "waiting",
+    });
+  }
+  return out;
+}
+
+async function vaultView(name, ...addrs) {
+  const w = words(await call(needVault(), "0x" + vsel(name) + addrs.map(addrWord).join("")));
+  if (w.length === 0) fail(`no Haptix vault at ${CFG.vault} on this chain`);
+  return w;
+}
+
 // ---------------------------------------------------------------- writes
 
-async function prepare(from, data, summary) {
+async function prepare(from, to, data, summary, extra = {}) {
   try {
-    await call(CFG.registry, data, from);
+    await call(to, data, from);
   } catch (e) {
-    return out({ ok: false, simulation: "reverted", reason: decodeRevert(e), summary });
+    return out({ ok: false, simulation: "reverted", reason: decodeRevert(e), summary, ...extra });
   }
   out({
     ok: true,
     simulation: "ok",
     summary,
+    ...extra,
     next: "Run bawCommand, show the user the preview (parsed tx + risks), and only run " +
       "`baw contract-call execute --requestId <id> --json` after the user explicitly confirms.",
     bawCommand: `baw contract-call preview --binanceChainId ${CFG.binanceChainId} --from ${from} ` +
-      `--to ${CFG.registry} --value 0 --inputData ${data} --json`,
+      `--to ${to} --value 0 --inputData ${data} --json`,
   });
 }
 
@@ -183,23 +242,55 @@ async function readRule(a) {
   return { token, rule, human };
 }
 
+async function readAmount(a) {
+  const token = need(a, "token");
+  const dec = await decimals(token);
+  const amount = toUnits(need(a, "amount"), dec);
+  if (amount === 0n) fail("amount must be above 0");
+  return { token, amount, dec, sym: await symbol(token) };
+}
+
+function approveLink(action, holder, token, to, amount) {
+  const q = new URLSearchParams({ action, holder, token, amount: amount.toString() });
+  if (action === "pay") q.set("to", to);
+  return `${CFG.approveUrl}?${q}`;
+}
+
 const commands = {
   async status(a) {
     const addr = need(a, "address");
-    const res = { address: addr, registry: CFG.registry, holdsAgentId: await isHolder(addr), guard: await guardOf(addr) };
+    const res = {
+      address: addr,
+      registry: CFG.registry,
+      holdsAgentId: await isHolder(addr),
+      guard: await guardOf(addr),
+      queuedChanges: await pendingOf(addr),
+    };
     if (a.token) {
       const dec = await decimals(a.token);
+      const sym = await symbol(a.token);
       const r = await ruleOf(addr, a.token);
       res.rule = {
-        token: a.token,
-        symbol: await symbol(a.token),
-        dailyCap: fromUnits(r.dailyCap, dec),
-        ceiling: fromUnits(r.ceiling, dec),
-        passkeyAbove: fromUnits(r.passkeyAbove, dec),
+        token: a.token, symbol: sym,
+        dailyCap: fromUnits(r.dailyCap, dec), ceiling: fromUnits(r.ceiling, dec), passkeyAbove: fromUnits(r.passkeyAbove, dec),
       };
+      if (CFG.vault) {
+        const [bal] = await vaultView("balanceOf", addr, a.token);
+        const [spent, resetsAt] = await vaultView("spentInWindow", addr, a.token);
+        const [wAmt, wReady, wExp] = await vaultView("pendingWithdrawal", addr, a.token);
+        res.vault = {
+          address: CFG.vault,
+          balance: fromUnits(bal, dec),
+          spentThisWindow: fromUnits(spent, dec),
+          windowResetsAt: iso(resetsAt),
+          pendingWithdrawal: wAmt === 0n ? null : { amount: fromUnits(wAmt, dec), readyAt: iso(wReady), expiresAt: iso(wExp) },
+        };
+      }
     }
     out(res);
   },
+
+  // ---- guard (registry)
 
   async open(a) {
     const from = need(a, "from");
@@ -209,49 +300,51 @@ const commands = {
     const pk = a["passkey-x"] || a["passkey-y"]
       ? { x: need(a, "passkey-x"), y: need(a, "passkey-y") }
       : { x: zero, y: zero };
-    await prepare(from, enc.open(token, rule, delay, pk),
+    await prepare(from, CFG.registry, enc.open(token, rule, delay, pk),
       `Open a Haptix guard: ${human}; raising any limit later waits ${a.delay}` +
       (pk.x === zero ? "; no passkey yet." : "; passkey set now."));
-  },
-
-  async "set-passkey"(a) {
-    const from = need(a, "from");
-    const g = await guardOf(from);
-    await prepare(from, enc.kindBytes("queue", KIND.passkey, enc.passkeyData({ x: need(a, "x"), y: need(a, "y") })),
-      `Queue this passkey for your guard. It applies after ${g.changeDelaySeconds}s; cancel any time before that.`);
-  },
-
-  async "apply-passkey"(a) {
-    const from = need(a, "from");
-    await prepare(from, enc.kindBytes("applyChange", KIND.passkey, enc.passkeyData({ x: need(a, "x"), y: need(a, "y") })),
-      "Apply the queued passkey.");
   },
 
   async tighten(a) {
     const from = need(a, "from");
     const { token, rule, human } = await readRule(a);
-    await prepare(from, enc.tightenRule(token, rule), `Lower limits now: ${human}.`);
+    await prepare(from, CFG.registry, enc.tightenRule(token, rule), `Lower limits now: ${human}.`);
   },
 
   async loosen(a) {
     const from = need(a, "from");
     const { token, rule, human } = await readRule(a);
     const g = await guardOf(from);
-    await prepare(from, enc.kindBytes("queue", KIND.rule, enc.ruleData(token, rule)),
+    await prepare(from, CFG.registry, enc.kindBytes("queue", KIND.rule, enc.ruleData(token, rule)),
       `Queue higher limits (${human}). They apply only after ${g.changeDelaySeconds}s, and can be cancelled until then.`);
   },
 
   async "apply-loosen"(a) {
     const from = need(a, "from");
     const { token, rule, human } = await readRule(a);
-    await prepare(from, enc.kindBytes("applyChange", KIND.rule, enc.ruleData(token, rule)),
+    await prepare(from, CFG.registry, enc.kindBytes("applyChange", KIND.rule, enc.ruleData(token, rule)),
       `Apply the queued limits: ${human}.`);
   },
 
   async "lengthen-delay"(a) {
     const from = need(a, "from");
     const d = parseDelay(need(a, "delay"));
-    await prepare(from, enc.lengthenDelay(d), `Make limit increases wait ${a.delay}.`);
+    await prepare(from, CFG.registry, enc.lengthenDelay(d), `Make limit increases wait ${a.delay}.`);
+  },
+
+  async "set-passkey"(a) {
+    const from = need(a, "from");
+    const g = await guardOf(from);
+    await prepare(from, CFG.registry,
+      enc.kindBytes("queue", KIND.passkey, enc.passkeyData({ x: need(a, "x"), y: need(a, "y") })),
+      `Queue this passkey for your guard. It applies after ${g.changeDelaySeconds}s; cancel any time before that.`);
+  },
+
+  async "apply-passkey"(a) {
+    const from = need(a, "from");
+    await prepare(from, CFG.registry,
+      enc.kindBytes("applyChange", KIND.passkey, enc.passkeyData({ x: need(a, "x"), y: need(a, "y") })),
+      "Apply the queued passkey.");
   },
 
   async "change-id"(a) {
@@ -271,18 +364,97 @@ const commands = {
 
   async cancel(a) {
     const from = need(a, "from");
-    await prepare(from, enc.cancel(need(a, "id")), `Cancel queued change ${a.id}.`);
+    await prepare(from, CFG.registry, enc.cancel(need(a, "id")), `Cancel queued change ${a.id}.`);
+  },
+
+  // ---- vault
+
+  async "approve-deposit"(a) {
+    const from = need(a, "from");
+    const vault = needVault();
+    const { token, amount, sym } = await readAmount(a);
+    await prepare(from, token, enc.approve(vault, amount),
+      `Allow the Haptix vault to take exactly ${a.amount} ${sym} for a deposit (an exact amount, never unlimited).`);
+  },
+
+  async deposit(a) {
+    const from = need(a, "from");
+    const vault = needVault();
+    const { token, amount, sym } = await readAmount(a);
+    await prepare(from, vault, enc.deposit(token, amount), `Deposit ${a.amount} ${sym} into your Haptix vault.`);
+  },
+
+  async pay(a) {
+    const from = need(a, "from");
+    const vault = needVault();
+    const to = need(a, "to");
+    const { token, amount, sym } = await readAmount(a);
+    const r = await ruleOf(from, token);
+    const auth = a["passkey-auth"] ? hexBytes(a["passkey-auth"]) : "0x";
+    if (amount > r.passkeyAbove && auth === "0x") {
+      return out({
+        ok: false,
+        reason: "PasskeyRequired",
+        summary: `${a.amount} ${sym} is above your passkey threshold.`,
+        approveUrl: approveLink("pay", from, token, to, amount),
+        next: "Ask the user to open approveUrl on their passkey device, approve, and paste back the approval code. " +
+          "Then run this command again with --passkey-auth <code>.",
+      });
+    }
+    await prepare(from, vault, enc.pay(token, to, amount, auth),
+      `Pay ${a.amount} ${sym} to ${to} from your Haptix vault` + (auth === "0x" ? "." : ", approved by your passkey."));
+  },
+
+  async "request-withdraw"(a) {
+    const from = need(a, "from");
+    const vault = needVault();
+    const { token, amount, sym } = await readAmount(a);
+    const g = await guardOf(from);
+    await prepare(from, vault, enc.requestWithdraw(token, amount),
+      `Start withdrawing ${a.amount} ${sym} back to your wallet. It can be finished after ${g.changeDelaySeconds}s.`);
+  },
+
+  async "cancel-withdraw"(a) {
+    const from = need(a, "from");
+    await prepare(from, needVault(), enc.cancelWithdraw(need(a, "token")), "Cancel your pending withdrawal.");
+  },
+
+  async "finalize-withdraw"(a) {
+    const from = need(a, "from");
+    await prepare(from, needVault(), enc.finalizeWithdraw(need(a, "token")), "Finish your pending withdrawal.");
+  },
+
+  async "withdraw-now"(a) {
+    const from = need(a, "from");
+    const vault = needVault();
+    const { token, amount, sym } = await readAmount(a);
+    if (!a["passkey-auth"]) {
+      return out({
+        ok: false,
+        reason: "PasskeyRequired",
+        summary: `An instant withdrawal of ${a.amount} ${sym} needs your passkey.`,
+        approveUrl: approveLink("withdraw", from, token, null, amount),
+        next: "Ask the user to open approveUrl, approve, and paste back the approval code; then rerun with --passkey-auth <code>.",
+      });
+    }
+    await prepare(from, vault, enc.withdrawWithPasskey(token, amount, hexBytes(a["passkey-auth"])),
+      `Withdraw ${a.amount} ${sym} to your wallet now, approved by your passkey.`);
   },
 
   async "encode-only"(a) {
-    // Used by the test suite to compare against `cast calldata`.
+    // Used by the test script to compare against `cast calldata`.
     const zero = "0x" + "0".repeat(64);
-    const rule = { dailyCap: BigInt(a.daily), ceiling: BigInt(a.ceiling), passkeyAbove: BigInt(a["passkey-above"]) };
+    const rule = { dailyCap: BigInt(a.daily || 0), ceiling: BigInt(a.ceiling || 0), passkeyAbove: BigInt(a["passkey-above"] || 0) };
     const map = {
       open: () => enc.open(a.token, rule, Number(a.delay), { x: zero, y: zero }),
       tighten: () => enc.tightenRule(a.token, rule),
       queue: () => enc.kindBytes("queue", KIND.rule, enc.ruleData(a.token, rule)),
       apply: () => enc.kindBytes("applyChange", KIND.rule, enc.ruleData(a.token, rule)),
+      approve: () => enc.approve(a.to, BigInt(a.amount)),
+      deposit: () => enc.deposit(a.token, BigInt(a.amount)),
+      pay: () => enc.pay(a.token, a.to, BigInt(a.amount), a.auth || "0x"),
+      requestWithdraw: () => enc.requestWithdraw(a.token, BigInt(a.amount)),
+      withdrawWithPasskey: () => enc.withdrawWithPasskey(a.token, BigInt(a.amount), a.auth || "0x"),
     };
     console.log((map[a.fn] || (() => fail("unknown fn")))());
   },

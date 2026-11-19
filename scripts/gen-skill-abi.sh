@@ -1,19 +1,25 @@
 #!/usr/bin/env bash
-# Regenerates skills/haptix/abi.json from the compiled HaptixRegistry so the
-# skill's selectors can never drift from the contract.
+# Regenerates skills/haptix/abi.json from the compiled contracts so the
+# skill's selectors can never drift from them.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-C=src/agentid/HaptixRegistry.sol:HaptixRegistry
-M=$(FOUNDRY_PROFILE=bsc forge inspect $C methodIdentifiers --json)
-E=$(FOUNDRY_PROFILE=bsc forge inspect $C errors --json)
-python3 - "$M" "$E" "$(cast sig 'decimals()')" "$(cast sig 'symbol()')" <<'PY' > skills/haptix/abi.json
+ins() { FOUNDRY_PROFILE=bsc forge inspect "$1" "$2" --json; }
+R=src/agentid/HaptixRegistry.sol:HaptixRegistry
+V=src/agentid/HaptixVault.sol:HaptixVault
+python3 - "$(ins $R methodIdentifiers)" "$(ins $R errors)" "$(ins $V methodIdentifiers)" "$(ins $V errors)" \
+  "$(cast sig 'decimals()')" "$(cast sig 'symbol()')" "$(cast sig 'approve(address,uint256)')" \
+  "$(cast sig 'allowance(address,address)')" "$(cast sig 'balanceOf(address)')" <<'PY' > skills/haptix/abi.json
 import json, sys
-m, e = json.loads(sys.argv[1]), json.loads(sys.argv[2])
-out = {
-  "registry": {sig.split("(")[0]: "0x" + sel for sig, sel in m.items()},
-  "errors": {"0x" + sel: sig for sig, sel in e.items()},
-  "erc20": {"decimals": sys.argv[3], "symbol": sys.argv[4]},
-}
-print(json.dumps(out, indent=2))
+rm, re_, vm, ve = (json.loads(x) for x in sys.argv[1:5])
+sel = lambda m: {sig.split("(")[0]: "0x" + s for sig, s in m.items()}
+errors = {"0x" + s: sig for sig, s in {**re_, **ve}.items()}
+print(json.dumps({
+  "registry": sel(rm),
+  "vault": sel(vm),
+  "errors": errors,
+  "erc20": {"decimals": sys.argv[5], "symbol": sys.argv[6], "approve": sys.argv[7],
+            "allowance": sys.argv[8], "balanceOf": sys.argv[9]},
+}, indent=2))
 PY
-echo "wrote skills/haptix/abi.json"
+cp skills/haptix/abi.json web/haptix-abi.json
+echo "wrote skills/haptix/abi.json and web/haptix-abi.json"
