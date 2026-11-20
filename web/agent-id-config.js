@@ -2,9 +2,9 @@
 window.HAPTIX_AGENT_ID = {
   chainId: 56,
   chainName: "BNB Chain",
-  rpcUrl: "https://bsc-rpc.publicnode.com",
-  registry: "0x6C33A3d5d64862671F5BF9139920541a6BC4F73b",
-  vault: "",
+  rpcUrl: "https://bsc-dataseed1.bnbchain.org",
+  registry: "0xF2aD0c1fD648A4a556872456ce5BBCE97E9e8e1f",
+  vault: "0x01Cf3189f7a681073081b3Fca520512EB67E26Ca",
   explorer: "https://bscscan.com",
   repo: "https://github.com/ritesh59697/haptix-agent-os",
   skillPath: "ritesh59697/haptix-agent-os/skills/haptix",
