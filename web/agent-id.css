@@ -187,3 +187,33 @@ footer .row { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: sp
 html[data-theme="dark"] .msg.err { color: #FB7185; }
 .hidden { display: none !important; }
 @media (max-width: 720px) { .kv { grid-template-columns: minmax(0, 1fr); gap: 2px; } .kv dd { margin-bottom: 8px; } }
+
+/* /join */
+.stat { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; margin-top: 24px; }
+.stat b { font-family: var(--font-heading); font-size: 40px; line-height: 1; }
+.stat span { color: var(--text-2); }
+.prompt-box .code { white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font-body); font-size: 15px; }
+.wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.wall a { display: block; color: var(--text-2); font-size: 13px; min-width: 0; }
+.wall a:hover { text-decoration: none; color: var(--text); }
+.wall img { width: 100%; aspect-ratio: 1; border-radius: 14px; display: block; background: var(--surface-2); }
+.wall .who { display: block; margin-top: 6px; font-family: var(--font-mono); overflow-wrap: anywhere; }
+.empty { color: var(--text-3); font-size: 15px; }
+.checks { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 8px; }
+.checks li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; }
+.checks .mark { flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; background: var(--surface-2); color: var(--text-3); }
+.checks .mark.ok { background: rgba(5, 150, 105, 0.14); color: var(--ok); }
+.field { display: flex; gap: 10px; flex-wrap: wrap; }
+.field input {
+  flex: 1 1 260px; min-width: 0; min-height: 44px; padding: 10px 12px; border-radius: 10px;
+  border: 1px solid var(--line-2); background: var(--bg); color: var(--text); font: 14px var(--font-mono);
+}
+details.more { margin-top: 12px; }
+details.more summary { cursor: pointer; color: var(--accent); font-size: 14px; }
+.badge-hero { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 32px; align-items: center; }
+.badge-hero img { width: 100%; border-radius: 22px; box-shadow: 0 18px 40px rgba(2, 6, 23, 0.25); }
+@media (max-width: 720px) {
+  .badge-hero { grid-template-columns: minmax(0, 1fr); }
+  .badge-hero img { max-width: 200px; }
+  .stat b { font-size: 34px; }
+}
