@@ -4,10 +4,11 @@ description: |
   Haptix: on-chain spending limits for a Binance Agentic Wallet, keyed to the user's Agent ID (.ai name).
   Use when the user wants to open a Haptix guard, set or check spending limits for their agent,
   lower limits, queue higher limits, cancel a queued change, deposit into or pay from the Haptix vault,
-  withdraw from it, approve a payment with their passkey, or asks "what can my agent spend".
+  withdraw from it, approve a payment with their passkey, claim the Haptix Guarded Agent badge,
+  open a starter guard, or asks "what can my agent spend".
   Requires the binance-agentic-wallet skill (baw CLI) with Developer Mode on.
 metadata:
-  version: '0.2.0'
+  version: '0.3.0'
   requires:
     bins: [baw, node]
 ---
@@ -26,7 +27,9 @@ Haptix keeps spending limits for an Agentic Wallet in public, verified contracts
   delay, or are instant with a passkey approval.
 - **Only money in the vault is protected.** Haptix can't limit what the Agentic Wallet spends
   directly. Say so if asked.
-- If `config.json` has no `vault` address yet, the vault isn't live: guard commands still work.
+- **`HaptixBadge` is a soulbound "Guarded Agent" badge.** Any Agent ID holder with an open guard can
+  claim one, once. It moves no funds; its artwork shows their live guard settings.
+- If `config.json` has no `vault` or `badge` address yet, that part isn't live: guard commands still work.
 
 The helper [scripts/haptix.mjs](scripts/haptix.mjs) (Node 18+, no dependencies) reads the chain and
 builds calldata. **It never signs or sends.** Every write goes through `baw contract-call preview`,
@@ -52,6 +55,18 @@ baw wallet settings --json    # devMode.enabled must be true; if not: App -> Age
 baw wallet address --json     # use the address whose binanceChainId is "56"
 ```
 
+## Quick start (new users)
+
+If the user says something like "set up Haptix" or "get the Haptix badge" and has no guard yet:
+
+1. Run the preflight above.
+2. `starter --from <me>`, show the summary and the `baw` preview, and wait for an explicit yes before `execute`.
+3. After it lands, `claim-badge --from <me>`, same preview → yes → execute.
+4. Finish with `status --address <me> --token <starter token>`.
+
+Starting the guard only sets limits; it moves no money. The user can lower limits any time, and raise
+them later (queued behind the delay).
+
 ## Commands
 
 Run from this skill's folder. Amounts are in whole tokens (`5` = 5 USDT); the helper reads `decimals()`
@@ -59,6 +74,8 @@ on-chain. For token addresses, use the binance-agentic-wallet skill's Common Tok
 
 | Intent | Command |
 |---|---|
+| Open the starter guard (preset in config.json: 5 USDT/day, 2 USDT max per payment, raising limits waits 24h, no passkey) | `node scripts/haptix.mjs starter --from <me>` |
+| Claim the Guarded Agent badge (needs an open guard) | `node scripts/haptix.mjs claim-badge --from <me>` |
 | Show my guard and limits | `node scripts/haptix.mjs status --address <me> --token <token>` |
 | Open a guard | `node scripts/haptix.mjs open --from <me> --token <token> --daily <n> --ceiling <n> --passkey-above <n> --delay <24h>` |
 | Lower limits (instant) | `node scripts/haptix.mjs tighten --from <me> --token <token> --daily <n> --ceiling <n> --passkey-above <n>` |

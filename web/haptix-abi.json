@@ -38,6 +38,28 @@
     "withdrawWindow": "0xcb028a83",
     "withdrawWithPasskey": "0x69f1057c"
   },
+  "badge": {
+    "agentId": "0xe84f43b7",
+    "approve": "0x095ea7b3",
+    "balanceOf": "0x70a08231",
+    "canClaim": "0xbf3506c1",
+    "claim": "0x4e71d92d",
+    "claimedAt": "0x591cc145",
+    "getApproved": "0x081812fc",
+    "holderAt": "0x197bc336",
+    "isApprovedForAll": "0xe985e9c5",
+    "name": "0x06fdde03",
+    "ownerOf": "0x6352211e",
+    "registry": "0x7b103999",
+    "safeTransferFrom": "0xb88d4fde",
+    "setApprovalForAll": "0xa22cb465",
+    "supportsInterface": "0x01ffc9a7",
+    "symbol": "0x95d89b41",
+    "tokenOf": "0x42ec38e2",
+    "tokenURI": "0xc87b56dd",
+    "totalSupply": "0x18160ddd",
+    "transferFrom": "0x23b872dd"
+  },
   "errors": {
     "0x965f8d94": "AlreadyOpen()",
     "0x07cc321c": "BadConfig()",
@@ -66,7 +88,10 @@
     "0x4ccc1eec": "RecipientNotAllowed()",
     "0xab143c06": "Reentrancy()",
     "0x90b8ec18": "TransferFailed()",
-    "0x1f2a2005": "ZeroAmount()"
+    "0x1f2a2005": "ZeroAmount()",
+    "0x646cf558": "AlreadyClaimed()",
+    "0x29b490ad": "NoSuchToken()",
+    "0xa4420a95": "Soulbound()"
   },
   "erc20": {
     "decimals": "0x313ce567",

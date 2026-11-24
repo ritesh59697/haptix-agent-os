@@ -21,6 +21,8 @@ const CFG = {
   rpcUrl: process.env.HAPTIX_RPC_URL || fileCfg.rpcUrl,
   registry: process.env.HAPTIX_REGISTRY || fileCfg.registry,
   vault: process.env.HAPTIX_VAULT || fileCfg.vault,
+  badge: process.env.HAPTIX_BADGE || fileCfg.badge,
+  starterGuard: fileCfg.starterGuard,
   chainId: Number(process.env.HAPTIX_CHAIN_ID || fileCfg.chainId),
   binanceChainId: process.env.HAPTIX_BINANCE_CHAIN_ID || fileCfg.binanceChainId,
   approveUrl: process.env.HAPTIX_APPROVE_URL || fileCfg.approveUrl,
@@ -107,6 +109,11 @@ function decodeRevert(err) {
 async function checkChain() {
   const id = Number(BigInt(await rpc("eth_chainId", [])));
   if (id !== CFG.chainId) fail(`RPC is on chain ${id}, expected ${CFG.chainId}`);
+}
+
+function needBadge() {
+  if (!/^0x[0-9a-fA-F]{40}$/.test(CFG.badge || "")) fail("the Haptix badge address isn't configured yet (config.json \"badge\")");
+  return CFG.badge;
 }
 
 function needVault() {
@@ -266,6 +273,10 @@ const commands = {
       guard: await guardOf(addr),
       queuedChanges: await pendingOf(addr),
     };
+    if (CFG.badge) {
+      const [id] = words(await call(needBadge(), "0x" + selOf("badge", "tokenOf") + addrWord(addr)));
+      res.badge = id === undefined ? null : { claimed: id !== 0n, tokenId: id === 0n ? null : Number(id) };
+    }
     if (a.token) {
       const dec = await decimals(a.token);
       const sym = await symbol(a.token);
@@ -303,6 +314,21 @@ const commands = {
     await prepare(from, CFG.registry, enc.open(token, rule, delay, pk),
       `Open a Haptix guard: ${human}; raising any limit later waits ${a.delay}` +
       (pk.x === zero ? "; no passkey yet." : "; passkey set now."));
+  },
+
+  // One preset that every holder can open with identical calldata (preset lives in config.json).
+  async starter(a) {
+    const p = CFG.starterGuard || fail("no starterGuard preset in config.json");
+    await commands.open({
+      from: need(a, "from"), token: p.token, daily: p.daily, ceiling: p.ceiling,
+      "passkey-above": p.passkeyAbove, delay: p.delay,
+    });
+  },
+
+  async "claim-badge"(a) {
+    const from = need(a, "from");
+    await prepare(from, needBadge(), "0x" + selOf("badge", "claim"),
+      "Claim your Haptix Guarded Agent badge: soulbound, moves no funds, gas only. Needs an open guard.");
   },
 
   async tighten(a) {

@@ -5,5 +5,13 @@
   "registry": "0xF2aD0c1fD648A4a556872456ce5BBCE97E9e8e1f",
   "vault": "0x01Cf3189f7a681073081b3Fca520512EB67E26Ca",
   "approveUrl": "https://haptix-agent-os.vercel.app/approve",
-  "explorerTx": "https://bscscan.com/tx/"
+  "explorerTx": "https://bscscan.com/tx/",
+  "badge": "",
+  "starterGuard": {
+    "token": "0x55d398326f99059fF775485246999027B3197955",
+    "daily": "5",
+    "ceiling": "2",
+    "passkeyAbove": "2",
+    "delay": "24h"
+  }
 }
