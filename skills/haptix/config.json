@@ -6,7 +6,7 @@
   "vault": "0x01Cf3189f7a681073081b3Fca520512EB67E26Ca",
   "approveUrl": "https://haptix-agent-os.vercel.app/approve",
   "explorerTx": "https://bscscan.com/tx/",
-  "badge": "",
+  "badge": "0xD88e147C02f4E0eD93A67d043Ef31AC4DDbf253A",
   "starterGuard": {
     "token": "0x55d398326f99059fF775485246999027B3197955",
     "daily": "5",
