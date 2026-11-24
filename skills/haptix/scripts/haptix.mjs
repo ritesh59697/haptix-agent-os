@@ -245,7 +245,8 @@ async function readRule(a) {
     fail("need passkey-above <= ceiling <= daily");
   }
   const sym = await symbol(token);
-  const human = `daily ${a.daily} ${sym}, max ${a.ceiling} ${sym} per payment, passkey above ${a["passkey-above"]} ${sym}`;
+  const human = `daily ${a.daily} ${sym}, max ${a.ceiling} ${sym} per payment, ` +
+    (rule.passkeyAbove === rule.ceiling ? "no passkey needed" : `passkey above ${a["passkey-above"]} ${sym}`);
   return { token, rule, human };
 }
 
@@ -313,7 +314,7 @@ const commands = {
       : { x: zero, y: zero };
     await prepare(from, CFG.registry, enc.open(token, rule, delay, pk),
       `Open a Haptix guard: ${human}; raising any limit later waits ${a.delay}` +
-      (pk.x === zero ? "; no passkey yet." : "; passkey set now."));
+      (pk.x !== zero ? "; passkey set now." : rule.passkeyAbove === rule.ceiling ? "." : "; no passkey yet."));
   },
 
   // One preset that every holder can open with identical calldata (preset lives in config.json).
