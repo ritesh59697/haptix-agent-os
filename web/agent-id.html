@@ -142,8 +142,8 @@
     <section id="proof" class="section-alt">
       <div class="wrap proof-grid">
         <div class="proof-intro reveal">
-          <span class="kicker">Tested on mainnet</span>
-          <h2>Watch the vault say no.</h2>
+          <span class="kicker"><b>01</b>Tested on mainnet</span>
+          <h2>Watch the vault <em>say no.</em></h2>
           <p class="sub">The first real run through the Haptix vault, on <span id="runDate"></span>, with real <span class="symbol">USDT</span> on BNB Chain. Every step was previewed and confirmed in the Binance Agentic Wallet.</p>
           <ul class="proof-facts">
             <li><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-check"/></svg><span>Small payments to other <span class="mono">.ai</span> holders go straight through.</span></li>
@@ -168,8 +168,8 @@
       <div class="wrap">
         <div class="head-split reveal">
           <div>
-            <span class="kicker">How it works</span>
-            <h2>Three limits, and one rule about changing them.</h2>
+            <span class="kicker"><b>02</b>How it works</span>
+            <h2>Three limits, and <em>one rule</em> about changing them.</h2>
           </div>
           <p class="sub">Only the wallet that owns a guard can change it. Making it safer is instant. Making it looser has to wait, in public, where you can cancel it.</p>
         </div>
@@ -231,8 +231,8 @@
     <section class="section-alt">
       <div class="wrap">
         <div class="reveal" style="margin-bottom:48px">
-          <span class="kicker">Built on Agent ID</span>
-          <h2>Your <span class="mono" style="font-size:0.9em">.ai</span> name is the key.</h2>
+          <span class="kicker"><b>03</b>Built on Agent ID</span>
+          <h2>Your <span class="mono" style="font-size:0.9em">.ai</span> name <em>is the key.</em></h2>
         </div>
         <div class="bento">
           <div class="card b1 reveal">
@@ -265,8 +265,8 @@
     <section id="start">
       <div class="wrap">
         <div class="reveal" style="margin-bottom:48px">
-          <span class="kicker">Get started</span>
-          <h2>Three steps, from your own agent.</h2>
+          <span class="kicker"><b>04</b>Get started</span>
+          <h2>Three steps, from <em>your own agent.</em></h2>
           <p class="sub">Haptix runs through an AI agent that supports skills, such as Claude Code. Every transaction goes through Binance's preview and your confirmation.</p>
         </div>
         <div class="start-grid">
@@ -315,7 +315,7 @@
       <div class="wrap">
         <div class="wall-head reveal">
           <div>
-            <span class="kicker">Guarded agents</span>
+            <span class="kicker"><b>05</b>Guarded agents</span>
             <div class="count"><span id="count">–</span><small id="countText">badges claimed</small></div>
           </div>
           <a class="btn btn-ghost btn-sm" href="/join">Claim yours <svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
@@ -328,8 +328,8 @@
     <section>
       <div class="wrap">
         <div class="reveal">
-          <span class="kicker">Open and verified</span>
-          <h2>Nobody holds the keys. Not even us.</h2>
+          <span class="kicker"><b>06</b>Open and verified</span>
+          <h2>Nobody holds the keys. <em>Not even us.</em></h2>
           <p class="sub">Three contracts on BNB Chain, verified on BscScan, with the source on GitHub.</p>
         </div>
         <div class="contracts">
@@ -351,8 +351,8 @@
     <section class="section-alt">
       <div class="wrap faq">
         <div class="reveal">
-          <span class="kicker">Questions</span>
-          <h2>Straight answers.</h2>
+          <span class="kicker"><b>07</b>Questions</span>
+          <h2><em>Straight</em> answers.</h2>
         </div>
         <div class="faq-list">
           <details class="reveal"><summary>Is this made by Binance?<svg class="icon" aria-hidden="true"><use href="/icons.svg#i-chevron-down"/></svg></summary><p>No. Haptix is an independent, open-source project built for Binance Agentic Wallets and Agent ID. It isn't made by, endorsed by or affiliated with Binance.</p></details>
@@ -371,7 +371,7 @@
         <div class="band reveal">
           <div>
             <span class="kicker">Guarded Agent badge</span>
-            <h2>Give your agent limits it can't argue with.</h2>
+            <h2>Give your agent limits it <em>can't argue with.</em></h2>
             <p>Two transactions, gas only, and a soulbound badge that shows your limits on-chain.</p>
             <a class="btn btn-gold" href="/join" style="margin-top:28px">Get the badge <svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
           </div>
@@ -832,7 +832,7 @@
                 var hero = document.createElement('img'); hero.src = it.img; hero.alt = 'Guarded Agent badge #' + it.id + ', drawn on-chain';
                 $('badgeFrame').replaceChildren(hero);
                 $('badgeLabel').innerHTML = '<b></b> · live on-chain';
-                $('badgeLabel').querySelector('b').textContent = 'Guarded Agent #' + it.id;
+                $('badgeLabel').querySelector('b').textContent = 'No. ' + it.id;
               }
             });
             var slot = document.createElement('a'); slot.href = '/join'; slot.className = 'slot';
@@ -842,6 +842,21 @@
         });
       }).catch(function () {
         $('wallGrid').innerHTML = '<p class="empty">Couldn\'t reach BNB Chain just now. Refresh to try again.</p>';
+      });
+    })();
+  </script>
+  <script>
+    // Badge cards tilt toward the pointer and catch light. Off for touch and reduced motion.
+    (function () {
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      document.querySelectorAll('.badge-card').forEach(function (card) {
+        var glare = document.createElement('div'); glare.className = 'glare'; card.appendChild(glare);
+        card.addEventListener('pointermove', function (e) {
+          var r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+          card.style.transform = 'perspective(900px) rotateX(' + ((0.5 - y) * 10).toFixed(2) + 'deg) rotateY(' + ((x - 0.5) * 12).toFixed(2) + 'deg)';
+          card.style.setProperty('--gx', (x * 100).toFixed(1) + '%'); card.style.setProperty('--gy', (y * 100).toFixed(1) + '%');
+        });
+        card.addEventListener('pointerleave', function () { card.style.transform = ''; });
       });
     })();
   </script>

@@ -15,7 +15,7 @@
   <link rel="apple-touch-icon" href="/assets/favicon-256.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script>
     (function () { try { var t = localStorage.getItem('haptix-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
   </script>
@@ -39,13 +39,11 @@
   </header>
 
   <main>
-    <div class="hero join-hero arc-bg">
-      <div class="arc" aria-hidden="true"></div>
-      <div class="floor" aria-hidden="true"></div>
+    <div class="hero join-hero dhero">
       <div class="wrap">
         <div>
-          <span class="eyebrow"><svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-badge-check"/></svg>Free · gas only · for Agent ID holders</span>
-          <h1>Claim your <span class="gold">Guarded Agent</span> badge.</h1>
+          <p class="dh-eyebrow">Free · gas only · for Agent ID holders</p>
+          <h1>Claim your <em>Guarded Agent</em> badge.</h1>
           <p class="lede">Give your Agentic Wallet spending limits on BNB Chain, then claim a soulbound badge that shows them. It takes two transactions from your own wallet, costs a few cents of BNB in gas, and moves no money.</p>
           <div class="cta-row">
             <a class="btn btn-gold" href="#steps">Show me the steps <svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
@@ -76,8 +74,8 @@
     <section id="steps" class="section-alt">
       <div class="wrap">
         <div style="margin-bottom:48px">
-          <span class="kicker">Four steps</span>
-          <h2>From phone to badge.</h2>
+          <span class="kicker"><b>01</b>Four steps</span>
+          <h2>From phone <em>to badge.</em></h2>
           <p class="sub">Step 1 is on your phone. Steps 2 to 4 need a computer, because an Agentic Wallet is driven by an AI agent there. There's no website sign-in.</p>
         </div>
         <ol class="steps">
@@ -131,8 +129,8 @@
     <section id="check">
       <div class="wrap check-grid">
         <div>
-          <span class="kicker">Check your progress</span>
-          <h2>Where are you up to?</h2>
+          <span class="kicker"><b>02</b>Check your progress</span>
+          <h2>Where are <em>you up to?</em></h2>
           <p class="sub">Paste your Agentic Wallet address (your agent can show it). This only reads public chain data.</p>
         </div>
         <div class="panel">
@@ -149,8 +147,8 @@
     <section id="wall" class="section-alt">
       <div class="wrap">
         <div style="margin-bottom:40px">
-          <span class="kicker">Guarded agents</span>
-          <h2>The latest badges.</h2>
+          <span class="kicker"><b>03</b>Guarded agents</span>
+          <h2>The latest <em>badges.</em></h2>
           <p class="sub">Drawn on-chain from each holder's live guard.</p>
         </div>
         <div class="wall" id="wallGrid"><p class="empty">Loading from BNB Chain…</p></div>
@@ -326,6 +324,21 @@
           });
           list.classList.remove('hidden'); msg.textContent = '';
         }).catch(function () { msg.className = 'msg err'; msg.textContent = "Couldn't reach BNB Chain just now. Try again in a moment."; });
+      });
+    })();
+  </script>
+  <script>
+    // Badge cards tilt toward the pointer and catch light. Off for touch and reduced motion.
+    (function () {
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      document.querySelectorAll('.badge-card').forEach(function (card) {
+        var glare = document.createElement('div'); glare.className = 'glare'; card.appendChild(glare);
+        card.addEventListener('pointermove', function (e) {
+          var r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+          card.style.transform = 'perspective(900px) rotateX(' + ((0.5 - y) * 10).toFixed(2) + 'deg) rotateY(' + ((x - 0.5) * 12).toFixed(2) + 'deg)';
+          card.style.setProperty('--gx', (x * 100).toFixed(1) + '%'); card.style.setProperty('--gy', (y * 100).toFixed(1) + '%');
+        });
+        card.addEventListener('pointerleave', function () { card.style.transform = ''; });
       });
     })();
   </script>
