@@ -917,3 +917,6 @@ html[data-theme="light"] .copy { background: var(--surface); color: var(--text-m
 .badge-caption { padding: 14px 4px 0; }
 .badge-caption a { color: var(--accent-text); }
 .band .badge-card, .join-hero .badge-card { transform: none; }
+.badge-card { box-shadow: none; }
+.badge-card .badge-frame { box-shadow: 0 40px 80px -36px rgba(0, 0, 0, 0.75), 0 0 90px -30px rgba(240, 185, 11, 0.45); }
+html[data-theme="light"] .badge-card .badge-frame { box-shadow: 0 40px 80px -40px rgba(60, 40, 0, 0.45), 0 0 90px -30px rgba(240, 185, 11, 0.35); }
