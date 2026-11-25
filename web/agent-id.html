@@ -89,7 +89,7 @@
         <div class="grid">
           <div class="card"><span class="k">daily</span><h3>Daily cap</h3><p>The most your agent may pay out in a day.</p></div>
           <div class="card"><span class="k">ceiling</span><h3>Per-payment ceiling</h3><p>No single payment above this, ever.</p></div>
-          <div class="card"><span class="k">passkey-above</span><h3>Passkey threshold</h3><p>Once the vault is live, larger payments need your device passkey to co-sign.</p></div>
+          <div class="card"><span class="k">passkey-above</span><h3>Passkey threshold</h3><p>Payments above this need your device passkey to co-sign.</p></div>
         </div>
         <div class="rules" style="margin-top:14px">
           <div class="card rule-row"><span class="tag now">Instant</span><p>Lowering any limit, cancelling a queued change, or making increases wait longer.</p></div>
@@ -104,8 +104,12 @@
         <p class="sub">Plainly stated, so you know what you're getting today.</p>
         <div class="roadmap">
           <div class="road"><span class="when live">Live</span><div><b>Limits on-chain.</b> Open a guard and lower or raise its limits from your Agentic Wallet, with the delay protecting every increase.</div></div>
-          <div class="road"><span class="when">Next</span><div><b>The Haptix vault.</b> Payments sent through the vault are checked against your guard. They can go only to other Agent ID holders or recipients you allow, and need a passkey above your threshold.</div></div>
+          <div class="road"><span class="when live">Live</span><div><b>The Haptix vault.</b> Payments sent through the <a id="vaultLink" href="#" target="_blank" rel="noopener">vault</a> are checked against your guard. They can go only to other Agent ID holders or recipients you allow, and need a passkey above your threshold. Withdrawing waits out your delay, or happens at once with your passkey.</div></div>
+          <div class="road"><span class="when live">Live</span><div><b>The Guarded Agent badge.</b> A soulbound badge for holders who open a guard, drawn on-chain from their live limits. <a href="/join">Get yours</a>.</div></div>
         </div>
+        <h3 class="proof-head">Tested on mainnet</h3>
+        <p class="sub">The first real run through the vault, each step confirmed in the Binance Agentic Wallet.</p>
+        <ul class="proof" id="proofList"></ul>
       </div>
     </section>
 
@@ -137,7 +141,22 @@
       reg.textContent = C.registry.slice(0, 6) + '…' + C.registry.slice(-4);
       reg.href = C.explorer + '/address/' + C.registry + '#code';
 
-      var install = 'npx skills add ' + C.binanceSkillPath + '\nnpx skills add ' + C.skillPath;
+      document.getElementById('vaultLink').href = C.explorer + '/address/' + C.vault + '#code';
+      var proof = document.getElementById('proofList');
+      (C.vaultProof || []).forEach(function (p) {
+        var li = document.createElement('li');
+        var span = document.createElement('span');
+        span.textContent = p.label;
+        var a = document.createElement('a');
+        a.className = 'mono';
+        a.href = C.explorer + '/tx/' + p.tx;
+        a.target = '_blank'; a.rel = 'noopener';
+        a.textContent = p.tx.slice(0, 8) + '…' + p.tx.slice(-6);
+        li.appendChild(span); li.appendChild(a);
+        proof.appendChild(li);
+      });
+
+      var install ='npx skills add ' + C.binanceSkillPath + '\nnpx skills add ' + C.skillPath;
       document.getElementById('installCode').textContent = install;
       var btn = document.getElementById('copyBtn');
       btn.addEventListener('click', function () {

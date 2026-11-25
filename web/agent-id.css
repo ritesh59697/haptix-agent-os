@@ -217,3 +217,11 @@ details.more summary { cursor: pointer; color: var(--accent); font-size: 14px; }
   .badge-hero img { max-width: 200px; }
   .stat b { font-size: 34px; }
 }
+
+/* /agent-id: mainnet proof list */
+.proof-head { margin: 28px 0 4px; font-family: var(--font-heading); }
+.proof { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+.proof li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.proof li span { min-width: 0; }
+.proof li a { flex-shrink: 0; font-size: 13px; }
+@media (max-width: 560px) { .proof li { flex-direction: column; gap: 4px; } }
