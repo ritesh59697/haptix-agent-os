@@ -1,132 +1,338 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Haptix for Agent ID</title>
-  <meta name="description" content="On-chain spending limits for your Agentic Wallet, keyed to your Agent ID. Lowering a limit is instant; raising one waits out a delay you choose.">
-  <meta property="og:title" content="Haptix for Agent ID">
-  <meta property="og:description" content="Spending limits your agent can't talk its way past. On BNB Chain, keyed to your .ai name.">
-  <meta property="og:image" content="https://haptix-agent-os.vercel.app/og-image.png">
+  <title>Haptix · Spending limits your agent can't talk its way past</title>
+  <meta name="description" content="On-chain spending limits for your Binance Agentic Wallet, keyed to your Agent ID. Lowering a limit is instant; raising one waits out a delay you choose; big payments need your device passkey.">
+  <meta property="og:title" content="Haptix: limits your agent can't talk its way past">
+  <meta property="og:description" content="On-chain spending limits for Agentic Wallets, keyed to your .ai name. Tested on BNB Chain mainnet with real USDT.">
+  <meta property="og:image" content="https://haptix-agent-os.vercel.app/og-haptix.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://haptix-agent-os.vercel.app/og-haptix.png">
+  <meta name="theme-color" content="#0A0814">
   <link rel="icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/favicon-256.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('haptix-theme');
-        if (t) document.documentElement.setAttribute('data-theme', t);
-      } catch (e) {}
-    })();
+    (function () { try { var t = localStorage.getItem('haptix-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
   </script>
-  <link rel="stylesheet" href="/agent-id.css">
+  <link rel="stylesheet" href="/site.css">
 </head>
 <body>
-  <header>
+  <header class="site-head">
     <div class="wrap bar">
       <a class="brand" href="/"><img src="/assets/haptix-mark.svg" alt="">Haptix</a>
-      <nav class="nav">
-        <a href="/join">Get the badge</a>
-        <a class="hide-sm" href="#start">Get started</a>
+      <nav class="nav" aria-label="Main">
+        <a class="hide-sm" href="#proof">Proof</a>
         <a class="hide-sm" href="#how">How it works</a>
-        <a id="repoLink" href="#">GitHub</a>
-        <button class="theme-btn" id="themeBtn" aria-label="Switch light or dark theme">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <a class="hide-sm" href="#start">Get started</a>
+        <a class="hide-sm" id="repoLink" href="#">GitHub</a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch light or dark theme">
+          <svg class="icon theme-moon" aria-hidden="true"><use href="/icons.svg#i-moon"/></svg>
+          <svg class="icon theme-sun" aria-hidden="true"><use href="/icons.svg#i-sun"/></svg>
         </button>
+        <a class="btn btn-gold btn-sm" href="/join">Get the badge</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <div class="wrap hero">
-      <span class="eyebrow">For Agentic Wallets with an Agent ID</span>
-      <h1>Limits your agent can't talk its way past.</h1>
-      <p class="lede">Haptix keeps spending limits for your Agentic Wallet in a public contract on BNB Chain, keyed to your <span class="mono">.ai</span> name. Lowering a limit takes effect at once. Raising one waits out a delay you choose, so a hijacked prompt can't quietly lift it.</p>
-      <div class="status" aria-live="polite">
-        <span><span class="dot" id="liveDot"></span> <span id="liveText">Checking contract on BNB Chain…</span></span>
-        <span>Contract <a class="mono" id="regLink" href="#" target="_blank" rel="noopener"></a></span>
-        <span>Verified, open source, no admin keys</span>
+    <!-- Hero -->
+    <div class="hero">
+      <div class="wrap">
+        <div>
+          <span class="eyebrow"><svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-bot"/></svg>For Agentic Wallets with an Agent ID</span>
+          <h1>Limits your agent <span class="gold">can't talk its way past.</span></h1>
+          <p class="lede">Haptix keeps your Agentic Wallet's spending limits in a public contract on BNB Chain, keyed to your <span class="mono">.ai</span> name. Lowering a limit is instant. Raising one waits out a delay you choose. Big payments need your fingerprint.</p>
+          <div class="cta-row">
+            <a class="btn btn-gold" href="/join">Get the Guarded Agent badge <svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
+            <a class="btn btn-ghost" href="#proof">See it refuse a payment</a>
+          </div>
+          <div class="trust" aria-live="polite">
+            <span><span class="dot" id="liveDot"></span><span id="liveText">Checking BNB Chain…</span></span>
+            <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-file-check"/></svg>Verified on BscScan</span>
+            <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-lock"/></svg>No admin keys</span>
+            <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-code"/></svg>Open source</span>
+          </div>
+        </div>
+
+        <div class="badge-stage">
+          <div class="badge-card">
+            <div class="badge-frame" id="badgeFrame">
+              <div class="badge-fallback" id="badgeFallback">
+                <img src="/assets/haptix-mark.svg" alt="">
+                <span>Each badge is drawn on-chain from its holder's live limits.</span>
+              </div>
+            </div>
+            <div class="badge-caption">
+              <span id="badgeLabel">Guarded Agent badge</span>
+              <span class="chip"><svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-badge-check"/></svg>Soulbound</span>
+            </div>
+          </div>
+          <div class="float-tag t1" aria-hidden="true">
+            <span class="ic"><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-ban"/></svg></span>
+            <span><b id="tagRefused">Payment refused</b><span>Over the passkey threshold</span></span>
+          </div>
+          <div class="float-tag t2" aria-hidden="true">
+            <span class="ic"><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-fingerprint-pattern"/></svg></span>
+            <span><b>Passkey required</b><span>Your device co-signs</span></span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <section id="start">
-      <div class="wrap">
-        <h2>Get started in three steps</h2>
-        <p class="sub">Haptix runs through your own AI agent, such as Claude Code or another client Binance's skills support. There's no website sign-in. Every transaction goes through Binance's preview and your confirmation.</p>
-        <div class="steps">
-          <div class="step">
-            <div>
-              <h3>In the Binance App</h3>
-              <p>Claim your Agent ID (Web3 wallet → Agent ID). Then turn on <b>Developer Mode</b> for your Agentic Wallet (Agentic Wallet → Settings). Keep a little BNB in it for gas.</p>
-            </div>
+    <!-- Proof -->
+    <section id="proof" class="section-alt">
+      <div class="wrap proof-grid">
+        <div class="proof-intro reveal">
+          <span class="kicker">Tested on mainnet</span>
+          <h2>Watch the vault say no.</h2>
+          <p class="sub">The first real run through the Haptix vault, on <span id="runDate"></span>, with real <span class="symbol">USDT</span> on BNB Chain. Every step was previewed and confirmed in the Binance Agentic Wallet.</p>
+          <ul class="proof-facts">
+            <li><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-check"/></svg><span>Small payments to other <span class="mono">.ai</span> holders go straight through.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-ban"/></svg><span>Above your threshold, the vault refuses, whatever the agent was told.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-fingerprint-pattern"/></svg><span>Your device passkey is the only thing that lets it through.</span></li>
+          </ul>
+        </div>
+        <div class="console reveal">
+          <div class="console-head">
+            <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span>vault run · BNB Chain mainnet</span>
+            <button class="replay" id="replayBtn" type="button"><svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-clock"/></svg>Replay</button>
           </div>
-          <div class="step">
-            <div>
-              <h3>Add the two skills to your agent</h3>
-              <p>Binance's wallet skill signs in and sends. The Haptix skill builds the limit transactions.</p>
-              <div class="codebox">
-                <div class="code-head"><span>Terminal</span><button class="copy" type="button" id="copyBtn">Copy</button></div>
-                <pre class="code" id="installCode"></pre>
+          <ol class="run" id="run" aria-label="Steps of the mainnet vault run"></ol>
+          <p class="console-foot">A replay of the real run. Linked steps are real transactions on BscScan. The refused attempt was stopped before sending, so it has no transaction.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how">
+      <div class="wrap">
+        <div class="head-split reveal">
+          <div>
+            <span class="kicker">How it works</span>
+            <h2>Three limits, and one rule about changing them.</h2>
+          </div>
+          <p class="sub">Only the wallet that owns a guard can change it. Making it safer is instant. Making it looser has to wait, in public, where you can cancel it.</p>
+        </div>
+        <div class="how-grid">
+          <div class="card reveal">
+            <h3>Tighten now. Loosen later.</h3>
+            <p style="margin-top:8px">A hijacked prompt can't raise your limits and spend in the same moment, because every increase sits in a queue first.</p>
+            <div class="lanes">
+              <div class="lane now">
+                <div class="lane-top"><b><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-trending-down"/></svg>Lower a limit</b><span class="tag now">Instant</span></div>
+                <div class="track" aria-hidden="true">
+                  <div class="node done"><i></i>Ask</div>
+                  <div class="bar-line fill"></div>
+                  <div class="node done"><i></i>Applied</div>
+                </div>
+                <p>Lowering a limit, cancelling a queued change, or making increases wait longer all apply right away.</p>
+              </div>
+              <div class="lane wait">
+                <div class="lane-top"><b><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-trending-up"/></svg>Raise a limit</b><span class="tag wait">Delayed</span></div>
+                <div class="track" aria-hidden="true">
+                  <div class="node done"><i></i>Queued</div>
+                  <div class="bar-line dash"></div>
+                  <div class="node"><i></i>Your delay</div>
+                  <div class="bar-line"></div>
+                  <div class="node"><i></i>Applied</div>
+                </div>
+                <p>Raising a limit or changing the passkey is queued on-chain, visible to anyone, and cancellable until the delay you set has passed.</p>
               </div>
             </div>
           </div>
-          <div class="step">
+          <div class="limits">
+            <div class="limit reveal">
+              <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-clock"/></svg></span>
+              <div><h3>Daily cap</h3><p>The most your agent can pay out in a day.</p></div>
+              <div class="val"><span id="vDaily">–</span><small>a day</small></div>
+            </div>
+            <div class="limit reveal">
+              <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-ban"/></svg></span>
+              <div><h3>Per-payment ceiling</h3><p>No single payment above this, ever.</p></div>
+              <div class="val"><span id="vCeiling">–</span><small>max</small></div>
+            </div>
+            <div class="limit reveal">
+              <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-fingerprint-pattern"/></svg></span>
+              <div><h3>Passkey threshold</h3><p>Above this, your device has to co-sign.</p></div>
+              <div class="val"><span id="vPasskey">–</span><small>above</small></div>
+            </div>
+            <div class="limit reveal">
+              <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-badge-check"/></svg></span>
+              <div><h3>Trusted recipients</h3><p>Other Agent ID holders, plus any address you allow after the delay.</p></div>
+              <div class="val"><span class="mono">.ai</span><small>by default</small></div>
+            </div>
+            <p class="limits-note" id="limitsNote">Values shown are the starter guard. You set your own.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Agent ID -->
+    <section class="section-alt">
+      <div class="wrap">
+        <div class="reveal" style="margin-bottom:48px">
+          <span class="kicker">Built on Agent ID</span>
+          <h2>Your <span class="mono" style="font-size:0.9em">.ai</span> name is the key.</h2>
+        </div>
+        <div class="bento">
+          <div class="card b1 reveal">
+            <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-shield-check"/></svg></span>
+            <h3>Only Agent ID holders get in</h3>
+            <p>Opening a guard, depositing to the vault and claiming the badge all check your Agent ID on-chain. There's no allow-list for anyone to edit.</p>
+          </div>
+          <div class="card b2 reveal">
+            <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-wallet"/></svg></span>
+            <h3>Agents pay agents</h3>
+            <p>The vault pays other <span class="mono">.ai</span> holders by default, so Agent ID becomes the trust list for agent-to-agent payments.</p>
+          </div>
+          <div class="card b3 reveal">
             <div>
-              <h3>Ask your agent</h3>
-              <p>It shows you Binance's preview first, and nothing is sent until you say yes.</p>
-              <div class="quote">Open a Haptix guard for USDT: 5 a day, at most 2 per payment, passkey above 1, and make any increase wait 24 hours.</div>
+              <h3>No relayer. No website sign-in.</h3>
+              <p style="margin-top:8px">Every transaction comes straight from your own Agentic Wallet.</p>
+            </div>
+            <div class="flow" aria-label="Your agent, then Binance's preview, then your yes, then BNB Chain">
+              <span>Your agent</span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg>
+              <span>Binance preview</span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg>
+              <span>Your yes</span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg>
+              <span>BNB Chain</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="how">
+    <!-- Get started -->
+    <section id="start">
       <div class="wrap">
-        <h2>How it works</h2>
-        <p class="sub">Each guard sets three limits per token. Only Agent ID holders can open a guard, and only the wallet that owns a guard can change it.</p>
-        <div class="grid">
-          <div class="card"><span class="k">daily</span><h3>Daily cap</h3><p>The most your agent may pay out in a day.</p></div>
-          <div class="card"><span class="k">ceiling</span><h3>Per-payment ceiling</h3><p>No single payment above this, ever.</p></div>
-          <div class="card"><span class="k">passkey-above</span><h3>Passkey threshold</h3><p>Payments above this need your device passkey to co-sign.</p></div>
+        <div class="reveal" style="margin-bottom:48px">
+          <span class="kicker">Get started</span>
+          <h2>Three steps, from your own agent.</h2>
+          <p class="sub">Haptix runs through an AI agent that supports skills, such as Claude Code. Every transaction goes through Binance's preview and your confirmation.</p>
         </div>
-        <div class="rules" style="margin-top:14px">
-          <div class="card rule-row"><span class="tag now">Instant</span><p>Lowering any limit, cancelling a queued change, or making increases wait longer.</p></div>
-          <div class="card rule-row"><span class="tag wait">Delayed</span><p>Raising a limit or changing the passkey. It's queued on-chain, visible, and cancellable until your delay passes.</p></div>
+        <div class="start-grid">
+          <ol class="steps">
+            <li class="reveal">
+              <div>
+                <h3>In the Binance App</h3>
+                <p>Claim your Agent ID (<span id="claimPath"></span>). Then turn on <b>Developer Mode</b> in your Agentic Wallet's settings, and keep a little BNB in it for gas.</p>
+              </div>
+            </li>
+            <li class="reveal">
+              <div>
+                <h3>Add the two skills to your agent</h3>
+                <p>Binance's wallet skill signs in and sends. The Haptix skill builds the limit transactions.</p>
+                <div class="codebox">
+                  <div class="code-head"><span>Terminal</span><button class="copy" type="button" id="copyBtn"><svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-copy"/></svg><span>Copy</span></button></div>
+                  <pre class="code" id="installCode"></pre>
+                </div>
+              </div>
+            </li>
+            <li class="reveal">
+              <div>
+                <h3>Ask your agent</h3>
+                <p>It shows you Binance's preview first. Nothing is sent until you say yes.</p>
+                <div class="quote" id="askQuote"></div>
+              </div>
+            </li>
+          </ol>
+          <aside class="quick reveal" aria-label="Quickest start">
+            <span class="kicker" style="margin:0">Quickest start</span>
+            <h3>Claim the Guarded Agent badge</h3>
+            <p>One prompt opens a starter guard and claims a soulbound badge that shows your live limits.</p>
+            <ul>
+              <li><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-check"/></svg>Two transactions from your own wallet</li>
+              <li><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-check"/></svg>Gas only, no deposit</li>
+              <li><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-check"/></svg>Binance's preview before each one</li>
+            </ul>
+            <a class="btn btn-gold" href="/join">Start at /join <svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
+          </aside>
         </div>
       </div>
     </section>
 
-    <section>
+    <!-- Wall -->
+    <section class="section-alt" id="wall">
       <div class="wrap">
-        <h2>What's live, what's next</h2>
-        <p class="sub">Plainly stated, so you know what you're getting today.</p>
-        <div class="roadmap">
-          <div class="road"><span class="when live">Live</span><div><b>Limits on-chain.</b> Open a guard and lower or raise its limits from your Agentic Wallet, with the delay protecting every increase.</div></div>
-          <div class="road"><span class="when live">Live</span><div><b>The Haptix vault.</b> Payments sent through the <a id="vaultLink" href="#" target="_blank" rel="noopener">vault</a> are checked against your guard. They can go only to other Agent ID holders or recipients you allow, and need a passkey above your threshold. Withdrawing waits out your delay, or happens at once with your passkey.</div></div>
-          <div class="road"><span class="when live">Live</span><div><b>The Guarded Agent badge.</b> A soulbound badge for holders who open a guard, drawn on-chain from their live limits. <a href="/join">Get yours</a>.</div></div>
+        <div class="wall-head reveal">
+          <div>
+            <span class="kicker">Guarded agents</span>
+            <div class="count"><span id="count">–</span><small id="countText">badges claimed</small></div>
+          </div>
+          <a class="btn btn-ghost btn-sm" href="/join">Claim yours <svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
         </div>
-        <h3 class="proof-head">Tested on mainnet</h3>
-        <p class="sub">The first real run through the vault, each step confirmed in the Binance Agentic Wallet.</p>
-        <ul class="proof" id="proofList"></ul>
+        <div class="wall" id="wallGrid"><p class="empty">Loading from BNB Chain…</p></div>
       </div>
     </section>
 
+    <!-- Contracts -->
     <section>
       <div class="wrap">
+        <div class="reveal">
+          <span class="kicker">Open and verified</span>
+          <h2>Nobody holds the keys. Not even us.</h2>
+          <p class="sub">Three contracts on BNB Chain, verified on BscScan, with the source on GitHub.</p>
+        </div>
+        <div class="contracts">
+          <div class="contract reveal"><b>Registry</b><p>Your guard: the limits, the delay and the queue of pending changes.</p><a id="regLink" href="#" target="_blank" rel="noopener"></a></div>
+          <div class="contract reveal"><b>Vault</b><p>Enforces your guard on every payment, and checks your passkey on-chain.</p><a id="vaultLink" href="#" target="_blank" rel="noopener"></a></div>
+          <div class="contract reveal"><b>Badge</b><p>The soulbound Guarded Agent badge, drawn on-chain from your live guard.</p><a id="badgeLink" href="#" target="_blank" rel="noopener"></a></div>
+        </div>
+        <div class="no-admin reveal" aria-label="What the contracts don't have">
+          <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-x"/></svg>No owner</span>
+          <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-x"/></svg>No admin</span>
+          <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-x"/></svg>No pause</span>
+          <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-x"/></svg>No upgrades</span>
+          <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-x"/></svg>No fees</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section-alt">
+      <div class="wrap faq">
+        <div class="reveal">
+          <span class="kicker">Questions</span>
+          <h2>Straight answers.</h2>
+        </div>
+        <div class="faq-list">
+          <details class="reveal"><summary>Is this made by Binance?<svg class="icon" aria-hidden="true"><use href="/icons.svg#i-chevron-down"/></svg></summary><p>No. Haptix is an independent, open-source project built for Binance Agentic Wallets and Agent ID. It isn't made by, endorsed by or affiliated with Binance.</p></details>
+          <details class="reveal"><summary>What does trying it cost?<svg class="icon" aria-hidden="true"><use href="/icons.svg#i-chevron-down"/></svg></summary><p>Opening the starter guard and claiming the badge cost only gas, a few cents of BNB. Neither one deposits or moves any of your tokens.</p></details>
+          <details class="reveal"><summary>Can Haptix move my money?<svg class="icon" aria-hidden="true"><use href="/icons.svg#i-chevron-down"/></svg></summary><p>No. The contracts have no owner or admin. Only you can pay from or withdraw your vault balance, and only within your own limits.</p></details>
+          <details class="reveal"><summary>What if my agent gets prompt-injected?<svg class="icon" aria-hidden="true"><use href="/icons.svg#i-chevron-down"/></svg></summary><p>That's the case Haptix is built for. A prompt can't change what the contract enforces. Raising a limit has to wait out your delay in public, and payments above your threshold need your device passkey.</p></details>
+          <details class="reveal"><summary>Why do I need Developer Mode?<svg class="icon" aria-hidden="true"><use href="/icons.svg#i-chevron-down"/></svg></summary><p>Binance's Agentic Wallet only calls custom contracts like Haptix when Developer Mode is on. You still see Binance's preview and confirm every transaction.</p></details>
+          <details class="reveal"><summary>Has it been audited?<svg class="icon" aria-hidden="true"><use href="/icons.svg#i-chevron-down"/></svg></summary><p>No. It's experimental, tested with Foundry and on mainnet, but not externally audited. Keep only small amounts in any agent-controlled wallet.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA + warning -->
+    <section>
+      <div class="wrap" style="display:grid;gap:24px">
+        <div class="band reveal">
+          <div>
+            <h2>Give your agent limits it can't argue with.</h2>
+            <p>Two transactions, gas only, and a badge that shows your limits on-chain.</p>
+          </div>
+          <a class="btn btn-gold" href="/join">Get the badge <svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
+        </div>
         <div class="warn" role="note">
-          <strong>Risk warning</strong>
-          Haptix is experimental and hasn't been externally audited. Limits are only as good as the contract and the values you set. AI agents can make mistakes. Keep only what you can afford to lose in any agent-controlled wallet, and check every preview before you confirm.
+          <svg class="icon" aria-hidden="true"><use href="/icons.svg#i-shield-check"/></svg>
+          <div><strong>Risk warning</strong>Haptix is experimental and hasn't been externally audited. Limits are only as good as the contract and the values you set, and AI agents can make mistakes. Keep only what you can afford to lose in any agent-controlled wallet, and check every preview before you confirm. Haptix will never ask for your seed phrase, private key or API secret.</div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>
+  <footer class="site-foot">
     <div class="wrap row">
-      <span>Haptix. Open source under MIT.</span>
-      <span><a id="repoLink2" href="#">Source code</a></span>
+      <span>Haptix · Open source under MIT · Not affiliated with Binance.</span>
+      <span><a href="/join">Get the badge</a> · <a id="repoLink2" href="#">Source code</a></span>
     </div>
   </footer>
 
@@ -134,46 +340,86 @@
   <script>
     (function () {
       var C = window.HAPTIX_AGENT_ID;
+      var $ = function (id) { return document.getElementById(id); };
+      var short = function (a) { return a.slice(0, 6) + '…' + a.slice(-4); };
+      var pad = function (n) { return BigInt(n).toString(16).padStart(64, '0'); };
+      var strip = function (h) { return h.replace(/^0x/, ''); };
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var icon = function (name, cls) {
+        return '<svg class="icon' + (cls ? ' ' + cls : '') + '" aria-hidden="true"><use href="/icons.svg#i-' + name + '"/></svg>';
+      };
 
-      document.getElementById('repoLink').href = C.repo;
-      document.getElementById('repoLink2').href = C.repo;
-      var reg = document.getElementById('regLink');
-      reg.textContent = C.registry.slice(0, 6) + '…' + C.registry.slice(-4);
-      reg.href = C.explorer + '/address/' + C.registry + '#code';
-
-      document.getElementById('vaultLink').href = C.explorer + '/address/' + C.vault + '#code';
-      var proof = document.getElementById('proofList');
-      (C.vaultProof || []).forEach(function (p) {
-        var li = document.createElement('li');
-        var span = document.createElement('span');
-        span.textContent = p.label;
-        var a = document.createElement('a');
-        a.className = 'mono';
-        a.href = C.explorer + '/tx/' + p.tx;
-        a.target = '_blank'; a.rel = 'noopener';
-        a.textContent = p.tx.slice(0, 8) + '…' + p.tx.slice(-6);
-        li.appendChild(span); li.appendChild(a);
-        proof.appendChild(li);
+      // ---- static text from config
+      $('repoLink').href = C.repo; $('repoLink2').href = C.repo;
+      $('claimPath').textContent = C.agentIdClaimPath;
+      $('runDate').textContent = C.vaultRunDate;
+      [['regLink', C.registry], ['vaultLink', C.vault], ['badgeLink', C.badge]].forEach(function (p) {
+        $(p[0]).innerHTML = short(p[1]) + icon('external-link', 'icon-sm');
+        $(p[0]).href = C.explorer + '/address/' + p[1] + '#code';
       });
-
-      var install ='npx skills add ' + C.binanceSkillPath + '\nnpx skills add ' + C.skillPath;
-      document.getElementById('installCode').textContent = install;
-      var btn = document.getElementById('copyBtn');
-      btn.addEventListener('click', function () {
+      var install = 'npx skills add ' + C.binanceSkillPath + '\nnpx skills add ' + C.skillPath;
+      $('installCode').textContent = install;
+      var copyBtn = $('copyBtn'), copyLabel = copyBtn.querySelector('span');
+      copyBtn.addEventListener('click', function () {
         navigator.clipboard.writeText(install).then(function () {
-          btn.textContent = 'Copied';
-          setTimeout(function () { btn.textContent = 'Copy'; }, 1400);
-        }, function () { btn.textContent = 'Select & copy'; });
+          copyLabel.textContent = 'Copied'; setTimeout(function () { copyLabel.textContent = 'Copy'; }, 1400);
+        }, function () { copyLabel.textContent = 'Select & copy'; });
       });
-
-      document.getElementById('themeBtn').addEventListener('click', function () {
-        var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-        var next = cur === 'dark' ? 'light' : 'dark';
+      $('themeBtn').addEventListener('click', function () {
+        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
         document.documentElement.setAttribute('data-theme', next);
         try { localStorage.setItem('haptix-theme', next); } catch (e) {}
       });
 
-      // Live check: the registry has code and points at an Agent ID contract.
+      // ---- the vault run, rendered from config; the token symbol comes from chain
+      var ICON = { paid: 'check', refused: 'ban', passkey: 'fingerprint-pattern', withdrawn: 'wallet' };
+      var refused = C.vaultRun.filter(function (s) { return s.outcome === 'refused'; })[0];
+      function renderRun(sym) {
+        var run = $('run'); run.innerHTML = '';
+        C.vaultRun.forEach(function (s) {
+          var li = document.createElement('li'); li.className = s.outcome;
+          var proof = s.tx
+            ? '<a href="' + C.explorer + '/tx/' + s.tx + '" target="_blank" rel="noopener">' + s.tx.slice(0, 8) + '…' + s.tx.slice(-4) + '</a>'
+            : '<em>not sent</em>';
+          li.innerHTML = '<span class="st">' + icon(ICON[s.outcome]) + '</span>' +
+            '<div><div class="t"></div><div class="n"></div></div>' +
+            '<div class="amt"><span></span>' + proof + '</div>';
+          li.querySelector('.t').textContent = s.title;
+          li.querySelector('.n').textContent = s.note;
+          li.querySelector('.amt span').textContent = (s.amount + ' ' + sym).trim();
+          run.appendChild(li);
+        });
+        if (refused) $('tagRefused').textContent = (refused.amount + ' ' + sym).trim() + ' refused';
+        if (sym) document.querySelectorAll('.symbol').forEach(function (el) { el.textContent = sym; });
+      }
+      var timers = [];
+      function play() {
+        timers.forEach(clearTimeout); timers = [];
+        var rows = $('run').children;
+        for (var i = 0; i < rows.length; i++) rows[i].classList.remove('on');
+        for (var j = 0; j < rows.length; j++) (function (row, k) {
+          timers.push(setTimeout(function () { row.classList.add('on'); }, reduced ? 0 : 350 + k * 900));
+        })(rows[j], j);
+      }
+      $('replayBtn').addEventListener('click', play);
+
+      // ---- reveal on scroll, and start the replay when the console is seen
+      var played = false;
+      if ('IntersectionObserver' in window && !reduced) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            e.target.classList.add('in'); io.unobserve(e.target);
+            if (e.target.classList.contains('console') && !played) { played = true; play(); }
+          });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+        played = true;
+      }
+
+      // ---- chain
       function rpc(method, params) {
         return fetch(C.rpcUrl, {
           method: 'POST', headers: { 'content-type': 'application/json' },
@@ -182,20 +428,85 @@
           if (j.error) throw new Error(j.error.message); return j.result;
         });
       }
-      var dot = document.getElementById('liveDot'), txt = document.getElementById('liveText');
-      fetch(C.abiUrl).then(function (r) { return r.json(); }).then(function (abi) {
-        return Promise.all([
-          rpc('eth_chainId', []),
-          rpc('eth_call', [{ to: C.registry, data: abi.registry.agentId }, 'latest'])
-        ]);
+      var call = function (to, data) { return rpc('eth_call', [{ to: to, data: data }, 'latest']); };
+      function decodeString(hex) {
+        var h = strip(hex), off = Number(BigInt('0x' + h.slice(0, 64))) * 2;
+        var len = Number(BigInt('0x' + h.slice(off, off + 64)));
+        var bytes = new Uint8Array(len);
+        for (var i = 0; i < len; i++) bytes[i] = parseInt(h.substr(off + 64 + i * 2, 2), 16);
+        return new TextDecoder().decode(bytes);
+      }
+      function badgeImage(uri) {
+        var json = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(uri.split(',')[1]), function (c) { return c.charCodeAt(0); })));
+        return json.image;
+      }
+
+      var g = C.starterGuard;
+      var abiP = fetch(C.abiUrl).then(function (r) { return r.json(); });
+
+      // Token symbol (the vault run used the same token as the starter guard).
+      abiP.then(function (abi) { return call(g.token, abi.erc20.symbol).then(decodeString); }).then(function (sym) {
+        renderRun(sym);
+        $('vDaily').textContent = g.daily + ' ' + sym;
+        $('vCeiling').textContent = g.ceiling + ' ' + sym;
+        $('vPasskey').textContent = g.passkeyAbove + ' ' + sym;
+        $('limitsNote').textContent = 'Values shown are the starter guard, with increases waiting ' + g.delay + '. You set your own.';
+        $('askQuote').textContent = 'Open a Haptix guard for ' + sym + ': ' + g.daily + ' a day, at most ' + g.ceiling +
+          ' per payment, passkey above ' + g.passkeyAbove + ', and make any increase wait ' + g.delay + '.';
+      }).catch(function () {
+        renderRun('');
+        $('askQuote').textContent = 'Open a Haptix guard with a daily cap, a per-payment ceiling, a passkey threshold, and a delay on any increase.';
+      }).then(function () { if (played) play(); });
+
+      // Live check: right chain, and the registry points at an Agent ID contract.
+      abiP.then(function (abi) {
+        return Promise.all([rpc('eth_chainId', []), call(C.registry, abi.registry.agentId)]);
       }).then(function (r) {
         if (parseInt(r[0], 16) !== C.chainId) throw new Error('wrong chain');
-        var nft = '0x' + r[1].slice(-40);
-        if (!/^0x[0-9a-f]{40}$/i.test(nft) || /^0x0+$/.test(nft)) throw new Error('no Agent ID link');
-        dot.classList.add('ok');
-        txt.textContent = 'Live on ' + C.chainName + ', gated by the Agent ID contract';
+        if (/^0+$/.test(strip(r[1]).slice(-40))) throw new Error('no Agent ID link');
+        $('liveDot').classList.add('ok');
+        $('liveText').textContent = 'Live on ' + C.chainName;
+      }).catch(function () { $('liveText').textContent = C.chainName + ' mainnet'; });
+
+      // Latest badge in the hero, and the wall.
+      abiP.then(function (abi) {
+        return call(C.badge, abi.badge.totalSupply).then(function (r) {
+          var n = Number(BigInt(r));
+          $('count').textContent = n;
+          $('countText').textContent = n === 1 ? 'badge claimed' : 'badges claimed';
+          var grid = $('wallGrid');
+          if (n === 0) { grid.innerHTML = '<p class="empty">No badges yet. Yours can be the first.</p>'; return; }
+          var ids = [];
+          for (var i = n; i >= 1 && ids.length < 5; i--) ids.push(i);
+          return Promise.all(ids.map(function (id) {
+            return Promise.all([
+              call(C.badge, abi.badge.holderAt + pad(id - 1)),
+              call(C.badge, abi.badge.tokenURI + pad(id)).then(decodeString)
+            ]).then(function (r) { return { id: id, holder: '0x' + strip(r[0]).slice(24), img: badgeImage(r[1]) }; },
+                    function () { return null; });
+          })).then(function (items) {
+            grid.innerHTML = '';
+            items.forEach(function (it) {
+              if (!it) return;
+              var a = document.createElement('a');
+              a.href = C.explorer + '/address/' + it.holder; a.target = '_blank'; a.rel = 'noopener';
+              var img = document.createElement('img'); img.src = it.img; img.alt = 'Guarded Agent #' + it.id; img.loading = 'lazy';
+              var who = document.createElement('span'); who.className = 'who'; who.textContent = '#' + it.id + ' · ' + short(it.holder);
+              a.append(img, who); grid.append(a);
+              if (it.id === n) {
+                var hero = document.createElement('img'); hero.src = it.img; hero.alt = 'Guarded Agent badge #' + it.id + ', drawn on-chain';
+                $('badgeFrame').replaceChildren(hero);
+                $('badgeLabel').innerHTML = '<b></b> · live on-chain';
+                $('badgeLabel').querySelector('b').textContent = 'Guarded Agent #' + it.id;
+              }
+            });
+            var slot = document.createElement('a'); slot.href = '/join'; slot.className = 'slot';
+            slot.textContent = 'Your badge here';
+            grid.append(slot);
+          });
+        });
       }).catch(function () {
-        txt.textContent = "Couldn't reach BNB Chain just now. The contract link still works.";
+        $('wallGrid').innerHTML = '<p class="empty">Couldn\'t reach BNB Chain just now. Refresh to try again.</p>';
       });
     })();
   </script>
