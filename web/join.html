@@ -1,62 +1,91 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Join Haptix</title>
+  <title>Join Haptix · Claim your Guarded Agent badge</title>
   <meta name="description" content="Give your Agentic Wallet on-chain spending limits and claim the soulbound Haptix Guarded Agent badge. Free, gas only, moves no money.">
   <meta property="og:title" content="Claim your Haptix Guarded Agent badge">
   <meta property="og:description" content="Free, gas only. Give your agent spending limits it can't talk its way past, and get a soulbound badge that shows them.">
-  <meta property="og:image" content="https://haptix-agent-os.vercel.app/og-image.png">
+  <meta property="og:image" content="https://haptix-agent-os.vercel.app/og-haptix.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://haptix-agent-os.vercel.app/og-haptix.png">
+  <meta name="theme-color" content="#0A0814">
   <link rel="icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/favicon-256.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <script>
     (function () { try { var t = localStorage.getItem('haptix-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
   </script>
-  <link rel="stylesheet" href="/agent-id.css">
+  <link rel="stylesheet" href="/site.css">
 </head>
 <body>
-  <header>
+  <header class="site-head">
     <div class="wrap bar">
-      <a class="brand" href="/agent-id"><img src="/assets/haptix-mark.svg" alt="">Haptix</a>
-      <nav class="nav">
+      <a class="brand" href="/"><img src="/assets/haptix-mark.svg" alt="">Haptix</a>
+      <nav class="nav" aria-label="Main">
         <a class="hide-sm" href="#steps">Steps</a>
+        <a class="hide-sm" href="#check">Check progress</a>
         <a class="hide-sm" href="#wall">Guarded agents</a>
-        <a href="/agent-id">How it works</a>
-        <button class="theme-btn" id="themeBtn" aria-label="Switch light or dark theme">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <a href="/">How it works</a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch light or dark theme">
+          <svg class="icon theme-moon" aria-hidden="true"><use href="/icons.svg#i-moon"/></svg>
+          <svg class="icon theme-sun" aria-hidden="true"><use href="/icons.svg#i-sun"/></svg>
         </button>
       </nav>
     </div>
   </header>
 
   <main>
-    <div class="wrap hero badge-hero">
-      <div>
-        <span class="eyebrow">Free · gas only · for Agent ID holders</span>
-        <h1>Claim your Guarded Agent badge.</h1>
-        <p class="lede">Give your Agentic Wallet spending limits on BNB Chain, then claim a soulbound badge that shows them. It takes two transactions from your own wallet, costs a few cents of BNB in gas, and moves no money.</p>
-        <div class="stat" aria-live="polite">
-          <b id="count">–</b><span id="countText">badges claimed so far</span>
+    <div class="hero join-hero">
+      <div class="wrap">
+        <div>
+          <span class="eyebrow"><svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-badge-check"/></svg>Free · gas only · for Agent ID holders</span>
+          <h1>Claim your <span class="gold">Guarded Agent</span> badge.</h1>
+          <p class="lede">Give your Agentic Wallet spending limits on BNB Chain, then claim a soulbound badge that shows them. It takes two transactions from your own wallet, costs a few cents of BNB in gas, and moves no money.</p>
+          <div class="cta-row">
+            <a class="btn btn-gold" href="#steps">Show me the steps <svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
+            <a class="btn btn-ghost" href="#check">Check my progress</a>
+          </div>
+          <div class="stat" aria-live="polite">
+            <b id="count">–</b><span id="countText">badges claimed so far</span>
+          </div>
+        </div>
+        <div class="badge-stage">
+          <div class="badge-card">
+            <div class="badge-frame">
+              <img id="heroBadge" alt="A Haptix Guarded Agent badge" hidden>
+              <div class="badge-fallback">
+                <img src="/assets/haptix-mark.svg" alt="">
+                <span>Each badge is drawn on-chain from its holder's live limits.</span>
+              </div>
+            </div>
+            <div class="badge-caption">
+              <span>The latest badge, live on-chain</span>
+              <span class="chip"><svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-badge-check"/></svg>Soulbound</span>
+            </div>
+          </div>
         </div>
       </div>
-      <img id="heroBadge" alt="A Haptix Guarded Agent badge" hidden>
     </div>
 
-    <section id="steps">
+    <section id="steps" class="section-alt">
       <div class="wrap">
-        <h2>Four steps</h2>
-        <p class="sub">Step 1 is on your phone. Steps 2 to 4 need a computer, because an Agentic Wallet is driven by an AI agent there. There's no website sign-in.</p>
-        <div class="steps">
-          <div class="step">
+        <div style="margin-bottom:48px">
+          <span class="kicker">Four steps</span>
+          <h2>From phone to badge.</h2>
+          <p class="sub">Step 1 is on your phone. Steps 2 to 4 need a computer, because an Agentic Wallet is driven by an AI agent there. There's no website sign-in.</p>
+        </div>
+        <ol class="steps">
+          <li>
             <div>
               <h3>Claim your Agent ID</h3>
               <p>In the Binance App: <b id="claimPath"></b>. Pick a name such as <span class="mono">yourname.ai</span> and claim it. It's free, one per verified account, and can't be transferred. <a id="annLink" href="#" target="_blank" rel="noopener">Binance's announcement</a></p>
             </div>
-          </div>
-          <div class="step">
+          </li>
+          <li>
             <div>
               <h3>Add the skills to your AI agent</h3>
               <p>Use an agent that supports skills, such as Claude Code. Binance's wallet skill signs in and sends. The Haptix skill builds the transactions.</p>
@@ -64,17 +93,17 @@
                 <div class="code-head"><span>Terminal</span><button class="copy" type="button" data-copy="installCode">Copy</button></div>
                 <pre class="code" id="installCode"></pre>
               </div>
-              <p style="margin-top:10px">Then ask your agent to <b>sign in to my Binance Agentic Wallet</b>. It shows a Binance link; open it in the Binance App and approve.</p>
+              <p>Then ask your agent to <b>sign in to my Binance Agentic Wallet</b>. It shows a Binance link; open it in the Binance App and approve.</p>
             </div>
-          </div>
-          <div class="step">
+          </li>
+          <li>
             <div>
               <h3>Turn on Developer Mode and add gas</h3>
               <p>In the Binance App, open your Agentic Wallet's settings and turn on <b>Developer Mode</b>. Custom contracts like Haptix only work with it on.</p>
               <p>Put a little BNB on <b>BNB Chain</b> in your Agentic Wallet for gas. 0.0005 BNB covers both steps with room to spare.</p>
             </div>
-          </div>
-          <div class="step">
+          </li>
+          <li>
             <div>
               <h3>Paste this to your agent</h3>
               <p>Your agent shows you Binance's preview for each transaction. Nothing is sent until you say yes.</p>
@@ -82,29 +111,32 @@
                 <div class="code-head"><span>Prompt</span><button class="copy" type="button" data-copy="promptCode">Copy</button></div>
                 <pre class="code" id="promptCode"></pre>
               </div>
-              <p style="margin-top:10px" id="starterText"></p>
+              <p id="starterText"></p>
               <details class="more">
                 <summary>Your agent doesn't have the Haptix skill?</summary>
-                <p style="margin-top:10px">Use this instead. It asks Binance's wallet skill to call the two contracts directly, with the same preview and confirmation.</p>
+                <p>Use this instead. It asks Binance's wallet skill to call the two contracts directly, with the same preview and confirmation.</p>
                 <div class="codebox prompt-box">
                   <div class="code-head"><span>Prompt</span><button class="copy" type="button" data-copy="rawCode">Copy</button></div>
                   <pre class="code" id="rawCode">Loading from BNB Chain…</pre>
                 </div>
               </details>
             </div>
-          </div>
-        </div>
+          </li>
+        </ol>
       </div>
     </section>
 
     <section id="check">
-      <div class="wrap">
-        <h2>Check your progress</h2>
-        <p class="sub">Paste your Agentic Wallet address (your agent can show it). This only reads public chain data.</p>
+      <div class="wrap check-grid">
+        <div>
+          <span class="kicker">Check your progress</span>
+          <h2>Where are you up to?</h2>
+          <p class="sub">Paste your Agentic Wallet address (your agent can show it). This only reads public chain data.</p>
+        </div>
         <div class="panel">
           <form class="field" id="checkForm">
             <input id="addr" placeholder="0x…" autocomplete="off" spellcheck="false" aria-label="Your Agentic Wallet address">
-            <button class="btn" type="submit">Check</button>
+            <button class="btn btn-gold" type="submit">Check</button>
           </form>
           <ul class="checks hidden" id="checks"></ul>
           <p class="msg" id="checkMsg" role="status"></p>
@@ -112,10 +144,13 @@
       </div>
     </section>
 
-    <section id="wall">
+    <section id="wall" class="section-alt">
       <div class="wrap">
-        <h2>Guarded agents</h2>
-        <p class="sub">The latest badges, drawn on-chain from each holder's live guard.</p>
+        <div style="margin-bottom:40px">
+          <span class="kicker">Guarded agents</span>
+          <h2>The latest badges.</h2>
+          <p class="sub">Drawn on-chain from each holder's live guard.</p>
+        </div>
         <div class="wall" id="wallGrid"><p class="empty">Loading from BNB Chain…</p></div>
       </div>
     </section>
@@ -123,16 +158,16 @@
     <section>
       <div class="wrap">
         <div class="warn" role="note">
-          <strong>Stay safe</strong>
-          Haptix will never ask for your seed phrase, private key, API secret or sign-in pairing code. Don't share them with anyone. The starter guard and the badge move no money; you only pay gas. Haptix is experimental and not audited. It isn't made by or affiliated with Binance. Keep only what you can afford to lose in any agent-controlled wallet, and check every preview before you confirm.
+          <svg class="icon" aria-hidden="true"><use href="/icons.svg#i-shield-check"/></svg>
+          <div><strong>Stay safe</strong>Haptix will never ask for your seed phrase, private key, API secret or sign-in pairing code. Don't share them with anyone. The starter guard and the badge move no money; you only pay gas. Haptix is experimental and not audited. It isn't made by or affiliated with Binance. Keep only what you can afford to lose in any agent-controlled wallet, and check every preview before you confirm.</div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>
+  <footer class="site-foot">
     <div class="wrap row">
-      <span>Haptix. Open source under MIT.</span>
+      <span>Haptix · Open source under MIT · Not affiliated with Binance.</span>
       <span>Contracts: <a class="mono" id="regLink" href="#" target="_blank" rel="noopener"></a> · <a class="mono" id="badgeLink" href="#" target="_blank" rel="noopener"></a> · <a id="repoLink" href="#">Source</a></span>
     </div>
   </footer>
