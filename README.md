@@ -1,4 +1,118 @@
 <div align="center">
+  <h2>Haptix</h2>
+  <p><strong>Spending limits your AI agent can't talk its way past.</strong></p>
+  <p>On-chain guards for Binance Agentic Wallets, keyed to Agent ID, on BNB Chain mainnet.</p>
+  <p>
+    <a href="https://haptix-agent-os.vercel.app/join"><strong>Try it (Agent ID holders)</strong></a> •
+    <a href="https://haptix-agent-os.vercel.app/agent-id"><strong>Website</strong></a> •
+    <a href="skills/haptix/SKILL.md"><strong>Agent skill</strong></a> •
+    <a href="#contracts-bnb-chain-mainnet"><strong>Contracts</strong></a>
+  </p>
+</div>
+
+This repo holds two entries:
+
+- **[Haptix for Agent ID](#haptix-for-agent-id)**, the entry for the Agent ID Hackathon (Binance Wallet × BNB Chain, Nov 18 – Dec 9, 2026). It's live on BNB Chain mainnet. Its code is in `src/agentid/`, `test/agentid/`, `skills/haptix/` and `web/`.
+- **[Haptix Enclave](#haptix-enclave-for-binance-agent-os)**, the earlier ERC-4337 passkey account, which won Track A of the Binance Agent OS Mini Hackathon.
+
+---
+
+## Haptix for Agent ID
+
+### The problem
+
+An Agentic Wallet does what its agent asks. The agent reads prompts from emails, web pages and other agents, and one injected line can tell it to pay someone. Binance's preview-and-confirm step helps, but it sits in the agent's skill and conversation. A user who's tired, rushed or talked into it can still say yes to the wrong thing.
+
+### What Haptix does
+
+Haptix moves the limits out of the conversation and into contracts on BNB Chain. Only Agent ID holders can use them:
+
+| | |
+|---|---|
+| **Daily cap** | The most the agent may pay out of the vault per day, per token. |
+| **Per-payment ceiling** | No single payment above this, ever. |
+| **Passkey threshold** | Payments above it also need the owner's device passkey (WebAuthn, verified on-chain through BNB Chain's P-256 precompile). |
+| **Recipients** | Only other Agent ID holders (`.ai` names), or addresses the owner gave a daily allowance. |
+| **Raise delay** | Lowering a limit is instant. Raising one, adding a recipient or changing the passkey is queued on-chain and applies only after the owner's own delay (for example 24h), so a hijacked prompt can't quietly lift a limit and spend in the same breath. Queued changes are public and cancellable. |
+| **Withdrawals** | Taking money back out of the vault waits the same delay, or happens at once with a passkey approval. That stops a hijacked agent from emptying the vault into the wallet and spending it there. |
+
+**Agent ID is the core of the design, not decoration.** Haptix uses it in all three of the ways the hackathon lists:
+
+- **Access control:** `open`, `deposit` and `claim` check `AgentID.balanceOf(msg.sender) > 0` on-chain.
+- **Identity:** the vault pays only Agent ID holders by default. Anyone else needs an allowance that waits out the delay.
+- **Payments:** agent-to-agent payments between `.ai` names, each one checked against the payer's guard.
+
+Every action comes straight from the holder's Agentic Wallet (`baw contract-call` in Developer Mode). So `msg.sender` is always the Agent ID holder, with no relayer, bundler or session server in between.
+
+### How someone uses it
+
+There's no website sign-in: Agentic Wallets can't connect to sites, and Haptix doesn't want them to. The user talks to their own agent:
+
+1. Claim an Agent ID in the Binance App, turn on Developer Mode, and keep a little BNB for gas.
+2. Install two skills: Binance's `binance-agentic-wallet`, which signs and sends, and [`skills/haptix`](skills/haptix/SKILL.md), which builds and simulates the Haptix calls and never signs anything.
+3. Ask the agent, for example: *"Open a Haptix guard for USDT: 5 a day, at most 2 per payment, passkey above 1, and make any increase wait 24 hours."*
+
+For each write, the skill simulates the call, then runs `baw contract-call preview`, and the user sees Binance's preview and confirms. When a payment or instant withdrawal needs a passkey, the skill gives the user an approval link ([`/approve`](web/approve.html)). They check the amount and recipient on their own device, approve with fingerprint or face, and paste the code back.
+
+The fastest way in is **[/join](https://haptix-agent-os.vercel.app/join)**. It's one prompt that opens a starter guard (USDT: 5 a day, 2 per payment, 24h raise delay) and claims the **Guarded Agent badge**: a soulbound NFT whose artwork is drawn on-chain from the holder's live guard. That's two transactions, gas only, and no money moves. The page shows a live wall of badge holders and a progress check by address.
+
+### Tested on mainnet with real USDT
+
+The first vault run, on Nov 25, 2026. Every step was confirmed by the owner in the Binance Agentic Wallet preview.
+
+| Step | Result | Tx |
+|---|---|---|
+| Pay 1 USDT to another Agent ID holder (`syther069.ai`), under the passkey threshold | Paid | [`0x5ccd42d2…a049`](https://bscscan.com/tx/0x5ccd42d2934c4839eec107e5bb8b3818bb59ffe4d7b4d680edc3113439bca049) |
+| Try to pay 1.5 USDT, above the threshold | Refused in simulation: `PasskeyRequired` | — |
+| Same payment, approved with the owner's device passkey | Paid | [`0xf8564377…3f4c`](https://bscscan.com/tx/0xf85643772635eb2f459da4536550d945455d790a1a1ae3402267475890a43f4c) |
+| Withdraw the remaining 0.5 USDT instantly, with the passkey | Withdrawn | [`0xc672962a…262d`](https://bscscan.com/tx/0xc672962aecea19324c37848c8cc096ea8f345f7cfa3c35edb52ae215870d262d) |
+
+### Contracts (BNB Chain mainnet)
+
+All four are verified and open source on BscScan. **None has an owner, admin, pause, upgrade path, mint authority or fee.** Nobody, including the deployer, can change a rule, move a user's funds or freeze anything. Only the holder can change their own guard, and only under the delay rules above.
+
+| Contract | Address | What it does |
+|---|---|---|
+| HaptixRegistry (v2) | [`0xF2aD0c1fD648A4a556872456ce5BBCE97E9e8e1f`](https://bscscan.com/address/0xF2aD0c1fD648A4a556872456ce5BBCE97E9e8e1f#code) | Guards and limits per holder, queued changes (apply window 7 days, at most 8 pending) |
+| HaptixVault | [`0x01Cf3189f7a681073081b3Fca520512EB67E26Ca`](https://bscscan.com/address/0x01Cf3189f7a681073081b3Fca520512EB67E26Ca#code) | Deposits, guarded payments, passkey approvals, delayed or passkey withdrawals (24h spend window, 3-day withdrawal window) |
+| HaptixBadge | [`0xD88e147C02f4E0eD93A67d043Ef31AC4DDbf253A`](https://bscscan.com/address/0xD88e147C02f4E0eD93A67d043Ef31AC4DDbf253A#code) | Soulbound "Guarded Agent" badge, one per holder with an open guard, on-chain SVG |
+| HaptixRegistry (v1) | [`0x6C33A3d5d64862671F5BF9139920541a6BC4F73b`](https://bscscan.com/address/0x6C33A3d5d64862671F5BF9139920541a6BC4F73b#code) | The first version, from the go/no-go spike on Nov 18; superseded by v2 |
+
+All of them read Agent ID from the official contract [`0x60b9262456de011f7d15a54cdd8c48baaa8b022f`](https://bscscan.com/address/0x60b9262456de011f7d15a54cdd8c48baaa8b022f).
+
+### Safety rules we built to
+
+| Hackathon red line | How Haptix meets it |
+|---|---|
+| No web QR or pairing-code login | No web login of any kind. The user's own agent sends everything through `baw`. |
+| Skills must not bypass confirmation | The skill's first hard rule: never `execute` without the user's explicit yes to Binance's preview. The helper script can't sign. |
+| No unauthorized transfers or unlimited approvals | Deposits use an exact-amount approval. The vault only moves funds on the holder's own call, within their guard. |
+| Open source, owner permissions disclosed | Verified on BscScan. No owner permissions exist (see above). |
+| No Binance or BNB branding | The project is called Haptix. |
+| No collecting credentials | Haptix never sees a seed phrase, private key, API secret or pairing code. The passkey stays on the user's device; only its public key is stored on-chain. |
+| No promised returns; risk warnings | There's no yield. The website and `/join` both carry a risk warning, and the passkey page warns against approving anything you didn't ask for. |
+| No "look up wallets by name" | Haptix has no name-lookup feature. The skill resolves a `.ai` name only for a payment the user is making, through Binance's own command, and asks the user to confirm the address. |
+
+### What's honest to know
+
+- **Only money in the vault is protected.** Haptix can't limit what the Agentic Wallet spends directly; the skill says so when asked.
+- **Experimental and not externally audited.** Keep only small amounts in any agent-controlled wallet.
+
+### Build and test
+
+```bash
+forge test --match-path "test/agentid/*"   # 68 tests: registry, vault (incl. real WebAuthn vectors), badge
+node skills/haptix/scripts/haptix.mjs status --address <0x…>   # read any guard; needs only Node 18
+```
+
+- **Fork tests:** they run against the live mainnet contracts when `BSC_RPC_URL`, `HAPTIX_REGISTRY` and the sample-holder variables in [`.env.example`](.env.example) are set.
+- **Deploys:** `scripts/deploy-agentid.sh` and `scripts/deploy-badge.sh` take every address and window from the environment.
+
+---
+
+<a id="haptix-enclave-for-binance-agent-os"></a>
+<div align="center">
+
   <h2>Haptix Enclave for Binance Agent OS</h2>
   <p><strong>The Biometric Hardware Enclave & On-Chain Security Firewall for Autonomous AI Agents.</strong></p>
   <p><em>Official Submission for the Binance Agent OS Mini Hackathon — Track A: Build an AI Agent</em></p>
