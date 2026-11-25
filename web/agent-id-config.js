@@ -18,6 +18,9 @@ window.HAPTIX_AGENT_ID = {
     { outcome: "passkey", amount: "1.5", title: "Approved with a fingerprint", note: "The device passkey co-signed, and the vault let it through.", tx: "0xf85643772635eb2f459da4536550d945455d790a1a1ae3402267475890a43f4c" },
     { outcome: "withdrawn", amount: "0.5", title: "Withdrew the rest", note: "The passkey skips the withdrawal delay.", tx: "0xc672962aecea19324c37848c8cc096ea8f345f7cfa3c35edb52ae215870d262d" }
   ],
+  // The home-page playground reads its limits live from this holder's guard: the wallet
+  // that made the mainnet vault run above.
+  demoGuardHolder: "0x6686C37f07c40F51768aF146CB460b21106b2d8a",
   agentIdClaimPath: "Binance App → Wallet → Agent ID banner",
   announcementUrl: "https://www.binance.com/en/support/announcement/detail/95f5dbe0ea674a48a739b59e046648bf",
   repo: "https://github.com/ritesh59697/haptix-agent-os",
