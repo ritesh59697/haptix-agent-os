@@ -881,3 +881,29 @@ html[data-theme="light"] .band { background: radial-gradient(ellipse at 85% 30%,
 .join-hero .badge-card { transform: rotate(-2deg); }
 .stat b { font: 400 40px/1 var(--font-serif); }
 .join-hero h1 { margin-top: calc(var(--s) * 2.5); }
+
+/* ledger and code follow the theme */
+html[data-theme="light"] .console { background: var(--surface); border-color: var(--hair-2); box-shadow: 0 30px 60px -40px rgba(60, 40, 0, 0.25); }
+html[data-theme="light"] .console-head { color: var(--text-faint); border-bottom-color: var(--hair); }
+html[data-theme="light"] .replay { color: var(--text-muted); border-color: var(--hair-2); }
+html[data-theme="light"] .run li { color: var(--text); border-bottom-color: var(--hair); }
+html[data-theme="light"] .run .t, html[data-theme="light"] .run .amt { color: var(--text); }
+html[data-theme="light"] .run .n { color: var(--text-muted); }
+html[data-theme="light"] .run .amt a { color: var(--accent-text); }
+html[data-theme="light"] .run .amt em { color: var(--danger); }
+html[data-theme="light"] .run .paid .st, html[data-theme="light"] .run .withdrawn .st { background: var(--ok-soft); color: var(--ok); }
+html[data-theme="light"] .run .refused .st { background: var(--danger-soft); color: var(--danger); }
+html[data-theme="light"] .run .passkey .st { background: var(--accent-soft); color: var(--accent-text); }
+html[data-theme="light"] .console-foot { color: var(--text-faint); border-top-color: var(--hair); }
+html[data-theme="light"] .codebox { background: var(--surface-2); border-color: var(--hair-2); }
+html[data-theme="light"] .code-head { color: var(--text-faint); border-bottom-color: var(--hair); }
+html[data-theme="light"] pre.code { color: var(--text); }
+html[data-theme="light"] .copy { background: var(--surface); color: var(--text-muted); border-color: var(--hair-2); }
+.console-head { justify-content: space-between; }
+.msg { grid-template-columns: minmax(0, 1fr) auto; }
+.no-admin span + span::before { content: "·"; margin-right: 14px; color: var(--text-faint); }
+.no-admin { gap: 0; }
+.lane p { margin-top: 10px; }
+@media (max-width: 640px) { .msg { grid-template-columns: minmax(0, 1fr); } .m-k { grid-column: 1; } }
+.limit { grid-template-columns: minmax(0, 1fr) auto; }
+@media (max-width: 640px) { .limit { grid-template-columns: minmax(0, 1fr) auto; } .limit .val { grid-column: auto; text-align: right; } .limit .val small { display: block; margin-left: 0; } }

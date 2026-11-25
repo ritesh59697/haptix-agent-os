@@ -44,7 +44,7 @@
     <div class="dhero">
       <div class="wrap dhero-grid">
         <div class="dh-copy">
-          <p class="dh-eyebrow"><span class="dot" id="liveDot"></span><span id="liveText">Checking BNB Chain…</span><span class="sep">/</span>For Agentic Wallets with an Agent ID</p>
+          <p class="dh-eyebrow">For Agentic Wallets with an Agent ID</p>
           <h1 class="dh-title">Limits your agent <em>can't talk</em> its way past.</h1>
           <p class="dh-lede">Haptix keeps your Agentic Wallet's spending limits in a public contract on BNB Chain, keyed to your <span class="mono">.ai</span> name. Lowering a limit is instant. Raising one waits out a delay you choose. Big payments need your fingerprint.</p>
           <div class="dh-cta">
@@ -145,20 +145,14 @@
           <span class="kicker"><b>01</b>Tested on mainnet</span>
           <h2>Watch the vault <em>say no.</em></h2>
           <p class="sub">The first real run through the Haptix vault, on <span id="runDate"></span>, with real <span class="symbol">USDT</span> on BNB Chain. Every step was previewed and confirmed in the Binance Agentic Wallet.</p>
-          <ul class="proof-facts">
-            <li><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-check"/></svg><span>Small payments to other <span class="mono">.ai</span> holders go straight through.</span></li>
-            <li><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-ban"/></svg><span>Above your threshold, the vault refuses, whatever the agent was told.</span></li>
-            <li><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-fingerprint-pattern"/></svg><span>Your device passkey is the only thing that lets it through.</span></li>
-          </ul>
         </div>
         <div class="console reveal">
           <div class="console-head">
-            <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
             <span>vault run · BNB Chain mainnet</span>
             <button class="replay" id="replayBtn" type="button"><svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-clock"/></svg>Replay</button>
           </div>
           <ol class="run" id="run" aria-label="Steps of the mainnet vault run"></ol>
-          <p class="console-foot">A replay of the real run. Linked steps are real transactions on BscScan. The refused attempt was stopped before sending, so it has no transaction.</p>
+          <p class="console-foot">Each linked step is a real transaction on BscScan. The refused one was never sent.</p>
         </div>
       </div>
     </section>
@@ -180,44 +174,28 @@
             <div class="lanes">
               <div class="lane now">
                 <div class="lane-top"><b><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-trending-down"/></svg>Lower a limit</b><span class="tag now">Instant</span></div>
-                <div class="track" aria-hidden="true">
-                  <div class="node done"><i></i>Ask</div>
-                  <div class="bar-line fill"></div>
-                  <div class="node done"><i></i>Applied</div>
-                </div>
                 <p>Lowering a limit, cancelling a queued change, or making increases wait longer all apply right away.</p>
               </div>
               <div class="lane wait">
                 <div class="lane-top"><b><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-trending-up"/></svg>Raise a limit</b><span class="tag wait">Delayed</span></div>
-                <div class="track" aria-hidden="true">
-                  <div class="node done"><i></i>Queued</div>
-                  <div class="bar-line dash"></div>
-                  <div class="node"><i></i>Your delay</div>
-                  <div class="bar-line"></div>
-                  <div class="node"><i></i>Applied</div>
-                </div>
                 <p>Raising a limit or changing the passkey is queued on-chain, visible to anyone, and cancellable until the delay you set has passed.</p>
               </div>
             </div>
           </div>
           <div class="limits">
             <div class="limit reveal">
-              <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-clock"/></svg></span>
               <div><h3>Daily cap</h3><p>The most your agent can pay out in a day.</p></div>
               <div class="val"><span id="vDaily">–</span><small>a day</small></div>
             </div>
             <div class="limit reveal">
-              <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-ban"/></svg></span>
               <div><h3>Per-payment ceiling</h3><p>No single payment above this, ever.</p></div>
               <div class="val"><span id="vCeiling">–</span><small>max</small></div>
             </div>
             <div class="limit reveal">
-              <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-fingerprint-pattern"/></svg></span>
               <div><h3>Passkey threshold</h3><p>Above this, your device has to co-sign.</p></div>
               <div class="val"><span id="vPasskey">–</span><small>above</small></div>
             </div>
             <div class="limit reveal">
-              <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-badge-check"/></svg></span>
               <div><h3>Trusted recipients</h3><p>Other Agent ID holders, plus any address you allow after the delay.</p></div>
               <div class="val"><span class="mono">.ai</span><small>by default</small></div>
             </div>
@@ -236,12 +214,10 @@
         </div>
         <div class="bento">
           <div class="card b1 reveal">
-            <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-shield-check"/></svg></span>
             <h3>Only Agent ID holders get in</h3>
             <p>Opening a guard, depositing to the vault and claiming the badge all check your Agent ID on-chain. There's no allow-list for anyone to edit.</p>
           </div>
           <div class="card b2 reveal">
-            <span class="ic"><svg class="icon icon-lg" aria-hidden="true"><use href="/icons.svg#i-wallet"/></svg></span>
             <h3>Agents pay agents</h3>
             <p>The vault pays other <span class="mono">.ai</span> holders by default, so Agent ID becomes the trust list for agent-to-agent payments.</p>
           </div>
@@ -310,25 +286,12 @@
       </div>
     </section>
 
-    <!-- Wall -->
-    <section class="section-alt" id="wall">
-      <div class="wrap">
-        <div class="wall-head reveal">
-          <div>
-            <span class="kicker"><b>05</b>Guarded agents</span>
-            <div class="count"><span id="count">–</span><small id="countText">badges claimed</small></div>
-          </div>
-          <a class="btn btn-ghost btn-sm" href="/join">Claim yours <svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
-        </div>
-        <div class="wall" id="wallGrid"><p class="empty">Loading from BNB Chain…</p></div>
-      </div>
-    </section>
 
     <!-- Contracts -->
     <section>
       <div class="wrap">
         <div class="reveal">
-          <span class="kicker"><b>06</b>Open and verified</span>
+          <span class="kicker"><b>05</b>Open and verified</span>
           <h2>Nobody holds the keys. <em>Not even us.</em></h2>
           <p class="sub">Three contracts on BNB Chain, verified on BscScan, with the source on GitHub.</p>
         </div>
@@ -338,11 +301,11 @@
           <div class="contract reveal"><b>Badge</b><p>The soulbound Guarded Agent badge, drawn on-chain from your live guard.</p><a id="badgeLink" href="#" target="_blank" rel="noopener"></a></div>
         </div>
         <div class="no-admin reveal" aria-label="What the contracts don't have">
-          <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-x"/></svg>No owner</span>
-          <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-x"/></svg>No admin</span>
-          <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-x"/></svg>No pause</span>
-          <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-x"/></svg>No upgrades</span>
-          <span><svg class="icon" aria-hidden="true"><use href="/icons.svg#i-x"/></svg>No fees</span>
+          <span>No owner</span>
+          <span>No admin</span>
+          <span>No pause</span>
+          <span>No upgrades</span>
+          <span>No fees</span>
         </div>
       </div>
     </section>
@@ -351,7 +314,7 @@
     <section class="section-alt">
       <div class="wrap faq">
         <div class="reveal">
-          <span class="kicker"><b>07</b>Questions</span>
+          <span class="kicker"><b>06</b>Questions</span>
           <h2><em>Straight</em> answers.</h2>
         </div>
         <div class="faq-list">
@@ -370,7 +333,6 @@
       <div class="wrap" style="display:grid;gap:24px">
         <div class="band reveal">
           <div>
-            <span class="kicker">Guarded Agent badge</span>
             <h2>Give your agent limits it <em>can't argue with.</em></h2>
             <p>Two transactions, gas only, and a soulbound badge that shows your limits on-chain.</p>
             <a class="btn btn-gold" href="/join" style="margin-top:28px">Get the badge <svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
@@ -761,8 +723,7 @@
           scen.forEach(function (s, i) {
             var li = document.createElement('li');
             var b = document.createElement('button'); b.type = 'button'; b.className = 'msg';
-            b.innerHTML = '<span class="m-n mono"></span><span class="m-t"></span><span class="m-k"></span>';
-            b.querySelector('.m-n').textContent = String(i + 1).padStart(2, '0');
+            b.innerHTML = '<span class="m-t"></span><span class="m-k"></span>';
             b.querySelector('.m-t').textContent = '“' + s.text + '”';
             b.querySelector('.m-k').textContent = s.kind;
             b.addEventListener('click', function () {
@@ -793,56 +754,19 @@
         });
       })();
 
-      // Live check: right chain, and the registry points at an Agent ID contract.
-      abiP.then(function (abi) {
-        return Promise.all([rpc('eth_chainId', []), call(C.registry, abi.registry.agentId)]);
-      }).then(function (r) {
-        if (parseInt(r[0], 16) !== C.chainId) throw new Error('wrong chain');
-        if (/^0+$/.test(strip(r[1]).slice(-40))) throw new Error('no Agent ID link');
-        $('liveDot').classList.add('ok');
-        $('liveText').textContent = 'Live on ' + C.chainName;
-      }).catch(function () { $('liveText').textContent = C.chainName + ' mainnet'; });
-
-      // Latest badge in the hero, and the wall.
+      // The latest badge, drawn on-chain, for the closing band.
       abiP.then(function (abi) {
         return call(C.badge, abi.badge.totalSupply).then(function (r) {
           var n = Number(BigInt(r));
-          $('count').textContent = n;
-          $('countText').textContent = n === 1 ? 'badge claimed' : 'badges claimed';
-          var grid = $('wallGrid');
-          if (n === 0) { grid.innerHTML = '<p class="empty">No badges yet. Yours can be the first.</p>'; return; }
-          var ids = [];
-          for (var i = n; i >= 1 && ids.length < 5; i--) ids.push(i);
-          return Promise.all(ids.map(function (id) {
-            return Promise.all([
-              call(C.badge, abi.badge.holderAt + pad(id - 1)),
-              call(C.badge, abi.badge.tokenURI + pad(id)).then(decodeString)
-            ]).then(function (r) { return { id: id, holder: '0x' + strip(r[0]).slice(24), img: badgeImage(r[1]) }; },
-                    function () { return null; });
-          })).then(function (items) {
-            grid.innerHTML = '';
-            items.forEach(function (it) {
-              if (!it) return;
-              var a = document.createElement('a');
-              a.href = C.explorer + '/address/' + it.holder; a.target = '_blank'; a.rel = 'noopener';
-              var img = document.createElement('img'); img.src = it.img; img.alt = 'Guarded Agent #' + it.id; img.loading = 'lazy';
-              var who = document.createElement('span'); who.className = 'who'; who.textContent = '#' + it.id + ' · ' + short(it.holder);
-              a.append(img, who); grid.append(a);
-              if (it.id === n) {
-                var hero = document.createElement('img'); hero.src = it.img; hero.alt = 'Guarded Agent badge #' + it.id + ', drawn on-chain';
-                $('badgeFrame').replaceChildren(hero);
-                $('badgeLabel').innerHTML = '<b></b> · live on-chain';
-                $('badgeLabel').querySelector('b').textContent = 'No. ' + it.id;
-              }
-            });
-            var slot = document.createElement('a'); slot.href = '/join'; slot.className = 'slot';
-            slot.textContent = 'Your badge here';
-            grid.append(slot);
+          if (n === 0) return;
+          return call(C.badge, abi.badge.tokenURI + pad(n)).then(decodeString).then(function (uri) {
+            var img = document.createElement('img'); img.src = badgeImage(uri); img.alt = 'Guarded Agent badge #' + n + ', drawn on-chain';
+            $('badgeFrame').replaceChildren(img);
+            $('badgeLabel').innerHTML = '<b></b> · live on-chain';
+            $('badgeLabel').querySelector('b').textContent = 'No. ' + n;
           });
         });
-      }).catch(function () {
-        $('wallGrid').innerHTML = '<p class="empty">Couldn\'t reach BNB Chain just now. Refresh to try again.</p>';
-      });
+      }).catch(function () {});
     })();
   </script>
   <script>
