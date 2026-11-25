@@ -739,6 +739,12 @@
             });
             li.appendChild(b); list.appendChild(li);
           });
+          // A link like /#try=injection runs that message once the guard has loaded.
+          var hm = /^#try=([a-z-]+)$/.exec(location.hash);
+          if (hm) {
+            var idx = scen.map(function (x) { return x.kind.replace(/\s+/g, '-'); }).indexOf(hm[1]);
+            if (idx >= 0) setTimeout(function () { list.querySelectorAll('.msg')[idx].click(); }, reduced ? 0 : 500);
+          }
           function syncSeg() { document.querySelectorAll('.seg2 button').forEach(function (x) { x.setAttribute('aria-checked', String(x.getAttribute('data-to') === to)); }); }
           document.querySelectorAll('.seg2 button').forEach(function (b) {
             b.addEventListener('click', function () { to = b.getAttribute('data-to'); syncSeg(); });
