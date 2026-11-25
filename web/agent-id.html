@@ -346,7 +346,6 @@
             </div>
             <div class="badge-caption">
               <span id="badgeLabel">Guarded Agent badge</span>
-              <span class="chip"><svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-badge-check"/></svg>Soulbound</span>
             </div>
           </div>
         </div>
@@ -366,6 +365,7 @@
   </footer>
 
   <script src="/agent-id-config.js"></script>
+  <script src="/badge-art.js"></script>
   <script>
     (function () {
       var C = window.HAPTIX_AGENT_ID;
@@ -759,11 +759,14 @@
         return call(C.badge, abi.badge.totalSupply).then(function (r) {
           var n = Number(BigInt(r));
           if (n === 0) return;
-          return call(C.badge, abi.badge.tokenURI + pad(n)).then(decodeString).then(function (uri) {
-            var img = document.createElement('img'); img.src = badgeImage(uri); img.alt = 'Guarded Agent badge #' + n + ', drawn on-chain';
-            $('badgeFrame').replaceChildren(img);
-            $('badgeLabel').innerHTML = '<b></b> · live on-chain';
-            $('badgeLabel').querySelector('b').textContent = 'No. ' + n;
+          return Promise.all([
+            call(C.badge, abi.badge.tokenURI + pad(n)).then(decodeString),
+            call(C.badge, abi.badge.holderAt + pad(n - 1))
+          ]).then(function (r) {
+            var meta = HaptixBadgeArt.parse(r[0]), holder = '0x' + strip(r[1]).slice(24);
+            $('badgeFrame').innerHTML = HaptixBadgeArt.svg(meta, holder);
+            $('badgeLabel').innerHTML = 'From badge No. ' + meta.number + "'s on-chain data · <a target=\"_blank\" rel=\"noopener\">view on BscScan</a>";
+            $('badgeLabel').querySelector('a').href = C.explorer + '/nft/' + C.badge + '/' + meta.number;
           });
         });
       }).catch(function () {});

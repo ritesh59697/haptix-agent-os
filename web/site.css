@@ -907,3 +907,13 @@ html[data-theme="light"] .copy { background: var(--surface); color: var(--text-m
 @media (max-width: 640px) { .msg { grid-template-columns: minmax(0, 1fr); } .m-k { grid-column: 1; } }
 .limit { grid-template-columns: minmax(0, 1fr) auto; }
 @media (max-width: 640px) { .limit { grid-template-columns: minmax(0, 1fr) auto; } .limit .val { grid-column: auto; text-align: right; } .limit .val small { display: block; margin-left: 0; } }
+
+/* badge card art */
+.badge-frame svg, .wall .art svg { display: block; width: 100%; height: 100%; }
+.wall .art { aspect-ratio: 1; }
+.badge-frame { background: #07060E; border-radius: 20px; }
+.badge-card { padding: 0; background: none; box-shadow: 0 40px 80px -36px rgba(0, 0, 0, 0.75), 0 0 90px -30px rgba(240, 185, 11, 0.45); border-radius: 24px; }
+.badge-card .badge-frame { border-radius: 24px; }
+.badge-caption { padding: 14px 4px 0; }
+.badge-caption a { color: var(--accent-text); }
+.band .badge-card, .join-hero .badge-card { transform: none; }

@@ -61,8 +61,7 @@
               </div>
             </div>
             <div class="badge-caption">
-              <span>The latest badge, live on-chain</span>
-              <span class="chip"><svg class="icon icon-sm" aria-hidden="true"><use href="/icons.svg#i-badge-check"/></svg>Soulbound</span>
+              <span>The latest badge, from its on-chain data</span>
             </div>
           </div>
         </div>
@@ -171,6 +170,7 @@
   </footer>
 
   <script src="/agent-id-config.js"></script>
+  <script src="/badge-art.js"></script>
   <script>
     (function () {
       var C = window.HAPTIX_AGENT_ID;
@@ -273,7 +273,7 @@
             return Promise.all([
               call(C.badge, abi.badge.holderAt + pad(id - 1)),
               call(C.badge, abi.badge.tokenURI + pad(id)).then(decodeString)
-            ]).then(function (r) { return { id: id, holder: '0x' + strip(r[0]).slice(24), img: badgeImage(r[1]) }; },
+            ]).then(function (r) { return { id: id, holder: '0x' + strip(r[0]).slice(24), meta: HaptixBadgeArt.parse(r[1]) }; },
                     function () { return null; });
           })).then(function (items) {
             grid.innerHTML = '';
@@ -281,10 +281,10 @@
               if (!it) return;
               var a = document.createElement('a');
               a.href = C.explorer + '/address/' + it.holder; a.target = '_blank'; a.rel = 'noopener';
-              var img = document.createElement('img'); img.src = it.img; img.alt = 'Guarded Agent #' + it.id; img.loading = 'lazy';
+              var img = document.createElement('div'); img.className = 'art'; img.innerHTML = HaptixBadgeArt.svg(it.meta, it.holder);
               var who = document.createElement('span'); who.className = 'who'; who.textContent = '#' + it.id + ' · ' + short(it.holder);
               a.append(img, who); grid.append(a);
-              if (it.id === n) { $('heroBadge').src = it.img; $('heroBadge').hidden = false; }
+              if (it.id === n) { var f = $('heroBadge').parentNode; f.innerHTML = HaptixBadgeArt.svg(it.meta, it.holder); }
             });
           });
         });
