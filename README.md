@@ -119,7 +119,7 @@ node skills/haptix/scripts/haptix.mjs status --address <0x…>   # read any guar
   <p>🏆 <strong>Winner, Track A (300 USDC)</strong> — <a href="https://x.com/binance/status/2109750965570060759">Binance's winner announcement</a></p>
   <p>
     <a href="https://haptix-agent-os.vercel.app/grant-session"><strong>🚀 Live Console</strong></a> •
-    <a href="https://haptix-agent-os.vercel.app"><strong>🌐 Website</strong></a> •
+    <a href="https://haptix-agent-os.vercel.app/enclave"><strong>🌐 Website</strong></a> •
     <a href="https://x.com/Ritesh5969/status/2097242750379077915?s=20"><strong>📹 Demo Video (X / Twitter)</strong></a> •
     <a href="https://testnet.bscscan.com/address/0xE12c6D4a5a40A75885BB4b7503F76C1e41C306C5"><strong>📜 BNB Testnet Contract</strong></a>
   </p>

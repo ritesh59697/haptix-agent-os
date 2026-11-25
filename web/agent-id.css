@@ -62,7 +62,7 @@ header {
 .bar { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-family: var(--font-heading); font-weight: 700; font-size: 18px; }
 .brand:hover { text-decoration: none; }
-.brand img { width: 28px; height: 28px; border-radius: 8px; }
+.brand img { width: 28px; height: 28px; filter: drop-shadow(0 0 8px rgba(240, 185, 11, 0.45)); }
 .nav { display: flex; align-items: center; gap: 18px; font-size: 14px; }
 .nav a { color: var(--text-2); }
 .theme-btn {
