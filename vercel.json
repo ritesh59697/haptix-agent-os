@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/agent-id.html"
+      "destination": "/agent-id"
     },
     {
       "source": "/grant-session",
