@@ -671,3 +671,22 @@ html[data-theme="dark"] .join-hero h1 em { color: var(--accent); }
 .sec-head h2 em { color: var(--accent-ink); }
 html[data-theme="dark"] .sec-head h2 em { color: var(--accent); }
 .panel.card { background: var(--card); }
+
+/* Light only: the run section on a warm card instead of dark violet */
+.s-dark { background: radial-gradient(55% 70% at 85% 0%, var(--glow-a), transparent 60%), radial-gradient(45% 60% at 5% 100%, var(--glow-b), transparent 60%), var(--paper-2); color: var(--ink); border-top: 1px solid var(--rule); }
+.s-dark .s-head .s-no { color: var(--ink-3); } .s-dark .s-head .s-no em { color: var(--ink-2); } .s-dark .s-no i { background: var(--rule-2); }
+.s-dark .s-head p { color: var(--ink-2); }
+.s-dark .s-head h2 em { color: var(--accent-ink); }
+.r2 { background: var(--card); border: 1px solid var(--rule); box-shadow: var(--shadow); }
+.r2 .r-step { color: var(--ink-3); }
+.r2 .r-amt small { color: var(--ink-3); }
+.r2 .r-title { color: var(--ink-2); }
+.r2 .r-tx { color: var(--accent-ink); text-decoration-color: var(--accent-soft); }
+.r2 .r-tx.none { color: var(--danger); }
+.r2.refused .r-amt span { color: var(--ink-3); text-decoration-color: var(--danger); }
+.tag2.paid, .tag2.withdrawn { background: var(--ok-soft); color: var(--ok); }
+.tag2.refused { background: var(--danger-soft); color: var(--danger); }
+.tag2.passkey { background: var(--accent-soft); color: var(--accent-ink); }
+.s-dark .note2 { color: var(--ink-3); }
+.badge-frame { background: #FBF8EF; }
+.badge-fallback { color: var(--ink-3); }

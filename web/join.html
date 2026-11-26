@@ -17,7 +17,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script>
-    (function () { try { var t = localStorage.getItem('haptix-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
+    // Light only. Clear any theme saved by an earlier version of the site.
+    try { localStorage.removeItem('haptix-theme'); } catch (e) {}
   </script>
   <link rel="stylesheet" href="/paper.css">
 </head>
@@ -30,10 +31,6 @@
         <a class="hide-sm" href="#check">Check progress</a>
         <a class="hide-sm" href="#wall">Guarded agents</a>
         <a href="/">How it works</a>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch light or dark theme">
-          <svg class="icon theme-moon" aria-hidden="true"><use href="/icons.svg#i-moon"/></svg>
-          <svg class="icon theme-sun" aria-hidden="true"><use href="/icons.svg#i-sun"/></svg>
-        </button>
       </nav>
     </div>
   </header>
@@ -150,12 +147,6 @@
             btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1400);
           }, function () { btn.textContent = 'Select & copy'; });
         });
-      });
-
-      $('themeBtn').addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        try { localStorage.setItem('haptix-theme', next); } catch (e) {}
       });
 
       // ---- chain

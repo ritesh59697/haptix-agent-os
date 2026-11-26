@@ -27,11 +27,6 @@
       copyLabel.textContent = 'Copied'; setTimeout(function () { copyLabel.textContent = 'Copy'; }, 1400);
     }, function () { copyLabel.textContent = 'Select & copy'; });
   });
-  $('themeBtn').addEventListener('click', function () {
-    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    try { localStorage.setItem('haptix-theme', next); } catch (e) {}
-  });
 
   // ---- the vault in the illustration: bolts, ticks, arc and spokes
   (function () {
