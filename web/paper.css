@@ -690,3 +690,45 @@ html[data-theme="dark"] .sec-head h2 em { color: var(--accent); }
 .s-dark .note2 { color: var(--ink-3); }
 .badge-frame { background: #FBF8EF; }
 .badge-fallback { color: var(--ink-3); }
+
+/* Phone trim: one idea per screen. Desktop is unchanged. */
+@media (max-width: 640px) {
+  .s-sec { padding: 64px 0; }
+  .s-head { margin-bottom: 28px; }
+  .s-head p { font-size: 16px; }
+  /* the bento is hidden here, so drop the section numbers rather than show a gap */
+  .s-head .s-no em, .s-head .s-no i { display: none; }
+
+  /* console: the sample messages become one row you swipe */
+  .msgs { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 14px -16px 0; padding: 2px 16px 10px; scrollbar-width: none; }
+  .msgs::-webkit-scrollbar { display: none; }
+  .msgs > li { flex: 0 0 78%; scroll-snap-align: start; }
+  .msgs .msg { height: 100%; display: flex; flex-direction: column; gap: 6px; padding: 14px; border: 1px solid var(--rule-2); border-radius: 14px; background: var(--paper); font-size: 14px; }
+  .msgs .msg:hover, .msgs .msg.active { padding-left: 14px; }
+  .msgs .msg.active { border-color: var(--accent-deep); background: var(--card); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .msgs .msg::before { display: none; }
+  .msgs .msg .m-k { order: -1; font-size: 15px; }
+  .msgs .msg .m-t { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .cc-head { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .custom { margin-top: 12px; }
+  .play-foot { margin-top: 14px; }
+
+  /* cut what repeats something shown higher up */
+  .sources, .sec-guard, .stats { display: none; }
+
+  /* how it works: tighter steps */
+  .flow-card { padding: 18px 14px; }
+  .flow2 { gap: 14px; }
+  .node { padding: 14px; }
+  .node + .node::before { top: -15px; height: 15px; }
+  .node + .node::after { top: -7px; }
+
+  /* mainnet run: a 2 by 2 grid instead of four tall cards */
+  .run2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .r2 { padding: 14px 12px; }
+  .r2 .r-amt { font-size: 34px; margin-top: 12px; }
+  .r2 .r-title { font-size: 13px; }
+  .r2 .r-tx { font-size: 11px; }
+  .r2 .tag2 { top: 12px; right: 10px; font-size: 9px; padding: 3px 6px; }
+  .cta-card { padding: 40px 18px; }
+}
