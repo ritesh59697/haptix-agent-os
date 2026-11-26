@@ -10,20 +10,20 @@
   <meta property="og:image" content="https://haptix-agent-os.vercel.app/og-haptix.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://haptix-agent-os.vercel.app/og-haptix.png">
-  <meta name="theme-color" content="#F2EEE4">
+  <meta name="theme-color" content="#F3F2EC">
   <link rel="icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="/assets/favicon-256.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script>
     (function () { try { var t = localStorage.getItem('haptix-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
   </script>
   <link rel="stylesheet" href="/paper.css">
 </head>
 <body>
-  <header class="top">
-    <div class="wrap bar">
+  <header class="pill-nav">
+    <div class="bar">
       <a class="brand" href="/"><img src="/assets/haptix-mark.svg" alt="">Haptix</a>
       <nav class="nav" aria-label="Main">
         <a class="hide-sm" href="#steps">Steps</a>
@@ -47,12 +47,12 @@
           <p class="lede">Give your Agentic Wallet spending limits on BNB Chain, then claim a soulbound badge that shows them. It takes two transactions from your own wallet, costs a few cents of BNB in gas, and moves no money.</p>
           <div class="cta">
             <a class="btn btn-ink" href="#steps">Show me the steps <svg class="icon" aria-hidden="true"><use href="/icons.svg#i-arrow-right"/></svg></a>
-            <a class="link" href="#check">Check my progress</a>
+            <a class="btn btn-soft" href="#check">Check my progress</a>
           </div>
           <p class="sr-only" aria-live="polite"><b id="count">–</b> <span id="countText">badges claimed so far</span></p>
         </div>
         <div>
-          <div class="badge-frame"><img id="heroBadge" alt="A Haptix Guarded Agent badge" hidden><div class="badge-fallback">Each badge is drawn from its holder's on-chain data.</div></div>
+          <div class="badge-frame" style="box-shadow:var(--shadow-lg)"><img id="heroBadge" alt="A Haptix Guarded Agent badge" hidden><div class="badge-fallback">Each badge is drawn from its holder's on-chain data.</div></div>
           <p class="badge-caption">The latest badge, drawn from its on-chain data</p>
         </div>
       </div>
@@ -86,7 +86,7 @@
         <div class="sec-head"><p class="sec-no">02<span>Check your progress</span></p><h2>Where are <em>you up to?</em></h2></div>
         <div class="indent">
           <p class="sub" style="margin:-24px 0 28px">Paste your Agentic Wallet address (your agent can show it). This only reads public chain data.</p>
-          <div class="panel">
+          <div class="panel card">
             <form class="field" id="checkForm">
               <input id="addr" placeholder="0x…" autocomplete="off" spellcheck="false" aria-label="Your Agentic Wallet address">
               <button class="btn btn-ink" type="submit">Check</button>
